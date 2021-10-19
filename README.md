@@ -1,11 +1,21 @@
-# project_name
+# ouqu-tp
 
-This is a template repository for Python project.
+英語対応してなくてごめん
+いろいろ暫定です
 
-## How to use
-Refer to a following documentation:
-- en: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template
-- ja: https://docs.github.com/ja/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template
+# 使い方
 
-Then update `tool.poetry` section in `pyproject.toml` along your new project.
-And rename `project_name` directory. It is the same as `name` in `tool.poetry`.
+input_test.qasm を入力する場合、
+
+python ouqu-tp.py < input_test.qasm
+すると、　結果が出力されます。
+
+ただし、input_test.qasmは受け付ける関数の種類が非常に少ないです。
+事前にstaqを用いて、コンパイル?しておく必要があります。
+https://github.com/softwareQinc/staq
+
+input_origin.qasmを本来のqasmファイルとしたとき、
+
+staq -S -O2 -m -d ibm_tokyo.json --evaluate-all　input_origin.qasm
+
+を用いて、　コンパイルされたqasmファイルをouqu-tpに入力します。
