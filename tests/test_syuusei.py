@@ -1,2 +1,2 @@
 def test_sample() -> None:
-    assert (1 + 1) *10 *10 == 200
+    assert (1 + 1) * 10 * 10 == 200
