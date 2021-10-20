@@ -1,12 +1,12 @@
 import cmath
+import typing
 from cmath import atan, isclose, phase, pi, sqrt
 
-from qulacs import QuantumCircuit
 import qulacs
-from qulacs.gate import U3, Identity, merge,RZ,X,sqrtX
-from typing import List,Tuple
+from qulacs.gate import RZ, Identity, X, merge, sqrtX
 
-def tran_ouqu_single(input_gate):
+
+def tran_ouqu_single(input_gate: qulacs.gate) -> typing.List["qulacs.gate"]:
     # print(input_gate)
     # 1qubitのDenseMatrixゲートを入力し、 阪大のList[gate]の形に合わせます
     if len(input_gate.get_target_index_list()) != 1:
@@ -16,19 +16,19 @@ def tran_ouqu_single(input_gate):
     matrix = input_gate.get_matrix()
     qubit = input_gate.get_target_index_list()[0]
 
-    out_gates = []
+    out_gates: typing.List["qulacs.gate"] = []
     # Rz単騎
     if cmath.isclose(abs(matrix[0][0]), 1):
         degA = phase(matrix[1][1] / matrix[0][0])
         if isclose(degA, 0):
             return out_gates
-        out_gates.append(RZ(qubit,degA))
+        out_gates.append(RZ(qubit, degA))
         return out_gates
 
     # Rz X
     if isclose(abs(matrix[0][0]), 0):
         degA = phase(matrix[1][0] / matrix[0][1])
-        out_gates.append(RZ(qubit,degA))
+        out_gates.append(RZ(qubit, degA))
         out_gates.append(X(qubit))
         return out_gates
 
@@ -36,9 +36,9 @@ def tran_ouqu_single(input_gate):
     if isclose(abs(matrix[0][0]), cmath.sqrt(0.5)):
         degA = phase(matrix[1][0] / matrix[0][0]) + pi / 2
         degB = phase(matrix[0][1] / matrix[0][0]) + pi / 2
-        out_gates.append(RZ(qubit,degA))
+        out_gates.append(RZ(qubit, degA))
         out_gates.append(sqrtX(qubit))
-        out_gates.append(RZ(qubit,degB))
+        out_gates.append(RZ(qubit, degB))
         return out_gates
 
     # Rz sqrtX Rz sqrtX Rz
@@ -49,28 +49,33 @@ def tran_ouqu_single(input_gate):
     degB = degB_com.real
     degA = phase(matrix[1][0] / matrix[0][0])
     degC = phase(matrix[0][1] / matrix[0][0])
-    out_gates.append(RZ(qubit,degA))
+    out_gates.append(RZ(qubit, degA))
     out_gates.append(sqrtX(qubit))
-    out_gates.append(RZ(qubit,degB))
+    out_gates.append(RZ(qubit, degB))
     out_gates.append(sqrtX(qubit))
-    out_gates.append(RZ(qubit,degC))
+    out_gates.append(RZ(qubit, degC))
     return out_gates
 
 
-def tran_ouqu_multi(n_qubit:int,input_list:list[qulacs.gate])->list[qulacs.gate]:
+def tran_ouqu_multi(
+    n_qubit: int, input_list: typing.List["qulacs.gate"]
+) -> typing.List["qulacs.gate"]:
     bitSingleGates = []
     tran_gates = []
-    
+
     for i in range(n_qubit):
         bitSingleGates.append(Identity(i))
 
     for ingate in input_list:
-        if len(ingate.get_control_index_list())+len(ingate.get_target_index_list()) <= 1:
-            target=ingate.get_target_index_list()[0]
+        if (
+            len(ingate.get_control_index_list()) + len(ingate.get_target_index_list())
+            <= 1
+        ):
+            target = ingate.get_target_index_list()[0]
             newgate = merge(bitSingleGates[target], ingate)
             bitSingleGates[target] = newgate
         else:
-            bits=ingate.get_control_index_list()+ingate.get_target_index_list()
+            bits = ingate.get_control_index_list() + ingate.get_target_index_list()
             for i in bits:
                 tran_gates += tran_ouqu_single(bitSingleGates[i])
                 bitSingleGates[i] = Identity(i)
