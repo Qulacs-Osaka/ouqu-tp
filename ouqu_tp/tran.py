@@ -9,6 +9,8 @@ from qulacs.gate import RZ, Identity, X, merge, sqrtX
 def tran_ouqu_single(input_gate: qulacs.gate) -> typing.List["qulacs.gate"]:
     # print(input_gate)
     # 1qubitのDenseMatrixゲートを入力し、 阪大のList[gate]の形に合わせます
+    fugouZ=-1
+
     if len(input_gate.get_target_index_list()) != 1:
         print("input gate is not single")
     if len(input_gate.get_control_index_list()) != 0:
@@ -19,7 +21,7 @@ def tran_ouqu_single(input_gate: qulacs.gate) -> typing.List["qulacs.gate"]:
     out_gates: typing.List["qulacs.gate"] = []
     # Rz単騎
     if cmath.isclose(abs(matrix[0][0]), 1):
-        degA = phase(matrix[1][1] / matrix[0][0])
+        degA = phase(matrix[1][1] / matrix[0][0]) * fugouZ
         if isclose(degA, 0):
             return out_gates
         out_gates.append(RZ(qubit, degA))
@@ -27,15 +29,15 @@ def tran_ouqu_single(input_gate: qulacs.gate) -> typing.List["qulacs.gate"]:
 
     # Rz X
     if isclose(abs(matrix[0][0]), 0):
-        degA = phase(matrix[1][0] / matrix[0][1])
+        degA = phase(matrix[1][0] / matrix[0][1]) * fugouZ
         out_gates.append(RZ(qubit, degA))
         out_gates.append(X(qubit))
         return out_gates
 
     # Rz sqrtX Rz
     if isclose(abs(matrix[0][0]), cmath.sqrt(0.5)):
-        degA = phase(matrix[1][0] / matrix[0][0]) + pi / 2
-        degB = phase(matrix[0][1] / matrix[0][0]) + pi / 2
+        degA = (phase(matrix[1][0] / matrix[0][0]) + pi / 2)* fugouZ
+        degB = (phase(matrix[0][1] / matrix[0][0]) + pi / 2)* fugouZ
         out_gates.append(RZ(qubit, degA))
         out_gates.append(sqrtX(qubit))
         out_gates.append(RZ(qubit, degB))
@@ -46,9 +48,9 @@ def tran_ouqu_single(input_gate: qulacs.gate) -> typing.List["qulacs.gate"]:
     # print(adbc)
     degB_com = 2 * atan(sqrt(adbc))
     # print(degB_com)
-    degB = degB_com.real
-    degA = phase(matrix[1][0] / matrix[0][0])
-    degC = phase(matrix[0][1] / matrix[0][0])
+    degB = degB_com.real * fugouZ
+    degA = phase(matrix[1][0] / matrix[0][0])* fugouZ
+    degC = phase(matrix[0][1] / matrix[0][0])* fugouZ
     out_gates.append(RZ(qubit, degA))
     out_gates.append(sqrtX(qubit))
     out_gates.append(RZ(qubit, degB))

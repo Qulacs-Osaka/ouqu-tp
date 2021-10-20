@@ -17,4 +17,4 @@ output_gates(tran_gates)
 # staq -S -O2 -m --device qasm/ibm_tokyo.json --evaluate-all qasm/test_watle.qasm
 #
 #
-#
+#test_kairo_Aが通らない　なぜ？ Zの回転方向？　その他のミス?
