@@ -15,9 +15,3 @@ output_gates(tran_gates)
 # input_list=[["U",0.0,0.0,0.785398,1],["CX",0,1],["U",0.0,0.0,0.785398,1]]
 # やっぱりこの形式はやめて、qulacs.gateを受け渡しすることになった
 # staq -S -O2 -m --device qasm/ibm_tokyo.json --evaluate-all qasm/test_watle.qasm
-#
-#
-# test_kairo_Aが通らない　なぜ？ Zの回転方向？　その他のミス?
-# fugouZ
-# Z の回転方向調べる
-# "qulacs.gate" は、型名ではないので、なおす

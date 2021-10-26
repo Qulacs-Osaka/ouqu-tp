@@ -6,7 +6,7 @@ import qulacs
 from qulacs.gate import RZ, Identity, X, merge, sqrtX
 
 
-def tran_ouqu_single(input_gate: qulacs.gate) -> typing.List["qulacs.gate"]:
+def tran_ouqu_single(input_gate: qulacs.gate) -> typing.List[qulacs.QuantumGateBase]:
     # print(input_gate)
     # 1qubitのDenseMatrixゲートを入力し、 阪大のList[gate]の形に合わせます
     fugouZ = -1
@@ -18,7 +18,7 @@ def tran_ouqu_single(input_gate: qulacs.gate) -> typing.List["qulacs.gate"]:
     matrix = input_gate.get_matrix()
     qubit = input_gate.get_target_index_list()[0]
 
-    out_gates: typing.List["qulacs.gate"] = []
+    out_gates: typing.List[qulacs.QuantumGateBase] = []
     # Rz単騎
     if cmath.isclose(abs(matrix[0][0]), 1):
         degA = phase(matrix[1][1] / matrix[0][0]) * fugouZ
@@ -74,8 +74,8 @@ def tran_ouqu_single(input_gate: qulacs.gate) -> typing.List["qulacs.gate"]:
 
 # 1.02判定でなにかある?
 def tran_ouqu_multi(
-    n_qubit: int, input_list: typing.List["qulacs.gate"]
-) -> typing.List["qulacs.gate"]:
+    n_qubit: int, input_list: typing.List[qulacs.QuantumGateBase]
+) -> typing.List[qulacs.QuantumGateBase]:
     bitSingleGates = []
     tran_gates = []
 

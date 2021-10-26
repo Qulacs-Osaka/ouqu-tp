@@ -20,9 +20,9 @@ def input_strings() -> typing.List[str]:
 
 def str_to_gate(
     input_strs: typing.List[str],
-) -> typing.Tuple[int, typing.List["qulacs.gate"]]:
+) -> typing.Tuple[int, typing.List[qulacs.QuantumGateBase]]:
     n_qubit: int = 20  # 暫定
-    input_list: typing.List["qulacs.gate"] = []
+    input_list: typing.List[qulacs.QuantumGateBase] = []
     for instr in input_strs:
         if instr[0:7] == "qreg q[":
             mytable = instr.maketrans("qreg[];", "       ")
@@ -50,8 +50,9 @@ def str_to_gate(
     return (n_qubit, input_list)
 
 
-def output_gates(gates: typing.List["qulacs.gate"]) -> None:
+def output_gates(gates: typing.List[qulacs.QuantumGateBase]) -> None:
     # gateが直接渡されるようになった
+    # print(gates)
     print(type(gates[0]))
     for it in gates:
         # print(it.get_name())
@@ -65,6 +66,6 @@ def output_gates(gates: typing.List["qulacs.gate"]) -> None:
             print("sqrtX", it.get_target_index_list()[0])
         elif it.get_name() == "CNOT":
             print("CNOT", it.get_control_index_list()[0], it.get_target_index_list()[0])
-        # else:
-        # print(it) #直接プリントできるらしい、　困ったらそうするしかない
+        else:
+            print(it)  # 直接プリントできるらしい、　困ったらそうするしかない
     return
