@@ -9,7 +9,7 @@ from qulacs.gate import RZ, Identity, X, merge, sqrtX
 def tran_ouqu_single(input_gate: qulacs.gate) -> typing.List["qulacs.gate"]:
     # print(input_gate)
     # 1qubitのDenseMatrixゲートを入力し、 阪大のList[gate]の形に合わせます
-    fugouZ=-1
+    fugouZ = -1
 
     if len(input_gate.get_target_index_list()) != 1:
         print("input gate is not single")
@@ -22,6 +22,7 @@ def tran_ouqu_single(input_gate: qulacs.gate) -> typing.List["qulacs.gate"]:
     # Rz単騎
     if cmath.isclose(abs(matrix[0][0]), 1):
         degA = phase(matrix[1][1] / matrix[0][0]) * fugouZ
+        # print(degA)
         if isclose(degA, 0):
             return out_gates
         out_gates.append(RZ(qubit, degA))
@@ -29,28 +30,40 @@ def tran_ouqu_single(input_gate: qulacs.gate) -> typing.List["qulacs.gate"]:
 
     # Rz X
     if isclose(abs(matrix[0][0]), 0):
+
         degA = phase(matrix[1][0] / matrix[0][1]) * fugouZ
+        # print(degA,"X")
         out_gates.append(RZ(qubit, degA))
         out_gates.append(X(qubit))
         return out_gates
 
     # Rz sqrtX Rz
+
     if isclose(abs(matrix[0][0]), cmath.sqrt(0.5)):
-        degA = (phase(matrix[1][0] / matrix[0][0]) + pi / 2)* fugouZ
-        degB = (phase(matrix[0][1] / matrix[0][0]) + pi / 2)* fugouZ
+        degA = (phase(matrix[0][1] / matrix[0][0]) + pi / 2) * fugouZ
+        degB = (phase(matrix[1][0] / matrix[0][0]) + pi / 2) * fugouZ
+        # print(degA,degB)
         out_gates.append(RZ(qubit, degA))
         out_gates.append(sqrtX(qubit))
         out_gates.append(RZ(qubit, degB))
         return out_gates
 
     # Rz sqrtX Rz sqrtX Rz
-    adbc = abs((matrix[0][0] * matrix[1][1]) / (matrix[0][1] * matrix[1][0]))
+    adbc_mto = (matrix[0][0] * matrix[1][1]) / (matrix[0][1] * matrix[1][0])
+    # print(adbc_mto)
+    adbc = abs(adbc_mto)
     # print(adbc)
-    degB_com = 2 * atan(sqrt(adbc))
+    degB_com = -2 * atan(sqrt(adbc))  # 0～-π
     # print(degB_com)
     degB = degB_com.real * fugouZ
-    degA = phase(matrix[1][0] / matrix[0][0])* fugouZ
-    degC = phase(matrix[0][1] / matrix[0][0])* fugouZ
+    degA = phase(-matrix[0][1] / matrix[0][0]) * fugouZ
+    degC = phase(-matrix[1][0] / matrix[0][0]) * fugouZ
+
+    # degC=1.045
+    # 1.045周辺
+    # print(degA,degB,degC)
+    # print(matrix)
+    # print(tan(degB_com/2))
     out_gates.append(RZ(qubit, degA))
     out_gates.append(sqrtX(qubit))
     out_gates.append(RZ(qubit, degB))
@@ -59,6 +72,7 @@ def tran_ouqu_single(input_gate: qulacs.gate) -> typing.List["qulacs.gate"]:
     return out_gates
 
 
+# 1.02判定でなにかある?
 def tran_ouqu_multi(
     n_qubit: int, input_list: typing.List["qulacs.gate"]
 ) -> typing.List["qulacs.gate"]:

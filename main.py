@@ -17,4 +17,7 @@ output_gates(tran_gates)
 # staq -S -O2 -m --device qasm/ibm_tokyo.json --evaluate-all qasm/test_watle.qasm
 #
 #
-#test_kairo_Aが通らない　なぜ？ Zの回転方向？　その他のミス?
+# test_kairo_Aが通らない　なぜ？ Zの回転方向？　その他のミス?
+# fugouZ
+# Z の回転方向調べる
+# "qulacs.gate" は、型名ではないので、なおす
