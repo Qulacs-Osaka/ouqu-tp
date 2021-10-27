@@ -1,9 +1,8 @@
 from ouqu_tp.io import input_strings, output_gates, str_to_gate
 from ouqu_tp.tran import tran_ouqu_multi
-
+from ouqu_tp.debug import check_circuit
 # from ouqu_tp import input_strings,str_to_SAG,tran_ouqu_multi,output_gates
 
-# ここからmain文
 input_strs = input_strings()
 (n_qubit, input_list) = str_to_gate(input_strs)
 tran_gates = tran_ouqu_multi(n_qubit, input_list)

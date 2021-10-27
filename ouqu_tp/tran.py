@@ -15,8 +15,10 @@ def tran_ouqu_single(
 
     if len(input_gate.get_target_index_list()) != 1:
         print("input gate is not single")
+        return []
     if len(input_gate.get_control_index_list()) != 0:
         print("input gate have control qubit")
+        return []
     matrix = input_gate.get_matrix()
     qubit = input_gate.get_target_index_list()[0]
 

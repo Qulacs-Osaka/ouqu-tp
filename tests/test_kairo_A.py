@@ -1,10 +1,13 @@
 from ouqu_tp.io import str_to_gate
 from ouqu_tp.tran import tran_ouqu_multi
+from ouqu_tp.debug import check_circuit
 from qulacs import QuantumCircuit, QuantumState
 from qulacs.state import inner_product
 
 
+
 def test_kairo_A() -> None:
+    #staq->ouqu と、　qulacsのゲートが、同じかどうか確かめます
     taiou = [0, 3, 6, 2, 1]
     circuit = QuantumCircuit(7)
     circuit.add_U3_gate(taiou[0], 1.2, 2.1, 0.9)
@@ -68,17 +71,5 @@ def test_kairo_A() -> None:
     # stateb = QuantumState(4)
 
     # print(testcircuit)
-    for i in range(13):
-        state.set_Haar_random_state(i)
-        # state.set_zero_state()
-        stateb = state.copy()
-
-        # stateb.set_zero_state()
-        # stateX.set_zero_state()
-        circuit.update_quantum_state(state)
-
-        testcircuit.update_quantum_state(stateb)
-
-        # print(state)
-        # print(stateb)
-        assert abs(inner_product(state, stateb)) > 0.9999
+    check_circuit(circuit,testcircuit)
+    
