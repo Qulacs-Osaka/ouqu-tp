@@ -1,6 +1,7 @@
+# from ouqu_tp.debug import check_circuit
 from ouqu_tp.io import input_strings, output_gates, str_to_gate
 from ouqu_tp.tran import tran_ouqu_multi
-from ouqu_tp.debug import check_circuit
+
 # from ouqu_tp import input_strings,str_to_SAG,tran_ouqu_multi,output_gates
 
 input_strs = input_strings()

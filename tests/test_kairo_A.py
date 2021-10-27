@@ -1,13 +1,11 @@
+from ouqu_tp.debug import check_circuit
 from ouqu_tp.io import str_to_gate
 from ouqu_tp.tran import tran_ouqu_multi
-from ouqu_tp.debug import check_circuit
-from qulacs import QuantumCircuit, QuantumState
-from qulacs.state import inner_product
-
+from qulacs import QuantumCircuit
 
 
 def test_kairo_A() -> None:
-    #staq->ouqu と、　qulacsのゲートが、同じかどうか確かめます
+    # staq->ouqu と、　qulacsのゲートが、同じかどうか確かめます
     taiou = [0, 3, 6, 2, 1]
     circuit = QuantumCircuit(7)
     circuit.add_U3_gate(taiou[0], 1.2, 2.1, 0.9)
@@ -67,9 +65,5 @@ def test_kairo_A() -> None:
         # print(it)
         testcircuit.add_gate(it)
 
-    state = QuantumState(7)
-    # stateb = QuantumState(4)
-
     # print(testcircuit)
-    check_circuit(circuit,testcircuit)
-    
+    check_circuit(circuit, testcircuit)
