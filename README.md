@@ -19,3 +19,6 @@ input_origin.qasmを本来のqasmファイルとしたとき、
 staq -S -O2 -m -d ibm_tokyo.json --evaluate-all　input_origin.qasm
 
 を用いて、　コンパイルされたqasmファイルをouqu-tpに入力します。
+
+
+注意点:このトランスパイラは、グローバル位相を完全に無視します。
