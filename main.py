@@ -1,4 +1,4 @@
-from ouqu_tp.ioSAG import input_strings, output_gates, str_to_gate
+from ouqu_tp.io import input_strings, output_gates, str_to_gate
 from ouqu_tp.tran import tran_ouqu_multi
 
 # from ouqu_tp import input_strings,str_to_SAG,tran_ouqu_multi,output_gates
@@ -11,7 +11,5 @@ output_gates(tran_gates)
 
 
 # ここからメモ
-# 　次回　動くかどうかテスト
-# input_list=[["U",0.0,0.0,0.785398,1],["CX",0,1],["U",0.0,0.0,0.785398,1]]
-# やっぱりこの形式はやめて、qulacs.gateを受け渡しすることになった
+# やっぱりこの形式はやめて、qulacs.QuantumGateBaseを受け渡しすることになった
 # staq -S -O2 -m --device qasm/ibm_tokyo.json --evaluate-all qasm/test_watle.qasm

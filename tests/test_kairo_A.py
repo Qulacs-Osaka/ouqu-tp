@@ -1,4 +1,4 @@
-from ouqu_tp.ioSAG import str_to_gate
+from ouqu_tp.io import str_to_gate
 from ouqu_tp.tran import tran_ouqu_multi
 from qulacs import QuantumCircuit, QuantumState
 from qulacs.state import inner_product

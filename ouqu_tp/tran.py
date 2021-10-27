@@ -6,7 +6,9 @@ import qulacs
 from qulacs.gate import RZ, Identity, X, merge, sqrtX
 
 
-def tran_ouqu_single(input_gate: qulacs.gate) -> typing.List[qulacs.QuantumGateBase]:
+def tran_ouqu_single(
+    input_gate: qulacs.QuantumGateBase,
+) -> typing.List[qulacs.QuantumGateBase]:
     # print(input_gate)
     # 1qubitのDenseMatrixゲートを入力し、 阪大のList[gate]の形に合わせます
     fugouZ = -1
