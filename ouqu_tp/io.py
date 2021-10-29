@@ -53,7 +53,9 @@ def str_to_gate(
 def output_gates(gates: typing.List[qulacs.QuantumGateBase]) -> None:
     # gateが直接渡されるようになった
     # print(gates)
-    print(type(gates[0]))
+    print("OPENQASM 2.0")
+
+    # 気を付けて　qreg情報はない
     for it in gates:
         # print(it.get_name())
         if it.get_name() == "Z-rotation":
@@ -66,6 +68,35 @@ def output_gates(gates: typing.List[qulacs.QuantumGateBase]) -> None:
             print("sqrtX", it.get_target_index_list()[0])
         elif it.get_name() == "CNOT":
             print("CNOT", it.get_control_index_list()[0], it.get_target_index_list()[0])
+        else:
+            print(it)  # 直接プリントできるらしい、　困ったらそうするしかない
+    return
+
+
+def output_gates_QASMfuu(gates: typing.List[qulacs.QuantumGateBase]) -> None:
+    # QASM風です
+    print("OPENQASM 2.0")
+
+    # 気を付けて　qreg情報はない
+
+    for it in gates:
+        # print(it.get_name())
+        if it.get_name() == "Z-rotation":
+            matrix = it.get_matrix()
+            angle = phase(matrix[1][1] / matrix[0][0])
+            print("RZ(", angle, ") q[", it.get_target_index_list()[0], "]")
+        elif it.get_name() == "X":
+            print("X q[", it.get_target_index_list()[0], "]")
+        elif it.get_name() == "sqrtX":
+            print("sqrtX q[", it.get_target_index_list()[0], "]")
+        elif it.get_name() == "CNOT":
+            print(
+                "CNOT q[",
+                it.get_control_index_list()[0],
+                "] q[",
+                it.get_target_index_list()[0],
+                "]",
+            )
         else:
             print(it)  # 直接プリントできるらしい、　困ったらそうするしかない
     return
