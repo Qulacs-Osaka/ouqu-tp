@@ -24,7 +24,7 @@ staq -S -O2 -m -d ibm_tokyo.json --evaluate-all　input_origin.qasm
 CNOTゲートの制約は、staq側で処理します。
 ibm_tokyo.json　というファイルに、　CNOTゲートの制約を書きます
 
-√XとRZはouqu_tpで書きます。
+√XとRZはouqu_tpで処理されます
 
 ラッパーを後で書く予定です
 
