@@ -63,8 +63,6 @@ def tran_ouqu_single(
     degA = phase(-matrix[0][1] / matrix[0][0]) * fugouZ
     degC = phase(-matrix[1][0] / matrix[0][0]) * fugouZ
 
-    # degC=1.045
-    # 1.045周辺
     # print(degA,degB,degC)
     # print(matrix)
     # print(tan(degB_com/2))
@@ -76,7 +74,7 @@ def tran_ouqu_single(
     return out_gates
 
 
-# 1.02判定でなにかある?
+
 def tran_ouqu_multi(
     n_qubit: int, input_list: typing.List[qulacs.QuantumGateBase]
 ) -> typing.List[qulacs.QuantumGateBase]:
