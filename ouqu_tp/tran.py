@@ -74,7 +74,6 @@ def tran_ouqu_single(
     return out_gates
 
 
-
 def tran_ouqu_multi(
     n_qubit: int, input_list: typing.List[qulacs.QuantumGateBase]
 ) -> typing.List[qulacs.QuantumGateBase]:

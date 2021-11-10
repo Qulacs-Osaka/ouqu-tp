@@ -1,5 +1,5 @@
 from ouqu_tp.debug import check_circuit
-from ouqu_tp.io import str_to_gate
+from ouqu_tp.ot_io import str_to_gate
 from ouqu_tp.tran import tran_ouqu_multi
 from qulacs import QuantumCircuit
 
