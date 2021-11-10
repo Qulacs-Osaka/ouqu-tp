@@ -1,4 +1,19 @@
-OPENQASM 2.0
+// Mapped to device "test"
+// Qubits: 9
+// Layout (physical --> virtual):
+// 	q[0] --> q[0]
+// 	q[1] --> q[2]
+// 	q[2] --> q[1]
+// 	q[3] --> 
+// 	q[4] --> q[4]
+// 	q[5] --> q[3]
+// 	q[6] --> 
+// 	q[7] --> 
+// 	q[8] --> 
+OPENQASM 2.0;
+include "qelib1.inc";
+
+
 RZ( 0.5000000000000001 ) q[ 0 ]
 sqrtX q[ 0 ]
 RZ( -1.941592605906073 ) q[ 0 ]

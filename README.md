@@ -5,32 +5,25 @@
 
 # 使い方
 
-input_test.qasm を入力する場合、
+これは、QASMをqulacsで実行したり、実機で可能なようにうまく回路を変形するライブラリです。
 
-python main.py < input_test.qasm
-すると、　結果が出力されます。
 
-ただし、input_test.qasmは受け付ける関数の種類が非常に少ないです。
-事前にstaqを用いて、コンパイル?しておく必要があります。
-https://github.com/softwareQinc/staq
+CNOTの制約とQASMファイルから、実機で可能なQASMファイルを作るtrance.shと、
+QASMファイルを受け取り、量子状態を得た後、shotの回数だけ実行するsimulate.sh
+の二つの機能があります。
 
-input_origin.qasmを本来のqasmファイルとしたとき、
-
-staq -S -O2 -m -d ibm_tokyo.json --evaluate-all　input_origin.qasm
-
-を用いて、　コンパイルされたqasmファイルをouqu-tpに入力します。
-
-実機制約について
-CNOTゲートの制約は、staq側で処理します。
-ibm_tokyo.json　というファイルに、　CNOTゲートの制約を書きます
-
-√XとRZはouqu_tpで処理されます
-
+入出力例として、サンプルの各ファイルが、すでにdataフォルダに入っています。参考にしてください。
 注意点:このトランスパイラは、グローバル位相を完全に無視します。
 
+##必要な環境
+python
+qulacs(普通のでも、osakaでも可)
+staq
 
-ラッパーを書きました
-trance.sh
+が必要です。
+windows以外での動作は可能かわかりません。
+
+## trance.sh
 CNOTの制約とQASMファイルから、実機で可能なQASMファイルを作ります
 
 CNOTの制約はdata/CNOT_net.txtに書いてください
@@ -39,12 +32,43 @@ CNOTの制約はdata/CNOT_net.txtに書いてください
 (data/cpl.qasm　は、中間表現です)
 device mappingしてますが、どのようなマッピングかの情報が消えてます
 
+### data/CNOT_net.txt
 
-simulate.sh
+1行目：名前 なんでもいい
+2行目:qubit数
+3行目:connected数? (実は使ってない)
+以降、connected数行:  control,tergetの順
+
+例:
+test
+9
+12
+0,1
+1,2
+3,4
+4,5
+6,7
+7,8
+0,3
+3,6
+1,4
+4,7
+2,5
+5,8
+
+
+これは、
+0-1-2
+| | |
+3-4-5
+| | |
+6-7-8
+
+
+## simulate.sh
 QASMファイルを受け取り、量子状態を得た後、shotの回数だけ実行します。
 とりあえず回数=100
 入力QASMファイルは、data/input.qasmに書いて下さい
 得られた結果は、data/kekka.txtにあります。
 kekkaの各行が量子状態に対応していて、　一番右が0番のbitです。
-
 

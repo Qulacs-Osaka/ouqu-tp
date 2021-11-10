@@ -30,7 +30,7 @@ def str_to_gate(
             kazstr = yomustr.split(",")
             n_qubit = int(kazstr[0])
 
-        if instr[0:2] == "U(":
+        elif instr[0:2] == "U(":
             mytable = instr.maketrans("U()q[];", "   ,   ")
             yomustr = instr.translate(mytable)
             # print(yomustr)
@@ -40,20 +40,23 @@ def str_to_gate(
             )
             input_list.append(newgate)
 
-        if instr[0:2] == "CX":
+        elif instr[0:2] == "CX":
             mytable = instr.maketrans("CXq[];", "      ")
             yomustr = instr.translate(mytable)
             # print(yomustr)
             kazstr = yomustr.split(",")
             newgate = CNOT(int(kazstr[0]), int(kazstr[1]))
             input_list.append(newgate)
+
+        else:
+            print(instr)
     return (n_qubit, input_list)
 
 
 def output_gates(gates: typing.List[qulacs.QuantumGateBase]) -> None:
     # gateが直接渡されるようになった
     # print(gates)
-    print("OPENQASM 2.0")
+    #print("OPENQASM 2.0")
 
     # 気を付けて　qreg情報はない
     for it in gates:
@@ -75,7 +78,7 @@ def output_gates(gates: typing.List[qulacs.QuantumGateBase]) -> None:
 
 def output_gates_QASMfuu(gates: typing.List[qulacs.QuantumGateBase]) -> None:
     # QASM風です
-    print("OPENQASM 2.0")
+    #print("OPENQASM 2.0")
 
     # 気を付けて　qreg情報はない
 
