@@ -7,7 +7,7 @@
 
 input_test.qasm を入力する場合、
 
-python ouqu-tp.py < input_test.qasm
+python main.py < input_test.qasm
 すると、　結果が出力されます。
 
 ただし、input_test.qasmは受け付ける関数の種類が非常に少ないです。
