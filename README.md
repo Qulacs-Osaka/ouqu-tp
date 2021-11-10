@@ -26,23 +26,25 @@ ibm_tokyo.json　というファイルに、　CNOTゲートの制約を書き�
 
 √XとRZはouqu_tpで処理されます
 
-ラッパーを後で書く予定です
-
-
 注意点:このトランスパイラは、グローバル位相を完全に無視します。
 
 
+ラッパーを書きました
 trance.sh
+CNOTの制約とQASMファイルから、実機で可能なQASMファイルを作ります
 
-data/CNOT_net.txtを書く
-->data/created_Cnet.json が作られる
-
-data/input.qasmを書く
--> data/created_Cnet.json と組み合わせて、staqによって　data/cpl.qasmが作られる
-
-->data/output.qasmが作られる
-
+CNOTの制約はdata/CNOT_net.txtに書いてください
+入力QASMファイルは、data/input.qasmに書いて下さい
+出力QASMファイルは、data/output.qasmにあります
+(data/cpl.qasm　は、中間表現です)
+device mappingしてますが、どのようなマッピングかの情報が消えてます
 
 
+simulate.sh
+QASMファイルを受け取り、量子状態を得た後、shotの回数だけ実行します。
+とりあえず回数=100
+入力QASMファイルは、data/input.qasmに書いて下さい
+得られた結果は、data/kekka.txtにあります。
+kekkaの各行が量子状態に対応していて、　一番右が0番のbitです。
 
 
