@@ -20,5 +20,13 @@ staq -S -O2 -m -d ibm_tokyo.json --evaluate-all　input_origin.qasm
 
 を用いて、　コンパイルされたqasmファイルをouqu-tpに入力します。
 
+実機制約について
+CNOTゲートの制約は、staq側で処理します。
+ibm_tokyo.json　というファイルに、　CNOTゲートの制約を書きます
+
+√XとRZはouqu_tpで書きます。
+
+ラッパーを後で書く予定です
+
 
 注意点:このトランスパイラは、グローバル位相を完全に無視します。
