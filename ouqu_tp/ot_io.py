@@ -56,7 +56,7 @@ def str_to_gate(
 def output_gates(gates: typing.List[qulacs.QuantumGateBase]) -> None:
     # gateが直接渡されるようになった
     # print(gates)
-    #print("OPENQASM 2.0")
+    # print("OPENQASM 2.0")
 
     # 気を付けて　qreg情報はない
     for it in gates:
@@ -78,7 +78,7 @@ def output_gates(gates: typing.List[qulacs.QuantumGateBase]) -> None:
 
 def output_gates_QASMfuu(gates: typing.List[qulacs.QuantumGateBase]) -> None:
     # QASM風です
-    #print("OPENQASM 2.0")
+    # print("OPENQASM 2.0")
 
     # 気を付けて　qreg情報はない
 

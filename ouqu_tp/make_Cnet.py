@@ -5,14 +5,12 @@ from ot_io import input_strings
 解説
 
 
-1行目：名前
-don't make json
-って書かれてたら、　json作るの中止
-それ以外なら多分なんでもいい
+1行目：名前 なんでもいい
 2行目:qubit数
 3行目:connected数? (実は使ってない)
 以降、connected数行:  control,tergetの順
 
+例:
 test
 9
 12
@@ -28,6 +26,14 @@ test
 4,7
 2,5
 5,8
+
+
+これは、
+0-1-2
+| | |
+3-4-5
+| | |
+6-7-8
 """
 
 input_strs = input_strings()

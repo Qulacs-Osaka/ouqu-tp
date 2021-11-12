@@ -41,7 +41,7 @@ CNOTの制約はdata/CNOT_net.txtに書いてください
 
 device mappingしてますが、どのようなマッピングかの情報が消えてます
 
-### data/CNOT_net.txt
+### 最初にあるdata/CNOT_net.txtを例にした説明
 
 ```
 1行目：名前 なんでもいい
