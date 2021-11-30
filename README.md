@@ -27,7 +27,7 @@ staq
 が必要です。
 windows以外での動作は可能かわかりません。
 
-###staqをインストールしようとして文字化けする場合
+### staqをインストールしようとして文字化けする場合
 私の場合、文字コードをBOM付UTF-8にしたらコンパイルできました。
 
 ## trance.sh
@@ -83,14 +83,16 @@ test
 control,tergetのところに END というアルファベット3文字の入力が来ると、終了になる
 
 ## simulate.sh
-simulate.sh 入力.qasm 出力
+
+simulate.sh 入力.qasm 出力.txt
+
 QASMファイルを受け取り、量子状態を得た後、shotの回数だけ実行します。
 
 とりあえず回数=100
 
-入力QASMファイルは、data/input.qasmに書いて下さい
+入力QASMファイルのサンプルは、data/input.qasmにあります。
 
-得られた結果は、data/kekka.txtにあります。
+得られた結果のサンプルは、data/kekka.txtにあります。
 
 kekkaの各行が量子状態に対応していて、　一番右が0番のbitです。
 
