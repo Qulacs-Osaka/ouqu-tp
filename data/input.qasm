@@ -1,7 +1,6 @@
 OPENQASM 2.0;
 include "qelib1.inc";
 
-//ありとあらゆるゲートを試す
 
 qreg q[5];
 u3(1.2,2.1,0.5) q[0];

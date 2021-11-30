@@ -19,7 +19,7 @@ def input_strings() -> typing.List[str]:
 
 
 def str_to_gate(
-    input_strs: typing.List[str],
+    input_strs: typing.List[str], outmode: str
 ) -> typing.Tuple[int, typing.List[qulacs.QuantumGateBase]]:
     n_qubit: int = 20  # 暫定
     input_list: typing.List[qulacs.QuantumGateBase] = []
@@ -48,7 +48,7 @@ def str_to_gate(
             newgate = CNOT(int(kazstr[0]), int(kazstr[1]))
             input_list.append(newgate)
 
-        else:
+        elif outmode == "put":
             print(instr)
     return (n_qubit, input_list)
 

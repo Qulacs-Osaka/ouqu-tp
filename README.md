@@ -1,7 +1,6 @@
 # ouqu-tp
 
-英語対応してなくてごめん
-いろいろ暫定です
+英語対応してなくてごめんなさい
 
 # 使い方
 
@@ -22,31 +21,34 @@ QASMファイルを受け取り、量子状態を得た後、shotの回数だけ
 python
 
 qulacs(普通のでも、osakaでも可)
+
 staq
 
 が必要です。
 windows以外での動作は可能かわかりません。
 
+###staqをインストールしようとして文字化けする場合
+私の場合、文字コードをBOM付UTF-8にしたらコンパイルできました。
 
 ## trance.sh
+
+trance.sh 入力.qasm CNOT制約.txt 出力.qasm
 CNOTの制約とQASMファイルから、実機で可能なQASMファイルを作ります
 
-CNOTの制約はdata/CNOT_net.txtに書いてください
+サンプルのCNOTの制約はdata/CNOT_net.txtにあります
 
-入力QASMファイルは、data/input.qasmに書いて下さい
+サンプルの入力QASMファイルはdata/input.qasmにあります
 
-出力QASMファイルは、data/output.qasmにあります
+サンプルの出力QASMファイルはdata/output.qasmにあります
 
-(data/cpl.qasm　は、中間表現です)
+(data/cpl.qasm　は、中間表現です。QASM形式で、　UゲートとCNOTだけで構成されます)
 
-device mappingしてますが、どのようなマッピングかの情報が消えてます
-
-### 最初にあるdata/CNOT_net.txtを例にした説明
+### 初期状態にあるdata/CNOT_net.txtを例にした,CNOT制約ファイルの説明
 
 ```
 1行目：名前 なんでもいい
 2行目:qubit数
-3行目:connected数? (実は使ってない)
+3行目:connected数
 以降、connected数行:  control,tergetの順
 
 例:
@@ -75,8 +77,13 @@ test
 | | |
 6-7-8
 ```
+細かい仕様
+
+3行目:connected数 は実は使っていなくて、　EOFまで読んでる
+control,tergetのところに END というアルファベット3文字の入力が来ると、終了になる
 
 ## simulate.sh
+simulate.sh 入力.qasm 出力
 QASMファイルを受け取り、量子状態を得た後、shotの回数だけ実行します。
 
 とりあえず回数=100
