@@ -10,7 +10,7 @@ RUN git clone https://github.com/softwareQinc/staq.git \
   cmake .. && make -j8 && make install
 
 # Setup Poetry Environment
-RUN apt-get install -y python3 curl python3-distutils
+RUN apt-get install -y python3 curl python3-distutils python3-dev
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 -
 ENV PATH $PATH:/root/.poetry/bin
 
