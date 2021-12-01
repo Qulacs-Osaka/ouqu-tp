@@ -4,46 +4,69 @@
 
 # 使い方
 
-これは、QASMをqulacsで実行したり、実機で可能なようにうまく回路を変形するライブラリです。
+これは、QASM を qulacs で実行したり、実機で可能なようにうまく回路を変形するライブラリです。
 
+CNOT の制約と QASM ファイルから、実機で可能な QASM ファイルを作る trance.sh と、
 
-CNOTの制約とQASMファイルから、実機で可能なQASMファイルを作るtrance.shと、
-
-QASMファイルを受け取り、量子状態を得た後、shotの回数だけ実行するsimulate.sh
+QASM ファイルを受け取り、量子状態を得た後、shot の回数だけ実行する simulate.sh
 
 の二つの機能があります。
 
-入出力例として、サンプルの各ファイルが、すでにdataフォルダに入っています。参考にしてください。
+入出力例として、サンプルの各ファイルが、すでに data フォルダに入っています。参考にしてください。
 
 注意点:このトランスパイラは、グローバル位相を完全に無視します。
 
 ## 必要な環境
-python
 
-qulacs(普通のでも、osakaでも可)
+### 手元で動作させる場合
 
-staq
+- python
 
-が必要です。
-windows以外での動作は可能かわかりません。
+- Poetry
 
-### staqをインストールしようとして文字化けする場合
-私の場合、文字コードをBOM付UTF-8にしたらコンパイルできました。
+- staq
+
+の 3 つが必要です。
+windows 以外での動作は可能かわかりません。
+
+### staq をインストールしようとして文字化けする場合
+
+私の場合、文字コードを BOM 付 UTF-8 にしたらコンパイルできました。
+
+### Docker 環境を使う場合
+
+Dockerfile が用意されています。
+以下のコマンドを使うと必要なソフトウェアが導入された状態の作業用仮想環境に入ることができます。
+Docker 内で行った/ouqu-tp ディレクトリ下への操作は Docker 外でも反映されるように設定しています。
+
+```
+docker build . -t ouqu-tp-docker-image
+docker run -it --mount type=bind,source=`pwd`,target=/ouqu-tp ouqu-tp-docker-image
+```
+
+## 動かす前に
+
+依存しているライブラリをインストールする必要があります。
+poetry を使ってインストールしてください。
+
+```
+poetry install
+```
 
 ## trance.sh
 
-trance.sh 入力.qasm CNOT制約.txt 出力.qasm
-CNOTの制約とQASMファイルから、実機で可能なQASMファイルを作ります
+trance.sh 入力.qasm CNOT 制約.txt 出力.qasm
+CNOT の制約と QASM ファイルから、実機で可能な QASM ファイルを作ります
 
-サンプルのCNOTの制約はdata/CNOT_net.txtにあります
+サンプルの CNOT の制約は data/CNOT_net.txt にあります
 
-サンプルの入力QASMファイルはdata/input.qasmにあります
+サンプルの入力 QASM ファイルは data/input.qasm にあります
 
-サンプルの出力QASMファイルはdata/output.qasmにあります
+サンプルの出力 QASM ファイルは data/output.qasm にあります
 
-(data/cpl.qasm　は、中間表現です。QASM形式で、　UゲートとCNOTだけで構成されます)
+(data/cpl.qasm 　は、中間表現です。QASM 形式で、　 U ゲートと CNOT だけで構成されます)
 
-### 初期状態にあるdata/CNOT_net.txtを例にした,CNOT制約ファイルの説明
+### 初期状態にある data/CNOT_net.txt を例にした,CNOT 制約ファイルの説明
 
 ```
 1行目：名前 なんでもいい
@@ -77,22 +100,22 @@ test
 | | |
 6-7-8
 ```
+
 細かい仕様
 
-3行目:connected数 は実は使っていなくて、　EOFまで読んでる
-control,tergetのところに END というアルファベット3文字の入力が来ると、終了になる
+3 行目:connected 数 は実は使っていなくて、　 EOF まで読んでる
+control,terget のところに END というアルファベット 3 文字の入力が来ると、終了になる
 
 ## simulate.sh
 
 simulate.sh 入力.qasm 出力.txt
 
-QASMファイルを受け取り、量子状態を得た後、shotの回数だけ実行します。
+QASM ファイルを受け取り、量子状態を得た後、shot の回数だけ実行します。
 
 とりあえず回数=100
 
-入力QASMファイルのサンプルは、data/input.qasmにあります。
+入力 QASM ファイルのサンプルは、data/input.qasm にあります。
 
-得られた結果のサンプルは、data/kekka.txtにあります。
+得られた結果のサンプルは、data/kekka.txt にあります。
 
-kekkaの各行が量子状態に対応していて、　一番右が0番のbitです。
-
+kekka の各行が量子状態に対応していて、　一番右が 0 番の bit です。
