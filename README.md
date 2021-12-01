@@ -55,7 +55,8 @@ poetry install
 
 ## trance.sh
 
-trance.sh 入力.qasm CNOT 制約.txt 出力.qasm
+`trance.sh 入力.qasm CNOT 制約.txt 出力.qasm`
+
 CNOT の制約と QASM ファイルから、実機で可能な QASM ファイルを作ります
 
 サンプルの CNOT の制約は data/CNOT_net.txt にあります
@@ -63,6 +64,12 @@ CNOT の制約と QASM ファイルから、実機で可能な QASM ファイル
 サンプルの入力 QASM ファイルは data/input.qasm にあります
 
 サンプルの出力 QASM ファイルは data/output.qasm にあります
+
+例えば、サンプルを実行する場合は以下のコマンドを実行してください。
+
+```
+trance.sh data/input.qasm data/CNOT_net.txt data/output.qasm
+```
 
 (data/cpl.qasm 　は、中間表現です。QASM 形式で、　 U ゲートと CNOT だけで構成されます)
 
@@ -108,7 +115,7 @@ control,terget のところに END というアルファベット 3 文字の入
 
 ## simulate.sh
 
-simulate.sh 入力.qasm 出力.txt
+`simulate.sh 入力.qasm 出力.txt`
 
 QASM ファイルを受け取り、量子状態を得た後、shot の回数だけ実行します。
 
@@ -119,3 +126,9 @@ QASM ファイルを受け取り、量子状態を得た後、shot の回数だ�
 得られた結果のサンプルは、data/kekka.txt にあります。
 
 kekka の各行が量子状態に対応していて、　一番右が 0 番の bit です。
+
+例えば、サンプルを実行する場合は以下のコマンドを実行してください。
+
+```
+simulate.sh data/input.qasm data/kekka.txt
+```
