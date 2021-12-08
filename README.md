@@ -35,11 +35,11 @@ windows以外での動作は可能かわかりません。
 trance.sh 入力.qasm CNOT制約.txt 出力.qasm
 CNOTの制約とQASMファイルから、実機で可能なQASMファイルを作ります
 
-サンプルのCNOTの制約はdata/CNOT_net.txtにあります
+CNOTの制約のサンプルはdata/CNOT_net.txtにあります
 
-サンプルの入力QASMファイルはdata/input.qasmにあります
+入力QASMファイルのサンプルはdata/input.qasmにあります
 
-サンプルの出力QASMファイルはdata/output.qasmにあります
+出力QASMファイルのサンプルはdata/output.qasmにあります
 
 (data/cpl.qasm　は、中間表現です。QASM形式で、　UゲートとCNOTだけで構成されます)
 
@@ -83,14 +83,17 @@ test
 control,tergetのところに END というアルファベット3文字の入力が来ると、終了になる
 
 ## simulate.sh
-simulate.sh 入力.qasm 出力
+
+simulate.sh 入力.qasm 出力.txt shot回数
+
 QASMファイルを受け取り、量子状態を得た後、shotの回数だけ実行します。
 
-とりあえず回数=100
+shot回数は整数である必要があります。
 
-入力QASMファイルは、data/input.qasmに書いて下さい
+kekkaの各行が量子状態に対応していて、　行の中で、一番「右」が0番のbitです。
 
-得られた結果は、data/kekka.txtにあります。
+入力QASMファイルのサンプルは、data/input.qasmにあります。
 
-kekkaの各行が量子状態に対応していて、　一番右が0番のbitです。
+得られた結果のサンプルは、data/kekka.txtにあります。
+
 
