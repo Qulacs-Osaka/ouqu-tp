@@ -1,7 +1,7 @@
-project_name
-============
+ouqu_tp
+=======
 
 .. toctree::
    :maxdepth: 4
 
-   project_name
+   ouqu_tp

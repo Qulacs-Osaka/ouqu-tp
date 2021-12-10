@@ -5,7 +5,7 @@ IMPORT_SORTER := poetry run isort
 TYPE_CHECKER := poetry run mypy
 SPHINX_APIDOC := poetry run sphinx-apidoc
 
-PROJECT_DIR := project_name
+PROJECT_DIR := ouqu_tp
 CHECK_DIR := $(PROJECT_DIR) tests
 PORT := 8000
 
