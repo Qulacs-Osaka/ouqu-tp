@@ -52,6 +52,9 @@ serve: html
 html: api
 	poetry run $(MAKE) -C doc html
 
+# Because it is not protected by `if __name__ == '__main__'` conditions
+# See https://www.sphinx-doc.org/en/master/man/sphinx-apidoc.html
+EXCLUDE_PATTERN := ouqu_tp/make_Cnet.py ouqu_tp/simulate.py ouqu_tp/trancepile.py
 .PHONY: api
 api:
-	$(SPHINX_APIDOC) -f -e -o doc/source $(PROJECT_DIR)
+	$(SPHINX_APIDOC) -f -e -o doc/source $(PROJECT_DIR) $(EXCLUDE_PATTERN)
