@@ -1,0 +1,20 @@
+ouqu\_tp package
+================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   ouqu_tp.debug
+   ouqu_tp.ot_io
+   ouqu_tp.tran
+
+Module contents
+---------------
+
+.. automodule:: ouqu_tp
+   :members:
+   :undoc-members:
+   :show-inheritance:

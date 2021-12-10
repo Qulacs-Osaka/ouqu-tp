@@ -1,0 +1,7 @@
+ouqu\_tp.debug module
+=====================
+
+.. automodule:: ouqu_tp.debug
+   :members:
+   :undoc-members:
+   :show-inheritance:
