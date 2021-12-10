@@ -7,8 +7,8 @@ Installation in Linux and macOS:
 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
 ```
 
-In Windows:
-```bash
+In Windows, use PowerShell:
+```powershell
 (Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python -
 ```
 
@@ -25,7 +25,6 @@ First, change configuration.
 ```bash
 poetry config virtualenvs.in-project true
 ```
-And in VSCode setting, select `./.venv/bin/python`(`./.venv/Scripts/python.exe` in Windows) as Python interpreter of the project.
 
 ### Dependency management
 poetry manages list of dependencies in `pyproject.toml`.
@@ -59,6 +58,9 @@ poetry run python
 
 In other words, you cannot use packages you installed in the virtual environment if you just run `python main.py`.
 
+When you run in VSCode, select `./.venv/bin/python`(`./.venv/Scripts/python.exe` in Windows) as Python interpreter of the project.
+You can refer to [Using Python environments in VS Code](https://code.visualstudio.com/docs/python/environments#_select-and-activate-an-environment) to see how to configure it.
+
 ### Build and publish
 To build the project to wheel archive, just run:
 ```bash
@@ -91,14 +93,9 @@ git add NEW_FILE
 ```
 
 6. Format, lint, and test your code.
-```
+```bash
 make check
 make test
-```
-
-If you have format or lint error, you can use this command to try fixing it automatically.
-```
-make format
 ```
 
 There might remain some errors. They cannot be fixed automatically, so fix them manually.
@@ -173,3 +170,63 @@ The purpose of CI is
 * Share our code works properly in the team.
 * Find error you cannot notice at your local machine.
 * Avoid unnecessary diff by forcing code format and linter error.
+
+## Documentation
+You can publish the repository's documentation at [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages). It can include Jupyter Notebook format tutorial and API documentation generated from comments in the source code. HTML files for the Web site is generated automatically from these contents.
+
+### Tutorial by Jupyter Notebook
+You can create tutorial pages from Jupyter Notebook.
+
+1. Create file like `1.1_wonderful_tutorial.ipynb` in `doc/source/notebooks`. 1 file corresponds to 1 page in the Web site.
+2. Add title like `# Wonderful Tutorial` in the first Markdown cell. This is displayed at index page of the document as a title.
+3. Add contents.
+4. Add a line `1.1_wonderful_tutorial`(file name without its extension) to `doc/source/notebooks/index.rst` like this:
+```
+.. toctree::
+
+   1.1_wonderful_tutorial
+```
+
+Images used in notebooks should be stored at `doc/source/notebooks/figs`. It is recommended to name the images with the section number: e.g. `1.1_wonderful_graph.png`.
+
+Detailed instructions of Markdown and code cells are available: [An example Jupyter Notebook](https://myst-nb.readthedocs.io/en/latest/examples/basic.html)
+
+### API Documentation
+API documentation is generated from documentation comments(docstring) which are put just after a definition of function or class. This is an example:
+```python
+def wonderful_func(x: Int, y: str) -> str:
+    """Summary line(one line is preferred).
+
+    Detailed description.
+    You can use multiple lines.
+
+    Args:
+        x: Description of argument x.
+        y: Description of argument y.
+
+    Examples:
+    >>> a = add(2, 3)
+
+    Returns:
+        Description of return value.
+    """
+    return x + y
+```
+
+For more detail, refer to [Sphinx document](https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html).
+
+### Build
+To build the documentation as HTML files, just run following:
+```bash
+make html
+```
+
+Then HTML files are generated under `doc/build/html`. You can open them in your browser.
+Or you can build and serve them at localhost by just running this command:
+```bash
+make serve  # Serves at http://localhost:8000
+make serve PORT=12345  # Or you can serve at other port.
+```
+
+### Publish
+When PR is merged into `main` branch, the documentation is automatically generated and published to GitHub Pages. Generated HTML files are pushed to `gh-pages` branch, so do not edit and delete the branch.
