@@ -156,5 +156,5 @@ kekka の各行が量子状態に対応していて、　一番右が 0 番の b
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
 
 ```
-simulate.sh data/input.qasm data/kekka.txt
+simulate.sh data/input.qasm data/kekka.txt shots
 ```
