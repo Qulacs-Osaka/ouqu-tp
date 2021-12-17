@@ -64,13 +64,6 @@ CNOT の制約と QASM ファイルから、実機で可能な QASM ファイル
 
 サンプルの CNOT の制約は data/CNOT_net.txt にあります
 
-<<<<<<< HEAD
-CNOTの制約のサンプルはdata/CNOT_net.txtにあります
-
-入力QASMファイルのサンプルはdata/input.qasmにあります
-
-出力QASMファイルのサンプルはdata/output.qasmにあります
-=======
 サンプルの入力 QASM ファイルは data/input.qasm にあります
 
 サンプルの出力 QASM ファイルは data/output.qasm にあります
@@ -80,7 +73,6 @@ CNOTの制約のサンプルはdata/CNOT_net.txtにあります
 ```
 trance.sh data/input.qasm data/CNOT_net.txt data/output.qasm
 ```
->>>>>>> f2e15aa813d755580dfc5c8f44b13b332a91715c
 
 (data/cpl.qasm 　は、中間表現です。QASM 形式で、　 U ゲートと CNOT だけで構成されます)
 
@@ -126,35 +118,69 @@ control,terget のところに END というアルファベット 3 文字の入
 
 ## simulate.sh
 
-<<<<<<< HEAD
-simulate.sh 入力.qasm 出力.txt shot回数
+`simulate.sh 入力.qasm 出力.txt shot回数`
 
-QASMファイルを受け取り、量子状態を得た後、shotの回数だけ実行します。
-=======
-`simulate.sh 入力.qasm 出力.txt`
+QASMファイル形式で量子回路を入力して、その回路に(000..0)を入力して、結果を受け取る
 
-QASM ファイルを受け取り、量子状態を得た後、shot の回数だけ実行します。
->>>>>>> f2e15aa813d755580dfc5c8f44b13b332a91715c
+それを、shotの回数だけ実行します。
 
 shot回数は整数である必要があります。
 
-kekkaの各行が量子状態に対応していて、　行の中で、一番「右」が0番のbitです。
+出力の各行が量子状態に対応していて、　行の中で、一番「右」が0番のbitです。
 
-<<<<<<< HEAD
-入力QASMファイルのサンプルは、data/input.qasmにあります。
-
-得られた結果のサンプルは、data/kekka.txtにあります。
-
-=======
 入力 QASM ファイルのサンプルは、data/input.qasm にあります。
 
 得られた結果のサンプルは、data/kekka.txt にあります。
-
-kekka の各行が量子状態に対応していて、　一番右が 0 番の bit です。
->>>>>>> f2e15aa813d755580dfc5c8f44b13b332a91715c
 
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
 
 ```
 simulate.sh data/input.qasm data/kekka.txt
 ```
+
+## getval.sh
+
+`getval.sh 入力.qasm 出力.txt openfermion_file `
+
+QQASMファイル形式で量子回路を入力して、その回路に(000..0)を入力して、オブザーバブルで観測します。
+
+オブザーバブルは、openfermion形式で保存しておく必要があります。
+
+出力は観測した結果の数値一つです。
+
+入力 QASM ファイルのサンプルは、data/input.qasm にあります。
+
+openfermion_file のサンプルは、data/fermion.txtにあります。
+
+得られた結果のサンプルは、data/gv_kekka.txt にあります。
+
+例えば、サンプルを実行する場合は以下のコマンドを実行してください。
+
+```
+getval.sh data/input.qasm data/gv_kekka.txt data/fermion.txt
+```
+
+現状、入力QASMファイルのbit数と、fermionのビット数(添え字の最大値+1)が、 ピッタリ一致しないと動きません。
+
+これは、内部的な話をすると、qulacsではfermionをファイルから読み込むときにビット数が自動で付与されてしまうのが原因です。
+
+qulacsと、qulacs-osakaにプルリクを投げました。
+
+通れば、入力QASMファイルのbit数が、fermionのビット数以上なら動くようになります。
+
+## re_simulate.sh
+
+`simulate.sh 出力.txt shot回数`
+
+## re_getval.sh
+
+`getval.sh 出力.txt openfermion_file`
+
+
+
+この2つは、QASMファイルは前回入力したものを使う場合のコマンドです。
+
+具体的にいうと、re_ が付かないシェルでは、staqを用いて入力したファイルをqulacsが処理しやすい形式にした後、data/cpl.qasmに保存されています。
+そのdata/cpl.qasmを、再び使います。
+
+trance.shでもcpl.qasmは更新されます。
