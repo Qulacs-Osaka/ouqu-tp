@@ -135,7 +135,7 @@ shot 回数は整数である必要があります。
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
 
 ```
-simulate.sh data/input.qasm data/kekka.txt
+simulate.sh data/input.qasm data/kekka.txt 20
 ```
 
 ## getval.sh
@@ -157,7 +157,7 @@ openfermion_file のサンプルは、data/fermion.txt にあります。
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
 
 ```
-simulate.sh data/input.qasm data/kekka.txt 100
+getval.sh data/input.qasm data/gv_kekka.txt data/fermion.txt
 ```
 
 現状、入力 QASM ファイルの bit 数と、fermion のビット数(添え字の最大値+1)が、 ピッタリ一致しないと動きません。
