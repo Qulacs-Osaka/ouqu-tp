@@ -1,10 +1,13 @@
-import sys
+from typing import List
 
-from ot_io import input_strings, str_to_gate
 from qulacs import QuantumCircuit, QuantumState, observable
 
-def getval_do(input_strs ,ferfile :str):
+from ouqu_tp.ot_io import str_to_gate
+
+
+def getval_do(input_strs: List[str], ferfile: str) -> float:
     (n_qubit, input_list) = str_to_gate(input_strs, "notput")
+    print(n_qubit)
     # input_listを直接ぶち込む
     testcircuit = QuantumCircuit(n_qubit)
     for it in input_list:
@@ -14,11 +17,5 @@ def getval_do(input_strs ,ferfile :str):
 
     obs = observable.create_observable_from_openfermion_file(ferfile)
 
-    return obs.get_expectation_value(out_state)
-
-
-input_strs = input_strings()
-print(getval_do(input_strs,sys.argv[1]))
-
-
-
+    return float(obs.get_expectation_value(out_state))
+    #qulacsの型アノテーションないので、怒りのキャスト
