@@ -1,3 +1,7 @@
-staq -m --evaluate-all $1 > data/cpl.qasm
+#!/bin/bash
 
-poetry run python ouqu_tp/getval.py $3 < data/cpl.qasm > $2
+workdir=$(mktemp -d)
+
+staq -m --evaluate-all $1 > $workdir/cpl.qasm
+
+poetry run python ouqu_tp/getval.py $3 < $workdir/cpl.qasm > $2

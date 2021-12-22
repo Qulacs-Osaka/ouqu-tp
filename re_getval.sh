@@ -1,1 +1,0 @@
-poetry run python ouqu_tp/getval.py $12 < data/cpl.qasm > $1

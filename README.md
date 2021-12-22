@@ -167,18 +167,3 @@ getval.sh data/input.qasm data/gv_kekka.txt data/fermion.txt
 qulacs と、qulacs-osaka にプルリクを投げました。
 
 通れば、入力 QASM ファイルの bit 数が、fermion のビット数以上なら動くようになります。
-
-## re_simulate.sh
-
-`re_simulate.sh 出力.txt shot回数`
-
-## re_getval.sh
-
-`re_getval.sh 出力.txt openfermion_file`
-
-この 2 つは、QASM ファイルは前回入力したものを使う場合のコマンドです。
-
-具体的にいうと、re\_ が付かないシェルでは、staq を用いて入力したファイルを qulacs が処理しやすい形式にした後、data/cpl.qasm に保存されています。
-その data/cpl.qasm を、再び使います。
-
-trance.sh でも cpl.qasm は更新されます。
