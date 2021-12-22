@@ -170,11 +170,11 @@ qulacs と、qulacs-osaka にプルリクを投げました。
 
 ## re_simulate.sh
 
-`simulate.sh 出力.txt shot回数`
+`re_simulate.sh 出力.txt shot回数`
 
 ## re_getval.sh
 
-`getval.sh 出力.txt openfermion_file`
+`re_getval.sh 出力.txt openfermion_file`
 
 この 2 つは、QASM ファイルは前回入力したものを使う場合のコマンドです。
 
