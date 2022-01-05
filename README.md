@@ -58,7 +58,7 @@ poetry install
 
 ## trance.sh
 
-`trance.sh 入力.qasm CNOT 制約.txt 出力.qasm`
+`trance.sh 入力.qasm CNOT制約.txt 出力.qasm`
 
 CNOT の制約と QASM ファイルから、実機で可能な QASM ファイルを作ります
 
@@ -170,11 +170,11 @@ qulacs と、qulacs-osaka にプルリクを投げました。
 
 ## re_simulate.sh
 
-`simulate.sh 出力.txt shot回数`
+`re_simulate.sh 出力.txt shot回数`
 
 ## re_getval.sh
 
-`getval.sh 出力.txt openfermion_file`
+`re_getval.sh 出力.txt openfermion_file`
 
 この 2 つは、QASM ファイルは前回入力したものを使う場合のコマンドです。
 

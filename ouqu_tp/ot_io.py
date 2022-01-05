@@ -21,7 +21,7 @@ def input_strings() -> typing.List[str]:
 def str_to_gate(
     input_strs: typing.List[str], outmode: str
 ) -> typing.Tuple[int, typing.List[qulacs.QuantumGateBase]]:
-    n_qubit: int = 20  # 暫定
+    n_qubit: int = 0  # 暫定
     input_list: typing.List[qulacs.QuantumGateBase] = []
     for instr in input_strs:
         if instr[0:7] == "qreg q[":
@@ -39,6 +39,8 @@ def str_to_gate(
                 int(kazstr[3]), float(kazstr[0]), float(kazstr[1]), float(kazstr[2])
             )
             input_list.append(newgate)
+            if n_qubit < int(kazstr[3]) + 1:
+                n_qubit = int(kazstr[3]) + 1
 
         elif instr[0:2] == "CX":
             mytable = instr.maketrans("CXq[];", "      ")
@@ -47,6 +49,11 @@ def str_to_gate(
             kazstr = yomustr.split(",")
             newgate = CNOT(int(kazstr[0]), int(kazstr[1]))
             input_list.append(newgate)
+
+            if n_qubit < int(kazstr[0]) + 1:
+                n_qubit = int(kazstr[0]) + 1
+            if n_qubit < int(kazstr[1]) + 1:
+                n_qubit = int(kazstr[1]) + 1
 
         elif outmode == "put":
             print(instr)

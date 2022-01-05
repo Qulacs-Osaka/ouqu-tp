@@ -1,23 +1,16 @@
-import sys
+from typing import List, Tuple
 
-from ot_io import input_strings, str_to_gate
 from qulacs import QuantumCircuit, QuantumState
 
-input_strs = input_strings()
-(n_qubit, input_list) = str_to_gate(input_strs, "notput")
+from ouqu_tp.ot_io import str_to_gate
 
-# input_listを直接ぶち込む
 
-testcircuit = QuantumCircuit(n_qubit)
-for it in input_list:
-    testcircuit.add_gate(it)
-out_state = QuantumState(n_qubit)
-testcircuit.update_quantum_state(out_state)
-shots = int(sys.argv[1])
-kekka = out_state.sampling(shots)
-# print(kekka)
-for aaaa in kekka:
-    moziretu = "{:b}".format(aaaa)
-    while len(moziretu) < n_qubit:
-        moziretu = "0" + moziretu
-    print(moziretu)
+def simulate_do(input_strs: List[str], shots: int) -> Tuple[List[int], int]:
+    (n_qubit, input_list) = str_to_gate(input_strs, "notput")
+    testcircuit = QuantumCircuit(n_qubit)
+    for it in input_list:
+        testcircuit.add_gate(it)
+    out_state = QuantumState(n_qubit)
+    testcircuit.update_quantum_state(out_state)
+    kekka = out_state.sampling(shots)
+    return (kekka, n_qubit)
