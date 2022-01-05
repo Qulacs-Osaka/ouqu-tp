@@ -106,8 +106,18 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../../ouqu_tp.getval_call.html">
+       ouqu_tp.getval_call module
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../ouqu_tp.ot_io.html">
        ouqu_tp.ot_io module
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../ouqu_tp.simulate_call.html">
+       ouqu_tp.simulate_call module
       </a>
      </li>
      <li class="toctree-l3">
@@ -230,7 +240,7 @@
 <div class="viewcode-block" id="str_to_gate"><a class="viewcode-back" href="../../ouqu_tp.ot_io.html#ouqu_tp.ot_io.str_to_gate">[docs]</a><span class="k">def</span> <span class="nf">str_to_gate</span><span class="p">(</span>
     <span class="n">input_strs</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">outmode</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">qulacs</span><span class="o">.</span><span class="n">QuantumGateBase</span><span class="p">]]:</span>
-    <span class="n">n_qubit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># 暫定</span>
+    <span class="n">n_qubit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># 暫定</span>
     <span class="n">input_list</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">qulacs</span><span class="o">.</span><span class="n">QuantumGateBase</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">instr</span> <span class="ow">in</span> <span class="n">input_strs</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;qreg q[&quot;</span><span class="p">:</span>
@@ -248,6 +258,8 @@
                 <span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
             <span class="p">)</span>
             <span class="n">input_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newgate</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n_qubit</span> <span class="o">&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">n_qubit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
 
         <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;CX&quot;</span><span class="p">:</span>
             <span class="n">mytable</span> <span class="o">=</span> <span class="n">instr</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s2">&quot;CXq[];&quot;</span><span class="p">,</span> <span class="s2">&quot;      &quot;</span><span class="p">)</span>
@@ -256,6 +268,11 @@
             <span class="n">kazstr</span> <span class="o">=</span> <span class="n">yomustr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
             <span class="n">newgate</span> <span class="o">=</span> <span class="n">CNOT</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
             <span class="n">input_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newgate</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">n_qubit</span> <span class="o">&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">n_qubit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">n_qubit</span> <span class="o">&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">n_qubit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
 
         <span class="k">elif</span> <span class="n">outmode</span> <span class="o">==</span> <span class="s2">&quot;put&quot;</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">instr</span><span class="p">)</span>
