@@ -180,6 +180,9 @@ p1は、1ビットの量子ゲートのノイズの確率で、 コンパイル�
 
 p2は、2ビットの量子ゲートのノイズの確率で、 コンパイルされた回路上で、2ビットの量子ゲート(CXのみ)があるたびに、qulacsのTwoQubitDepolarizingNoiseが入ります。
 
+ノイズが入るのは、「コンパイルされた回路上」であることに注意してください。
+例えば、手元で2qubit gete一つでも、コンパイルされたら2qubit gate+1qubit gate2つ　みたいになることがあります。
+
 pmは、状態測定ノイズの確率で、 回路の終わりに、qulacsのDepolarizingNoiseが入ります。
 
 ppは、初期状態ノイズの確率で、 回路の始めに、qulacsのDepolarizingNoiseが入ります。
