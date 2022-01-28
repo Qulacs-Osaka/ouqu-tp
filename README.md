@@ -175,7 +175,6 @@ openfermion_file のサンプルは、data/fermion.txt にあります。
 getval.sh data/input.qasm data/gv_kekka.txt data/fermion.txt
 ```
 
-[オブザーバブルのbit数と回路のbit数に関する問題](#オブザーバブルのbit数と回路のbit数に関する問題)
 
 ## sampleval.sh
 
@@ -201,7 +200,6 @@ openfermion_file のサンプルは、data/fermion.txt にあります。
 sampleval.sh data/input.qasm data/sv_kekka.txt data/fermion.txt 500
 ```
 
-[オブザーバブルのbit数と回路のbit数に関する問題](#オブザーバブルのbit数と回路のbit数に関する問題)
 
 # ノイズがあるバージョン
 
@@ -232,12 +230,6 @@ getval_noise.sh data/input.qasm data/gv_noise_kekka.txt data/fermion.txt 0.05 0.
 sampleval_noise.sh data/input.qasm data/sv_noise_kekka.txt data/fermion.txt 500 0.05 0.05 0.05 0.05
 ```
 
+## その他
 
-# オブザーバブルのbit数と回路のbit数に関する問題
-現状、入力 QASM ファイルの bit 数と、fermion のビット数(添え字の最大値+1)が、 ピッタリ一致しないと動きません。
-
-これは、内部的な話をすると、qulacs では fermion をファイルから読み込むときにビット数が自動で付与されてしまうのが原因です。
-
-qulacs と、qulacs-osaka にプルリクを投げました。
-
-通れば、入力 QASM ファイルの bit 数が、fermion のビット数以上なら動くようになります。
+qulacsの仕様上、openfermionに虚数部分が含まれていても、それを無視して実数を返します。
