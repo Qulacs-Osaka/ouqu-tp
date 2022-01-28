@@ -225,7 +225,7 @@ ppは、初期状態ノイズの確率で、 回路の始めに、qulacsのDepol
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
 
 ```
-simulate_noise.sh data/input.qasm data/sim_noise_kekka_noise.txt 100 0.05 0.05 0.05 0.05
+simulate_noise.sh data/input.qasm data/sim_noise_kekka.txt 100 0.05 0.05 0.05 0.05
 getval_noise.sh data/input.qasm data/gv_noise_kekka.txt data/fermion.txt 0.05 0.05 0.05 0.05
 sampleval_noise.sh data/input.qasm data/sv_noise_kekka.txt data/fermion.txt 500 0.05 0.05 0.05 0.05
 ```
