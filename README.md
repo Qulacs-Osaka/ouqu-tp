@@ -129,7 +129,7 @@ test
 control,terget のところに END というアルファベット 3 文字の入力が来ると、終了になる
 
 
-#ノイズがないバージョン
+# ノイズがないバージョン
 
 ## simulate.sh
 
@@ -175,7 +175,7 @@ openfermion_file のサンプルは、data/fermion.txt にあります。
 getval.sh data/input.qasm data/gv_kekka.txt data/fermion.txt
 ```
 
-[添え字とqubitに関しての問題はこちらを参照してください] (#添え字ビット数一致問題)
+[添え字とqubitに関しての問題はこちらを参照してください] (# 添え字ビット数一致問題)
 
 ## sampleval.sh
 
@@ -203,7 +203,7 @@ sampleval.sh data/input.qasm data/sv_kekka.txt data/fermion.txt 500
 
 [添え字とqubitに関しての問題はこちらを参照してください] (#添え字ビット数一致問題)
 
-## ノイズがあるバージョン
+# ノイズがあるバージョン
 
 ノイズがある場合を示します。
 
@@ -233,7 +233,7 @@ sampleval_noise.sh data/input.qasm data/sv_noise_kekka.txt data/fermion.txt 500 
 ```
 
 
-## 添え字ビット数一致問題
+# 添え字ビット数一致問題
 現状、入力 QASM ファイルの bit 数と、fermion のビット数(添え字の最大値+1)が、 ピッタリ一致しないと動きません。
 
 これは、内部的な話をすると、qulacs では fermion をファイルから読み込むときにビット数が自動で付与されてしまうのが原因です。
