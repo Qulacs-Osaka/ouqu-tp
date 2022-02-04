@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ouqu_tp.getval &#8212; ouqu_tp  documentation</title>
+    <title>ouqu_tp.noisesim &#8212; ouqu_tp  documentation</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -226,27 +226,63 @@
         
               <div>
                 
-  <h1>Source code for ouqu_tp.getval</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+  <h1>Source code for ouqu_tp.noisesim</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="kn">from</span> <span class="nn">qulacs</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">QuantumState</span><span class="p">,</span> <span class="n">observable</span>
+<span class="kn">from</span> <span class="nn">qulacs</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">NoiseSimulator</span><span class="p">,</span>
+    <span class="n">QuantumCircuit</span><span class="p">,</span>
+    <span class="n">QuantumGateBase</span><span class="p">,</span>
+    <span class="n">QuantumState</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">qulacs.gate</span> <span class="kn">import</span> <span class="n">DepolarizingNoise</span><span class="p">,</span> <span class="n">TwoQubitDepolarizingNoise</span>
 
 <span class="kn">from</span> <span class="nn">ouqu_tp.ot_io</span> <span class="kn">import</span> <span class="n">str_to_gate</span>
 
 
-<div class="viewcode-block" id="getval_do"><a class="viewcode-back" href="../../ouqu_tp.getval.html#ouqu_tp.getval.getval_do">[docs]</a><span class="k">def</span> <span class="nf">getval_do</span><span class="p">(</span><span class="n">input_strs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">ferfile</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-    <span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">input_list</span><span class="p">)</span> <span class="o">=</span> <span class="n">str_to_gate</span><span class="p">(</span><span class="n">input_strs</span><span class="p">,</span> <span class="s2">&quot;notput&quot;</span><span class="p">)</span>
-    <span class="c1"># input_listを直接ぶち込む</span>
+<div class="viewcode-block" id="auto_noize"><a class="viewcode-back" href="../../ouqu_tp.noisesim.html#ouqu_tp.noisesim.auto_noize">[docs]</a><span class="k">def</span> <span class="nf">auto_noize</span><span class="p">(</span>
+    <span class="n">gate_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">QuantumGateBase</span><span class="p">],</span>
+    <span class="n">n_qubit</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">p1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">p2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">pm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">pp</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuantumCircuit</span><span class="p">:</span>
     <span class="n">testcircuit</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">input_list</span><span class="p">:</span>
-        <span class="n">testcircuit</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">):</span>
+        <span class="n">testcircuit</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">DepolarizingNoise</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">pp</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">ingate</span> <span class="ow">in</span> <span class="n">gate_list</span><span class="p">:</span>
+        <span class="n">testcircuit</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">ingate</span><span class="p">)</span>
+
+        <span class="n">gate_index_list</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">ingate</span><span class="o">.</span><span class="n">get_control_index_list</span><span class="p">()</span> <span class="o">+</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">gate_index_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">testcircuit</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">DepolarizingNoise</span><span class="p">(</span><span class="n">gate_index_list</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">gate_index_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">testcircuit</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span>
+                <span class="n">TwoQubitDepolarizingNoise</span><span class="p">(</span><span class="n">gate_index_list</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">gate_index_list</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p2</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">gate_index_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="c1"># 本来ありえません　3ビット以上のやつは</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;3ビット以上のやつを与えないでください もしくは何かバグがあるので、連絡して下さい&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">):</span>
+        <span class="n">testcircuit</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">DepolarizingNoise</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">pm</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">testcircuit</span></div>
+
+
+<div class="viewcode-block" id="noisesim_do"><a class="viewcode-back" href="../../ouqu_tp.noisesim.html#ouqu_tp.noisesim.noisesim_do">[docs]</a><span class="k">def</span> <span class="nf">noisesim_do</span><span class="p">(</span>
+    <span class="n">input_strs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">p1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">p2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">pm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">pp</span><span class="p">:</span> <span class="nb">float</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+    <span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">input_list</span><span class="p">)</span> <span class="o">=</span> <span class="n">str_to_gate</span><span class="p">(</span><span class="n">input_strs</span><span class="p">,</span> <span class="s2">&quot;notput&quot;</span><span class="p">)</span>
+    <span class="n">testcircuit</span> <span class="o">=</span> <span class="n">auto_noize</span><span class="p">(</span><span class="n">input_list</span><span class="p">,</span> <span class="n">n_qubit</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">pm</span><span class="p">,</span> <span class="n">pp</span><span class="p">)</span>
+
     <span class="n">out_state</span> <span class="o">=</span> <span class="n">QuantumState</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span>
-    <span class="n">testcircuit</span><span class="o">.</span><span class="n">update_quantum_state</span><span class="p">(</span><span class="n">out_state</span><span class="p">)</span>
-
-    <span class="n">obs</span> <span class="o">=</span> <span class="n">observable</span><span class="o">.</span><span class="n">create_observable_from_openfermion_file</span><span class="p">(</span><span class="n">ferfile</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">obs</span><span class="o">.</span><span class="n">get_expectation_value</span><span class="p">(</span><span class="n">out_state</span><span class="p">))</span></div>
-    <span class="c1"># qulacsの型アノテーションないので、怒りのキャスト</span>
+    <span class="n">nsim</span> <span class="o">=</span> <span class="n">NoiseSimulator</span><span class="p">(</span><span class="n">testcircuit</span><span class="p">,</span> <span class="n">out_state</span><span class="p">)</span>
+    <span class="n">kekka</span> <span class="o">=</span> <span class="n">nsim</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">shots</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">kekka</span><span class="p">,</span> <span class="n">n_qubit</span><span class="p">)</span></div>
 </pre></div>
 
               </div>
