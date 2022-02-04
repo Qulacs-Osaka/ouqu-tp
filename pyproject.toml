@@ -8,7 +8,8 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
 numpy = "^1.21.2"
-Qulacs = "^0.3.0"
+scipy = "^1.7.3"
+qulacs-osaka = "^0.2.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"

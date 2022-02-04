@@ -142,7 +142,7 @@ simulate.sh data/input.qasm data/kekka.txt 20
 
 `getval.sh 入力.qasm 出力.txt openfermion_file `
 
-QQASM ファイル形式で量子回路を入力して、その回路に(000..0)を入力して、オブザーバブルで観測します。
+QASM ファイル形式で量子回路を入力して、その回路に(000..0)を入力して、オブザーバブルで観測します。
 
 オブザーバブルは、openfermion 形式で保存しておく必要があります。
 
@@ -168,6 +168,31 @@ qulacs と、qulacs-osaka にプルリクを投げました。
 
 通れば、入力 QASM ファイルの bit 数が、fermion のビット数以上なら動くようになります。
 
+## noisesim.sh
+
+`noisesim.sh 入力.qasm 出力.txt shot回数 p1 p2 pm pp`
+
+simulate.sh の、ノイズがあるバージョンです。
+
+具体的には、p1,p2,pm,ppには0以上1以下の実数が入り、ノイズの確率を示します。
+
+p1は、1ビットの量子ゲートのノイズの確率で、 コンパイルされた回路上で、1ビットの量子ゲートがあるたびに、qulacsのDepolarizingNoiseが入ります。
+
+p2は、2ビットの量子ゲートのノイズの確率で、 コンパイルされた回路上で、2ビットの量子ゲート(CXのみ)があるたびに、qulacsのTwoQubitDepolarizingNoiseが入ります。
+
+ノイズが入るのは、「コンパイルされた回路上」であることに注意してください。
+例えば、手元で2qubit gete一つでも、コンパイルされたら2qubit gate+1qubit gate2つ　みたいになることがあります。
+
+pmは、状態測定ノイズの確率で、 回路の終わりに、qulacsのDepolarizingNoiseが入ります。
+
+ppは、初期状態ノイズの確率で、 回路の始めに、qulacsのDepolarizingNoiseが入ります。
+
+例えば、サンプルを実行する場合は以下のコマンドを実行してください。
+```
+noisesim.sh data/input.qasm data/kekka_noise.txt 100 0.1 0.1 0.1 0.1
+```
+
+
 ## re_simulate.sh
 
 `re_simulate.sh 出力.txt shot回数`
@@ -182,3 +207,5 @@ qulacs と、qulacs-osaka にプルリクを投げました。
 その data/cpl.qasm を、再び使います。
 
 trance.sh でも cpl.qasm は更新されます。
+
+re_noisesimは実装予定です。
