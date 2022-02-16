@@ -229,7 +229,7 @@ ouqu-tp ideal sampleval --input-qasm-file=data/input.qasm --input-openfermion-fi
 
 ````
 # poetryの場合
-poetry run ouqu-tp noisy simulate --input-qasm-file=入力.qasm--shots=shot回数 --p1=p1の確率 --p2=p2の確率 --pm=pmの確率 --pp=ppの確率
+poetry run ouqu-tp noisy simulate --input-qasm-file=入力.qasm --shots=shot回数 --p1=p1の確率 --p2=p2の確率 --pm=pmの確率 --pp=ppの確率
 
 poetry run ouqu-tp noisy getval --input-qasm-file=入力.qasm --input-openfermion-file=openfermion_file --p1=p1の確率 --p2=p2の確率 --pm=pmの確率 --pp=ppの確率
 
@@ -265,7 +265,7 @@ pp は、初期状態ノイズの確率で、 回路の始めに、qulacs の De
 # poetryの場合
 poetry run ouqu-tp noisy simulate --input-qasm-file=data/input.qasm --shots=100 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
 
-poetry run ouqu-tp noisy getval --input-qasm-file=data/input.qasm --input-openfermion-file=data/fermion.txt---p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
+poetry run ouqu-tp noisy getval --input-qasm-file=data/input.qasm --input-openfermion-file=data/fermion.txt --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
 
 poetry run ouqu-tp noisy sampleval --input-qasm-file=data/input.qasm --input-openfermion-file=data/fermion.txt --shots=500 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
 
@@ -273,7 +273,7 @@ poetry run ouqu-tp noisy sampleval --input-qasm-file=data/input.qasm --input-ope
 # pipの場合
 ouqu-tp noisy simulate --input-qasm-file=data/input.qasm --shots=100 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
 
-ouqu-tp noisy getval --input-qasm-file=data/input.qasm --input-openfermion-file=data/fermion.txt---p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
+ouqu-tp noisy getval --input-qasm-file=data/input.qasm --input-openfermion-file=data/fermion.txt --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
 
 ouqu-tp noisy sampleval --input-qasm-file=data/input.qasm --input-openfermion-file=data/fermion.txt --shots=500 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
 ```
