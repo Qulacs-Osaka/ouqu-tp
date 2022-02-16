@@ -64,8 +64,7 @@ def test_getval_sampleval_noise() -> None:
     ]
     # getvalのテストを書く
 
-    valG = getval_noise_do(
-        input_strs, "tests/fer_testB.txt", 0.01, 0.01, 0.01, 0.01)
+    valG = getval_noise_do(input_strs, "tests/fer_testB.txt", 0.01, 0.01, 0.01, 0.01)
     valS = sampleval_noise_do(
         input_strs, "tests/fer_testB.txt", 25000, 0.01, 0.01, 0.01, 0.01
     )
