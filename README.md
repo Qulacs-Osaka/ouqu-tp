@@ -216,10 +216,6 @@ openfermion_file のサンプルは、data/fermion.txt にあります。
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
 
 ```
-sampleval.sh data/input.qasm data/sv_kekka.txt data/fermion.txt 500
-```
-
-```
 # poetryの場合
 poetry run ouqu-tp ideal sampleval --input-qasm-file=data/input.qasm --input-openfermion-file=data/fermion.txt --shots=500
 
