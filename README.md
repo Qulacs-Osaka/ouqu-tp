@@ -63,9 +63,15 @@ pip install .
 
 ## 機能紹介
 
-### trance.sh
+### trance
 
-`trance.sh 入力.qasm CNOT制約.txt 出力.qasm`
+```
+# poetryの場合
+poetry run ouqu-tp trance trance --input-qasm-file=入力.qasm --input-cnot-json-file=CNOT制約.json
+
+# pipの場合
+ouqu-tp trance trance --input-qasm-file=入力.qasm --input-cnot-json-file=CNOT制約.json
+```
 
 CNOT の制約と QASM ファイルから、実機で可能な QASM ファイルを作ります
 
@@ -78,12 +84,34 @@ CNOT の制約と QASM ファイルから、実機で可能な QASM ファイル
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
 
 ```
-trance.sh data/input.qasm data/CNOT_net.txt data/output.qasm
+# poetryの場合
+poetry run ouqu-tp trance trance --input-qasm-file=data/input.qasm --input-cnot-json-file=data/created_Cnet.json
+
+# pipの場合
+ouqu-tp trance trance --input-qasm-file=data/input.qasm --input-cnot-json-file=data/created_Cnet.json
+
 ```
 
-(data/cpl.qasm は、中間表現です。QASM 形式で、 U ゲートと CNOT だけで構成されます)
+### make_Cnet
+```
+# poetryの場合
+poetry run ouqu-tp trance makeCnet --cnot-net-file=CNOT制約.txt
 
-#### 初期状態にある data/CNOT_net.txt を例にした,CNOT 制約ファイルの説明
+# pipの場合
+ouqu-tp trance makeCnet --cnot-net-file=CNOT制約.txt
+```
+上のtranceが利用するCnot制約はjsonで書かれています。
+
+書きやすいように、以下の形式のtxtファイルからjsonに変換するプログラムです。
+
+```
+# poetryの場合
+poetry run ouqu-tp trance makeCnet --cnot-net-file=data/Cnot_net.txt
+
+# pipの場合
+ouqu-tp trance makeCnet --cnot-net-file=data/Cnot_net.txt
+```
+####　サンプルにある data/CNOT_net.txt を例にした,CNOT 制約ファイルの説明
 
 ```
 1行目：名前 なんでもいい
@@ -116,6 +144,7 @@ test
 3-4-5
 | | |
 6-7-8
+のグリッドでのCnotに対応します。
 ```
 
 細かい仕様

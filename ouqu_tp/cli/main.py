@@ -5,10 +5,12 @@ import typer
 
 import ouqu_tp.cli.ideal as ideal
 import ouqu_tp.cli.noisy as noisy
+import ouqu_tp.cli.trance as trance
 
 app = typer.Typer()
 app.add_typer(ideal.app, name="ideal")
 app.add_typer(noisy.app, name="noisy")
+app.add_typer(trance.app, name="trance")
 
 
 def is_staq_installed() -> Boolean:
