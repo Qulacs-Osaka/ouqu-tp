@@ -16,8 +16,7 @@ def getval_ideal_call(
     input_openfermion_file: str = typer.Option(...),
 ) -> None:
     cpl_qasm: List[str] = (
-        subprocess.check_output(
-            ["staq", "-m", "--evaluate-all", input_qasm_file])
+        subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
         .decode()
         .splitlines()
     )
@@ -31,8 +30,7 @@ def sampleval_ideal_call(
     shots: int = typer.Option(...),
 ) -> None:
     cpl_qasm: List[str] = (
-        subprocess.check_output(
-            ["staq", "-m", "--evaluate-all", input_qasm_file])
+        subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
         .decode()
         .splitlines()
     )
@@ -44,8 +42,7 @@ def simulate_ideal_call(
     input_qasm_file: str = typer.Option(...), shots: int = typer.Option(...)
 ) -> None:
     cpl_qasm: List[str] = (
-        subprocess.check_output(
-            ["staq", "-m", "--evaluate-all", input_qasm_file])
+        subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
         .decode()
         .splitlines()
     )

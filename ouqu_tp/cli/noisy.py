@@ -20,8 +20,7 @@ def getval_noisy_call(
     pp: float = 0,
 ) -> None:
     cpl_qasm: List[str] = (
-        subprocess.check_output(
-            ["staq", "-m", "--evaluate-all", input_qasm_file])
+        subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
         .decode()
         .splitlines()
     )
@@ -39,8 +38,7 @@ def sampleval_noisy_call(
     pp: float = 0,
 ) -> None:
     cpl_qasm: List[str] = (
-        subprocess.check_output(
-            ["staq", "-m", "--evaluate-all", input_qasm_file])
+        subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
         .decode()
         .splitlines()
     )
@@ -57,8 +55,7 @@ def simulate_noisy_call(
     pp: float = 0,
 ) -> None:
     cpl_qasm: List[str] = (
-        subprocess.check_output(
-            ["staq", "-m", "--evaluate-all", input_qasm_file])
+        subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
         .decode()
         .splitlines()
     )
