@@ -1,5 +1,5 @@
-from ouqu_tp.getval import getval_do, getval_noise_do
-from ouqu_tp.sampleval import sampleval_do, sampleval_noise_do
+from ouqu_tp.internal.getval import getval_do, getval_noise_do
+from ouqu_tp.internal.sampleval import sampleval_do, sampleval_noise_do
 
 
 def test_getval_sampleval() -> None:
@@ -64,7 +64,8 @@ def test_getval_sampleval_noise() -> None:
     ]
     # getvalのテストを書く
 
-    valG = getval_noise_do(input_strs, "tests/fer_testB.txt", 0.01, 0.01, 0.01, 0.01)
+    valG = getval_noise_do(
+        input_strs, "tests/fer_testB.txt", 0.01, 0.01, 0.01, 0.01)
     valS = sampleval_noise_do(
         input_strs, "tests/fer_testB.txt", 25000, 0.01, 0.01, 0.01, 0.01
     )

@@ -26,8 +26,7 @@ def auto_noise(
             testcircuit.add_gate(DepolarizingNoise(gate_index_list[0], p1))
         if len(gate_index_list) == 2:
             testcircuit.add_gate(
-                TwoQubitDepolarizingNoise(
-                    gate_index_list[0], gate_index_list[1], p2)
+                TwoQubitDepolarizingNoise(gate_index_list[0], gate_index_list[1], p2)
             )
 
         if len(gate_index_list) > 2:
