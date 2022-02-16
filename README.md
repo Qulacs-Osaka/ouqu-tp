@@ -58,7 +58,7 @@ poetry や pip を使ってインストールしてください。
 poetry install
 
 # pipの場合
-pip install -e .
+pip install .
 ```
 
 ## 機能紹介
