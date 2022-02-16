@@ -46,7 +46,13 @@ def simulate_ideal_call(
         .decode()
         .splitlines()
     )
-    print(simulate_do(cpl_qasm, shots))
+    (kekka, n_qubit) = simulate_do(cpl_qasm, shots)
+    # input_listを直接ぶち込む
+    for aaaa in kekka:
+        moziretu = "{:b}".format(aaaa)
+        while len(moziretu) < n_qubit:
+            moziretu = "0" + moziretu
+        print(moziretu)
 
 
 if __name__ == "__main__":
