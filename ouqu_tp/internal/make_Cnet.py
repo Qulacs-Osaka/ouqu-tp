@@ -9,11 +9,11 @@ def make_Cnet_put(input_strs: List[str]) -> None:
     print("{")
     print('  "couplings": [')
     for i in range(3, len(input_strs)):
-        kazstr = input_strs[i].split(",")
+        kazstr = input_strs[i].rstrip("\n").split(",")
         con.append([int(kazstr[0]), int(kazstr[1])])
         print("    {")
         print('      "control": ' + kazstr[0] + ",")
-        print('      "target": ' + kazstr[1].rstrip("\n"))
+        print('      "target": ' + kazstr[1])
         if i + 1 < len(input_strs):
             print("    },")
         else:
