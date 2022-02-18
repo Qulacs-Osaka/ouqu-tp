@@ -13,7 +13,7 @@
 
 の四つの機能が実装されています。
 
-入出力例として、サンプルの各ファイルが、すでに data フォルダに入っています。参考にしてください。
+入出力例として、サンプルの各ファイルが、すでに sample フォルダに入っています。参考にしてください。
 
 注意点:このトランスパイラは、グローバル位相を完全に無視します。
 
@@ -75,20 +75,20 @@ ouqu-tp trance trance --input-qasm-file=入力.qasm --input-cnot-json-file=CNOT�
 
 CNOT の制約と QASM ファイルから、実機で可能な QASM ファイルを作ります
 
-サンプルの CNOT の制約は data/CNOT_net.txt にあります
+サンプルの CNOT の制約は sample/CNOT_net.txt にあります
 
-サンプルの入力 QASM ファイルは data/input.qasm にあります
+サンプルの入力 QASM ファイルは sample/input.qasm にあります
 
-サンプルの出力 QASM ファイルは data/output.qasm にあります
+サンプルの出力 QASM ファイルは sample/output.qasm にあります
 
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
 
 ```
 # poetryの場合
-poetry run ouqu-tp trance trance --input-qasm-file=data/input.qasm --input-cnot-json-file=data/created_Cnet.json
+poetry run ouqu-tp trance trance --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json
 
 # pipの場合
-ouqu-tp trance trance --input-qasm-file=data/input.qasm --input-cnot-json-file=data/created_Cnet.json
+ouqu-tp trance trance --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json
 
 ```
 
@@ -106,12 +106,12 @@ ouqu-tp trance makeCnet --cnot-net-file=CNOT制約.txt
 
 ```
 # poetryの場合
-poetry run ouqu-tp trance makeCnet --cnot-net-file=data/Cnot_net.txt
+poetry run ouqu-tp trance makeCnet --cnot-net-file=sample/Cnot_net.txt
 
 # pipの場合
-ouqu-tp trance makeCnet --cnot-net-file=data/Cnot_net.txt
+ouqu-tp trance makeCnet --cnot-net-file=sample/Cnot_net.txt
 ```
-####　サンプルにある data/CNOT_net.txt を例にした,CNOT 制約ファイルの説明
+####　サンプルにある sample/CNOT_net.txt を例にした,CNOT 制約ファイルの説明
 
 ```
 1行目：名前 なんでもいい
@@ -172,18 +172,18 @@ shot 回数は整数である必要があります。
 
 出力の各行が量子状態に対応していて、行の中で、一番「右」が 0 番の bit です。
 
-入力 QASM ファイルのサンプルは、data/input.qasm にあります。
+入力 QASM ファイルのサンプルは、sample/input.qasm にあります。
 
-得られた結果のサンプルは、data/kekka.txt にあります。
+得られた結果のサンプルは、sample/kekka.txt にあります。
 
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
 
 ```
 # poetryの場合
-poetry run ouqu-tp ideal simulate --input-qasm-file=data/input.qasm --shots=20
+poetry run ouqu-tp ideal simulate --input-qasm-file=sample/input.qasm --shots=20
 
 # pipの場合
-ouqu-tp ideal simulate --input-qasm-file=data/input.qasm --shots=20
+ouqu-tp ideal simulate --input-qasm-file=sample/input.qasm --shots=20
 ```
 
 ### getval
@@ -202,20 +202,20 @@ QASM ファイル形式で量子回路を入力して、その回路に(000..0)�
 
 出力は観測した結果の厳密な期待値です。
 
-入力 QASM ファイルのサンプルは、data/input.qasm にあります。
+入力 QASM ファイルのサンプルは、sample/input.qasm にあります。
 
-openfermion_file のサンプルは、data/fermion.txt にあります。
+openfermion_file のサンプルは、sample/fermion.txt にあります。
 
-得られた結果のサンプルは、data/gv_kekka.txt にあります。
+得られた結果のサンプルは、sample/gv_kekka.txt にあります。
 
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
 
 ```
 # poetryの場合
-poetry run ouqu-tp ideal getval --input-qasm-file=data/input.qasm --input-openfermion-file=data/fermion.txt
+poetry run ouqu-tp ideal getval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt
 
 # pipの場合
-ouqu-tp ideal getval --input-qasm-file=data/input.qasm --input-openfermion-file=data/fermion.txt
+ouqu-tp ideal getval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt
 ```
 
 ### sampleval
@@ -236,20 +236,20 @@ QASM ファイル形式で量子回路を入力して、その回路に(000..0)�
 
 ただし、オブザーバブルが複数の項の和として表される場合、それぞれ独立に shot 回づつ観測します。
 
-入力 QASM ファイルのサンプルは、data/input.qasm にあります。
+入力 QASM ファイルのサンプルは、sample/input.qasm にあります。
 
-openfermion_file のサンプルは、data/fermion.txt にあります。
+openfermion_file のサンプルは、sample/fermion.txt にあります。
 
-得られた結果のサンプルは、data/sv_kekka.txt にあります。
+得られた結果のサンプルは、sample/sv_kekka.txt にあります。
 
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
 
 ```
 # poetryの場合
-poetry run ouqu-tp ideal sampleval --input-qasm-file=data/input.qasm --input-openfermion-file=data/fermion.txt --shots=500
+poetry run ouqu-tp ideal sampleval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt --shots=500
 
 # pipの場合
-ouqu-tp ideal sampleval --input-qasm-file=data/input.qasm --input-openfermion-file=data/fermion.txt --shots=500
+ouqu-tp ideal sampleval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt --shots=500
 ```
 
 # ノイズがあるバージョン
@@ -292,19 +292,19 @@ pp は、初期状態ノイズの確率で、 回路の始めに、qulacs の De
 
 ```
 # poetryの場合
-poetry run ouqu-tp noisy simulate --input-qasm-file=data/input.qasm --shots=100 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
+poetry run ouqu-tp noisy simulate --input-qasm-file=sample/input.qasm --shots=100 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
 
-poetry run ouqu-tp noisy getval --input-qasm-file=data/input.qasm --input-openfermion-file=data/fermion.txt --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
+poetry run ouqu-tp noisy getval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
 
-poetry run ouqu-tp noisy sampleval --input-qasm-file=data/input.qasm --input-openfermion-file=data/fermion.txt --shots=500 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
+poetry run ouqu-tp noisy sampleval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt --shots=500 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
 
 
 # pipの場合
-ouqu-tp noisy simulate --input-qasm-file=data/input.qasm --shots=100 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
+ouqu-tp noisy simulate --input-qasm-file=sample/input.qasm --shots=100 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
 
-ouqu-tp noisy getval --input-qasm-file=data/input.qasm --input-openfermion-file=data/fermion.txt --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
+ouqu-tp noisy getval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
 
-ouqu-tp noisy sampleval --input-qasm-file=data/input.qasm --input-openfermion-file=data/fermion.txt --shots=500 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
+ouqu-tp noisy sampleval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt --shots=500 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
 ```
 
 ## その他
