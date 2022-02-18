@@ -19,7 +19,7 @@ def make_Cnet_put(input_strs: List[str]) -> None:
         else:
             print("    }")
     print("  ],")
-    print('  "name": "' + input_strs[0] + '",')
+    print('  "name": "' + input_strs[0].rstrip('\n') + '",')
     print('  "qubits": [')
     for i in range(qubit_num):
         print("    {")
