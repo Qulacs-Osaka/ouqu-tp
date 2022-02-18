@@ -13,13 +13,13 @@ def make_Cnet_put(input_strs: List[str]) -> None:
         con.append([int(kazstr[0]), int(kazstr[1])])
         print("    {")
         print('      "control": ' + kazstr[0] + ",")
-        print('      "target": ' + kazstr[1].rstrip('\n'))
+        print('      "target": ' + kazstr[1].rstrip("\n"))
         if i + 1 < len(input_strs):
             print("    },")
         else:
             print("    }")
     print("  ],")
-    print('  "name": "' + input_strs[0].rstrip('\n') + '",')
+    print('  "name": "' + input_strs[0].rstrip("\n") + '",')
     print('  "qubits": [')
     for i in range(qubit_num):
         print("    {")
