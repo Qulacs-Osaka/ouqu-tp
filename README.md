@@ -106,10 +106,10 @@ ouqu-tp trance makeCnet --cnot-net-file=CNOT制約.txt
 
 ```
 # poetryの場合
-poetry run ouqu-tp trance makeCnet --cnot-net-file=sample/Cnot_net.txt
+poetry run ouqu-tp trance makeCnet --cnot-net-file=sample/CNOT_net.txt
 
 # pipの場合
-ouqu-tp trance makeCnet --cnot-net-file=sample/Cnot_net.txt
+ouqu-tp trance makeCnet --cnot-net-file=sample/CNOT_net.txt
 ```
 ####　サンプルにある sample/CNOT_net.txt を例にした,CNOT 制約ファイルの説明
 
