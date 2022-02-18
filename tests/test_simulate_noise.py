@@ -1,4 +1,4 @@
-from ouqu_tp.simulate import simulate_noise_do
+from ouqu_tp.internal.simulate import simulate_noise_do
 
 
 def test_simulate_noise_A() -> None:

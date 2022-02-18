@@ -2,8 +2,8 @@ from typing import List, Tuple
 
 from qulacs import NoiseSimulator, QuantumCircuit, QuantumState
 
-from ouqu_tp.auto_noise import auto_noise
-from ouqu_tp.ot_io import str_to_gate
+from ouqu_tp.internal.auto_noise import auto_noise
+from ouqu_tp.internal.ot_io import str_to_gate
 
 
 def simulate_do(input_strs: List[str], shots: int) -> Tuple[List[int], int]:

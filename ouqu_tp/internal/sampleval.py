@@ -2,9 +2,9 @@ from typing import List
 
 from qulacs import QuantumCircuit, observable
 
-from ouqu_tp.auto_noise import auto_noise
-from ouqu_tp.ot_io import str_to_gate
-from ouqu_tp.shot_obs import get_meseurment, get_noise_meseurment
+from ouqu_tp.internal.auto_noise import auto_noise
+from ouqu_tp.internal.ot_io import str_to_gate
+from ouqu_tp.internal.shot_obs import get_measurement, get_noise_meseurment
 
 
 def sampleval_do(input_strs: List[str], ferfile: str, shots: int) -> float:
@@ -16,7 +16,7 @@ def sampleval_do(input_strs: List[str], ferfile: str, shots: int) -> float:
 
     obs = observable.create_observable_from_openfermion_file(ferfile)
 
-    return get_meseurment(testcircuit, obs, shots)
+    return get_measurement(testcircuit, obs, shots)
 
 
 def sampleval_noise_do(

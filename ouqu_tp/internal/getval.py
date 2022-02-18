@@ -2,8 +2,8 @@ from typing import List
 
 from qulacs import DensityMatrix, QuantumCircuit, QuantumState, observable
 
-from ouqu_tp.auto_noise import auto_noise
-from ouqu_tp.ot_io import str_to_gate
+from ouqu_tp.internal.auto_noise import auto_noise
+from ouqu_tp.internal.ot_io import str_to_gate
 
 
 def getval_do(input_strs: List[str], ferfile: str) -> float:

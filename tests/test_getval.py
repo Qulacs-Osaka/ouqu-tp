@@ -1,4 +1,4 @@
-from ouqu_tp.getval import getval_do
+from ouqu_tp.internal.getval import getval_do
 
 
 def test_getval() -> None:

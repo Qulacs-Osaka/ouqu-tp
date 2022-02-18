@@ -1,5 +1,5 @@
-from ouqu_tp.getval import getval_do, getval_noise_do
-from ouqu_tp.sampleval import sampleval_do, sampleval_noise_do
+from ouqu_tp.internal.getval import getval_do, getval_noise_do
+from ouqu_tp.internal.sampleval import sampleval_do, sampleval_noise_do
 
 
 def test_getval_sampleval() -> None:

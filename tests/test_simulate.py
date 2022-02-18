@@ -1,4 +1,4 @@
-from ouqu_tp.simulate import simulate_do
+from ouqu_tp.internal.simulate import simulate_do
 
 
 def test_simulate() -> None:

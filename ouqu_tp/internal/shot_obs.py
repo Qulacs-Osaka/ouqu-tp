@@ -1,7 +1,7 @@
 from qulacs import NoiseSimulator, QuantumCircuit, QuantumState, observable
 
 
-def get_meseurment(circuit: QuantumCircuit, obs: observable, shots: int) -> float:
+def get_measurement(circuit: QuantumCircuit, obs: observable, shots: int) -> float:
     """
     Args:
         circuit (qulacs.Quantumcircuit):
@@ -25,9 +25,7 @@ def get_meseurment(circuit: QuantumCircuit, obs: observable, shots: int) -> floa
             continue
         buf_state = QuantumState(n_qubit)
         measurement_circuit = circuit.copy()
-        mask = "".join(
-            ["1" if n_qubit - 1 - k in pauli_index else "0" for k in range(n_qubit)]
-        )
+
         for single_pauli, index in zip(pauli_id, pauli_index):
             if single_pauli == 1:
                 measurement_circuit.add_H_gate(index)
@@ -36,6 +34,9 @@ def get_meseurment(circuit: QuantumCircuit, obs: observable, shots: int) -> floa
                 measurement_circuit.add_H_gate(index)
         measurement_circuit.update_quantum_state(buf_state)
         samples = buf_state.sampling(shots)
+        mask = "".join(
+            ["1" if n_qubit - 1 - k in pauli_index else "0" for k in range(n_qubit)]
+        )
         masked = int(mask, 2)
         exp += (
             coef
@@ -74,9 +75,7 @@ def get_noise_meseurment(circuit: QuantumCircuit, obs: observable, shots: int) -
             continue
         buf_state = QuantumState(n_qubit)
         measurement_circuit = circuit.copy()
-        mask = "".join(
-            ["1" if n_qubit - 1 - k in pauli_index else "0" for k in range(n_qubit)]
-        )
+
         for single_pauli, index in zip(pauli_id, pauli_index):
             if single_pauli == 1:
                 measurement_circuit.add_H_gate(index)
@@ -86,6 +85,9 @@ def get_noise_meseurment(circuit: QuantumCircuit, obs: observable, shots: int) -
 
         nsim = NoiseSimulator(measurement_circuit, buf_state)
         samples = nsim.execute(shots)
+        mask = "".join(
+            ["1" if n_qubit - 1 - k in pauli_index else "0" for k in range(n_qubit)]
+        )
         masked = int(mask, 2)
         exp += (
             coef
