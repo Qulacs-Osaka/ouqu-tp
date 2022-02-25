@@ -1,0 +1,21 @@
+ouqu\_tp.cli package
+====================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   ouqu_tp.cli.ideal
+   ouqu_tp.cli.main
+   ouqu_tp.cli.noisy
+   ouqu_tp.cli.trance
+
+Module contents
+---------------
+
+.. automodule:: ouqu_tp.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:

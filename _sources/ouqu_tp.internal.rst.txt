@@ -1,0 +1,27 @@
+ouqu\_tp.internal package
+=========================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   ouqu_tp.internal.auto_noise
+   ouqu_tp.internal.debug
+   ouqu_tp.internal.getval
+   ouqu_tp.internal.make_Cnet
+   ouqu_tp.internal.ot_io
+   ouqu_tp.internal.sampleval
+   ouqu_tp.internal.shot_obs
+   ouqu_tp.internal.simulate
+   ouqu_tp.internal.tran
+   ouqu_tp.internal.trancepile
+
+Module contents
+---------------
+
+.. automodule:: ouqu_tp.internal
+   :members:
+   :undoc-members:
+   :show-inheritance:

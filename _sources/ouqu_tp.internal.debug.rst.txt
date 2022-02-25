@@ -1,7 +1,7 @@
-ouqu\_tp.noisesim\_call module
+ouqu\_tp.internal.debug module
 ==============================
 
-.. automodule:: ouqu_tp.noisesim_call
+.. automodule:: ouqu_tp.internal.debug
    :members:
    :undoc-members:
    :show-inheritance:

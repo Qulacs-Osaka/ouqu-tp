@@ -1,7 +1,0 @@
-ouqu\_tp.ot\_io module
-======================
-
-.. automodule:: ouqu_tp.ot_io
-   :members:
-   :undoc-members:
-   :show-inheritance:
