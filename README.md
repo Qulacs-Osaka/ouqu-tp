@@ -6,13 +6,14 @@
 
 これは、QASM を qulacs で実行したり、実機で可能なようにうまく回路を変形するライブラリです。
 
-CNOT の制約と QASM ファイルから、実機で可能な QASM ファイルを作る trance.sh と、
+- CNOT の制約と QASM ファイルから、実機で可能な QASM ファイルを作る機能
+- QASM ファイルを受け取り、量子状態を得た後、shot の回数だけ実行する機能
+- QASM ファイルを受け取り、量子状態を得た後、オブザーバブルを openfermion の形式で受けとり、期待値を厳密に求める機能
+- QASM ファイルを受け取り、量子状態を得た後、オブザーバブルを openfermion の形式で受けとり、shot の回数サンプリングしてオブザーバブルの値を求める機能
 
-QASM ファイルを受け取り、量子状態を得た後、shot の回数だけ実行する simulate.sh
+の四つの機能が実装されています。
 
-の二つの機能があります。
-
-入出力例として、サンプルの各ファイルが、すでに data フォルダに入っています。参考にしてください。
+入出力例として、サンプルの各ファイルが、すでに sample フォルダに入っています。参考にしてください。
 
 注意点:このトランスパイラは、グローバル位相を完全に無視します。
 
@@ -22,13 +23,13 @@ QASM ファイルを受け取り、量子状態を得た後、shot の回数だ�
 
 - python
 
-- Poetry
+- Poetry(推奨) または pip
 
 - staq
 
 の 少なくとも 3 つが必要です。
 
-残りは poetry が自動的にインストールしてくれるはずです。
+残りは poetry や pip が自動的にインストールしてくれるはずです。
 
 ### staq をインストールしようとして文字化けする場合
 
@@ -50,33 +51,67 @@ docker run -it --mount type=bind,source=`pwd`,target=/ouqu-tp ouqu-tp-docker-ima
 ## 動かす前に
 
 依存しているライブラリをインストールする必要があります。
-poetry を使ってインストールしてください。
+poetry や pip を使ってインストールしてください。
 
 ```
+# poetryの場合
 poetry install
+
+# pipの場合
+pip install .
 ```
 
-## trance.sh
+## 機能紹介
 
-`trance.sh 入力.qasm CNOT制約.txt 出力.qasm`
+### trance
+
+```
+# poetryの場合
+poetry run ouqu-tp trance trance --input-qasm-file=入力.qasm --input-cnot-json-file=CNOT制約.json
+
+# pipの場合
+ouqu-tp trance trance --input-qasm-file=入力.qasm --input-cnot-json-file=CNOT制約.json
+```
 
 CNOT の制約と QASM ファイルから、実機で可能な QASM ファイルを作ります
 
-サンプルの CNOT の制約は data/CNOT_net.txt にあります
+サンプルの CNOT の制約は sample/CNOT_net.txt にあります
 
-サンプルの入力 QASM ファイルは data/input.qasm にあります
+サンプルの入力 QASM ファイルは sample/input.qasm にあります
 
-サンプルの出力 QASM ファイルは data/output.qasm にあります
+サンプルの出力 QASM ファイルは sample/output.qasm にあります
 
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
 
 ```
-trance.sh data/input.qasm data/CNOT_net.txt data/output.qasm
+# poetryの場合
+poetry run ouqu-tp trance trance --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json
+
+# pipの場合
+ouqu-tp trance trance --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json
+
 ```
 
-(data/cpl.qasm は、中間表現です。QASM 形式で、 U ゲートと CNOT だけで構成されます)
+### make_Cnet
+```
+# poetryの場合
+poetry run ouqu-tp trance makeCnet --cnot-net-file=CNOT制約.txt
 
-### 初期状態にある data/CNOT_net.txt を例にした,CNOT 制約ファイルの説明
+# pipの場合
+ouqu-tp trance makeCnet --cnot-net-file=CNOT制約.txt
+```
+上のtranceが利用するCnot制約はjsonで書かれています。
+
+書きやすいように、以下の形式のtxtファイルからjsonに変換するプログラムです。
+
+```
+# poetryの場合
+poetry run ouqu-tp trance makeCnet --cnot-net-file=sample/CNOT_net.txt
+
+# pipの場合
+ouqu-tp trance makeCnet --cnot-net-file=sample/CNOT_net.txt
+```
+####　サンプルにある sample/CNOT_net.txt を例にした,CNOT 制約ファイルの説明
 
 ```
 1行目：名前 なんでもいい
@@ -109,6 +144,7 @@ test
 3-4-5
 | | |
 6-7-8
+のグリッドでのCnotに対応します。
 ```
 
 細かい仕様
@@ -116,9 +152,17 @@ test
 3 行目:connected 数 は実は使っていなくて、 EOF まで読んでる
 control,terget のところに END というアルファベット 3 文字の入力が来ると、終了になる
 
-## simulate.sh
+## ノイズがないバージョン
 
-`simulate.sh 入力.qasm 出力.txt shot回数`
+### simulate
+
+```
+# poetryの場合
+poetry run ouqu-tp ideal simulate --input-qasm-file=入力.qasm --shots=shot回数
+
+# pipの場合
+ouqu-tp ideal simulate --input-qasm-file=入力.qasm --shots=shot回数
+```
 
 QASM ファイル形式で量子回路を入力して、その回路に(000..0)を入力して、結果を受け取る
 
@@ -128,84 +172,141 @@ shot 回数は整数である必要があります。
 
 出力の各行が量子状態に対応していて、行の中で、一番「右」が 0 番の bit です。
 
-入力 QASM ファイルのサンプルは、data/input.qasm にあります。
+入力 QASM ファイルのサンプルは、sample/input.qasm にあります。
 
-得られた結果のサンプルは、data/kekka.txt にあります。
+得られた結果のサンプルは、sample/kekka.txt にあります。
 
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
 
 ```
-simulate.sh data/input.qasm data/kekka.txt 20
+# poetryの場合
+poetry run ouqu-tp ideal simulate --input-qasm-file=sample/input.qasm --shots=20
+
+# pipの場合
+ouqu-tp ideal simulate --input-qasm-file=sample/input.qasm --shots=20
 ```
 
-## getval.sh
+### getval
 
-`getval.sh 入力.qasm 出力.txt openfermion_file `
+```
+# poetryの場合
+poetry run ouqu-tp ideal getval --input-qasm-file=入力.qasm --input-openfermion-file=openfermion_file
 
-QASM ファイル形式で量子回路を入力して、その回路に(000..0)を入力して、オブザーバブルで観測します。
+# pipの場合
+ouqu-tp ideal getval --input-qasm-file=入力.qasm --input-openfermion-file=openfermion_file
+```
+
+QASM ファイル形式で量子回路を入力して、その回路に(000..0)を入力して、オブザーバブルで観測した値の期待値を求めます。
 
 オブザーバブルは、openfermion 形式で保存しておく必要があります。
 
-出力は観測した結果の数値一つです。
+出力は観測した結果の厳密な期待値です。
 
-入力 QASM ファイルのサンプルは、data/input.qasm にあります。
+入力 QASM ファイルのサンプルは、sample/input.qasm にあります。
 
-openfermion_file のサンプルは、data/fermion.txt にあります。
+openfermion_file のサンプルは、sample/fermion.txt にあります。
 
-得られた結果のサンプルは、data/gv_kekka.txt にあります。
+得られた結果のサンプルは、sample/gv_kekka.txt にあります。
 
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
 
 ```
-getval.sh data/input.qasm data/gv_kekka.txt data/fermion.txt
+# poetryの場合
+poetry run ouqu-tp ideal getval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt
+
+# pipの場合
+ouqu-tp ideal getval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt
 ```
 
-現状、入力 QASM ファイルの bit 数と、fermion のビット数(添え字の最大値+1)が、 ピッタリ一致しないと動きません。
+### sampleval
 
-これは、内部的な話をすると、qulacs では fermion をファイルから読み込むときにビット数が自動で付与されてしまうのが原因です。
+```
+# poetryの場合
+poetry run ouqu-tp ideal sampleval --input-qasm-file=入力.qasm --input-openfermion-file=openfermion_file --shots=shot回数
 
-qulacs と、qulacs-osaka にプルリクを投げました。
+# pipの場合
+ouqu-tp ideal sampleval --input-qasm-file=入力.qasm --input-openfermion-file=openfermion_file --shots=shot回数
+```
 
-通れば、入力 QASM ファイルの bit 数が、fermion のビット数以上なら動くようになります。
+QASM ファイル形式で量子回路を入力して、その回路に(000..0)を入力して、オブザーバブルで shot 回観測します。
 
-## noisesim.sh
+オブザーバブルは、openfermion 形式で保存しておく必要があります。
 
-`noisesim.sh 入力.qasm 出力.txt shot回数 p1 p2 pm pp`
+出力は shot 回観測した結果の実測平均値です。
 
-simulate.sh の、ノイズがあるバージョンです。
+ただし、オブザーバブルが複数の項の和として表される場合、それぞれ独立に shot 回づつ観測します。
 
-具体的には、p1,p2,pm,ppには0以上1以下の実数が入り、ノイズの確率を示します。
+入力 QASM ファイルのサンプルは、sample/input.qasm にあります。
 
-p1は、1ビットの量子ゲートのノイズの確率で、 コンパイルされた回路上で、1ビットの量子ゲートがあるたびに、qulacsのDepolarizingNoiseが入ります。
+openfermion_file のサンプルは、sample/fermion.txt にあります。
 
-p2は、2ビットの量子ゲートのノイズの確率で、 コンパイルされた回路上で、2ビットの量子ゲート(CXのみ)があるたびに、qulacsのTwoQubitDepolarizingNoiseが入ります。
+得られた結果のサンプルは、sample/sv_kekka.txt にあります。
+
+例えば、サンプルを実行する場合は以下のコマンドを実行してください。
+
+```
+# poetryの場合
+poetry run ouqu-tp ideal sampleval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt --shots=500
+
+# pipの場合
+ouqu-tp ideal sampleval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt --shots=500
+```
+
+# ノイズがあるバージョン
+
+ノイズがある場合を示します。
+
+````
+# poetryの場合
+poetry run ouqu-tp noisy simulate --input-qasm-file=入力.qasm --shots=shot回数 --p1=p1の確率 --p2=p2の確率 --pm=pmの確率 --pp=ppの確率
+
+poetry run ouqu-tp noisy getval --input-qasm-file=入力.qasm --input-openfermion-file=openfermion_file --p1=p1の確率 --p2=p2の確率 --pm=pmの確率 --pp=ppの確率
+
+poetry run ouqu-tp noisy sampleval --input-qasm-file=入力.qasm --input-openfermion-file=openfermion_file --shots=shot回数 --p1=p1の確率 --p2=p2の確率 --pm=pmの確率 --pp=ppの確率
+
+
+# pipの場合
+ouqu-tp noisy simulate --input-qasm-file=入力.qasm--shots=shot回数 --p1=p1の確率 --p2=p2の確率 --pm=pmの確率 --pp=ppの確率
+
+ouqu-tp noisy getval --input-qasm-file=入力.qasm --input-openfermion-file=openfermion_file --p1=p1の確率 --p2=p2の確率 --pm=pmの確率 --pp=ppの確率
+
+ouqu-tp noisy sampleval --input-qasm-file=入力.qasm --input-openfermion-file=openfermion_file --shots=shot回数 --p1=p1の確率 --p2=p2の確率 --pm=pmの確率 --pp=ppの確率```
+````
+
+具体的には、p1,p2,pm,pp には 0 以上 1 以下の実数が入り、ノイズの確率を示します。
+
+p1 は、1 ビットの量子ゲートのノイズの確率で、 コンパイルされた回路上で、1 ビットの量子ゲートがあるたびに、qulacs の DepolarizingNoise が入ります。
+
+p2 は、2 ビットの量子ゲートのノイズの確率で、 コンパイルされた回路上で、2 ビットの量子ゲート(CX のみ)があるたびに、qulacs の TwoQubitDepolarizingNoise が入ります。
 
 ノイズが入るのは、「コンパイルされた回路上」であることに注意してください。
-例えば、手元で2qubit gete一つでも、コンパイルされたら2qubit gate+1qubit gate2つ　みたいになることがあります。
+例えば、手元で 2qubit gete 一つでも、コンパイルされたら 2qubit gate+1qubit gate2 つ みたいになることがあります。
 
-pmは、状態測定ノイズの確率で、 回路の終わりに、qulacsのDepolarizingNoiseが入ります。
+pm は、状態測定ノイズの確率で、 回路の終わりに、qulacs の DepolarizingNoise が入ります。
 
-ppは、初期状態ノイズの確率で、 回路の始めに、qulacsのDepolarizingNoiseが入ります。
+pp は、初期状態ノイズの確率で、 回路の始めに、qulacs の DepolarizingNoise が入ります。
+
+全てのノイズについて、オプションとして確率を指定しなかった場合には初期値の 0 が入ります。
 
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
+
 ```
-noisesim.sh data/input.qasm data/kekka_noise.txt 100 0.1 0.1 0.1 0.1
+# poetryの場合
+poetry run ouqu-tp noisy simulate --input-qasm-file=sample/input.qasm --shots=100 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
+
+poetry run ouqu-tp noisy getval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
+
+poetry run ouqu-tp noisy sampleval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt --shots=500 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
+
+
+# pipの場合
+ouqu-tp noisy simulate --input-qasm-file=sample/input.qasm --shots=100 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
+
+ouqu-tp noisy getval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
+
+ouqu-tp noisy sampleval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt --shots=500 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
 ```
 
+## その他
 
-## re_simulate.sh
-
-`re_simulate.sh 出力.txt shot回数`
-
-## re_getval.sh
-
-`re_getval.sh 出力.txt openfermion_file`
-
-この 2 つは、QASM ファイルは前回入力したものを使う場合のコマンドです。
-
-具体的にいうと、re\_ が付かないシェルでは、staq を用いて入力したファイルを qulacs が処理しやすい形式にした後、data/cpl.qasm に保存されています。
-その data/cpl.qasm を、再び使います。
-
-trance.sh でも cpl.qasm は更新されます。
-
-re_noisesimは実装予定です。
+qulacs の仕様上、openfermion に虚数部分が含まれていても、それを無視して実数を返します。

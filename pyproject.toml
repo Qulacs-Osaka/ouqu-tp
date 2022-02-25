@@ -10,6 +10,7 @@ python = ">=3.8,<3.11"
 numpy = "^1.21.2"
 scipy = "^1.7.3"
 qulacs-osaka = "^0.2.0"
+typer = "^0.4.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
@@ -21,6 +22,9 @@ Sphinx = "^4.2.0"
 sphinx-book-theme = "^0.1.6"
 ipykernel = "^6.4.2"
 myst-nb = "^0.13.1"
+
+[tool.poetry.scripts]
+ouqu-tp = "ouqu_tp.cli.main:main"
 
 [tool.isort]
 default_section = "THIRDPARTY"
