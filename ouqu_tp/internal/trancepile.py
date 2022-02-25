@@ -1,6 +1,10 @@
 # from ouqu_tp.debug import check_circuit
-from ot_io import input_strings, output_gates_QASMfuu, str_to_gate
-from tran import tran_ouqu_multi
+from ouqu_tp.internal.ot_io import (
+    input_strings,
+    output_gates_QASMfuu,
+    str_to_gate,
+)
+from ouqu_tp.internal.tran import tran_ouqu_multi
 
 # from ouqu_tp import input_strings,str_to_SAG,tran_ouqu_multi,output_gates
 

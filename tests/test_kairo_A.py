@@ -1,8 +1,8 @@
 from qulacs import QuantumCircuit
 
-from ouqu_tp.debug import check_circuit
-from ouqu_tp.ot_io import str_to_gate
-from ouqu_tp.tran import tran_ouqu_multi
+from ouqu_tp.internal.debug import check_circuit
+from ouqu_tp.internal.ot_io import str_to_gate
+from ouqu_tp.internal.tran import tran_ouqu_multi
 
 
 def test_kairo_A() -> None:
