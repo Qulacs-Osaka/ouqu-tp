@@ -94,14 +94,14 @@ def output_gates_QASMfuu(gates: typing.List[qulacs.QuantumGateBase]) -> None:
         if it.get_name() == "Z-rotation":
             matrix = it.get_matrix()
             angle = phase(matrix[1][1] / matrix[0][0])
-            print("RZ(", angle, ") q[", it.get_target_index_list()[0], "]")
+            print("u1(", angle, ") q[", it.get_target_index_list()[0], "]")
         elif it.get_name() == "X":
             print("X q[", it.get_target_index_list()[0], "]")
         elif it.get_name() == "sqrtX":
-            print("sqrtX q[", it.get_target_index_list()[0], "]")
+            print("sx q[", it.get_target_index_list()[0], "]")
         elif it.get_name() == "CNOT":
             print(
-                "CNOT q[",
+                "cx q[",
                 it.get_control_index_list()[0],
                 "] q[",
                 it.get_target_index_list()[0],
