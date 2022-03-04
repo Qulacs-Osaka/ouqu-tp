@@ -22,8 +22,11 @@
 ### VSCode + devcontainer 環境を使う場合
 
 VSCodeでdevcontainerを使って環境構築ができます。
-詳しくは[ドキュメント](https://github.com/Qulacs-Osaka/qulacs-developer-docs/blob/main/doc/Learn-Usage/devcontainer-manual.md)を参照して下さい。
+詳しくは[ドキュメント](https://github.com/Qulacs-Osaka/qulacs-developer-docs/blob/main/doc/Learn-Usage/devcontainer-manual.md)を参照して下さい。ouqu-tpをcloneするには以下のコマンドを利用して下さい。(**scikit-qulacsではないことに注意！**)
 
+```
+git clone https://github.com/Qulacs-Osaka/ouqu-tp.git
+```
 ### Docker 環境を使う場合
 
 環境構築用のDockerfileが.devcontainerディレクトリ下に用意されています。
