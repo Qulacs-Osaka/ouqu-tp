@@ -90,7 +90,7 @@ def output_gates_QASMfuu(gates: typing.List[qulacs.QuantumGateBase]) -> None:
     # print("OPENQASM 2.0")
 
     # 気を付けて　qreg情報はない
-    
+
     for it in gates:
         # print(it.get_name())
         if it.get_name() == "Z-rotation":
