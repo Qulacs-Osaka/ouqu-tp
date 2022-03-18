@@ -29,6 +29,8 @@ def str_to_gate(
             yomustr = instr.translate(mytable)
             kazstr = yomustr.split(",")
             n_qubit = int(kazstr[0])
+            if outmode == "put":
+                print(instr)
 
         elif instr[0:2] == "U(":
             mytable = instr.maketrans("U()q[];", "   ,   ")
@@ -94,18 +96,18 @@ def output_gates_QASMfuu(gates: typing.List[qulacs.QuantumGateBase]) -> None:
         if it.get_name() == "Z-rotation":
             matrix = it.get_matrix()
             angle = phase(matrix[1][1] / matrix[0][0])
-            print("u1(", angle, ") q[", it.get_target_index_list()[0], "]")
+            print("u1(", angle, ") q[", it.get_target_index_list()[0], "];")
         elif it.get_name() == "X":
-            print("X q[", it.get_target_index_list()[0], "]")
+            print("X q[", it.get_target_index_list()[0], "];")
         elif it.get_name() == "sqrtX":
-            print("sx q[", it.get_target_index_list()[0], "]")
+            print("sx q[", it.get_target_index_list()[0], "];")
         elif it.get_name() == "CNOT":
             print(
                 "cx q[",
                 it.get_control_index_list()[0],
-                "] q[",
+                "],q[",
                 it.get_target_index_list()[0],
-                "]",
+                "];",
             )
         else:
             print(it)  # 直接プリントできるらしい、　困ったらそうするしかない
