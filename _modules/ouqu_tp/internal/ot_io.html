@@ -189,6 +189,11 @@
        </li>
       </ul>
      </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../ouqu_tp.kasika.html">
+       ouqu_tp.kasika module
+      </a>
+     </li>
     </ul>
    </li>
   </ul>
@@ -312,6 +317,8 @@
             <span class="n">yomustr</span> <span class="o">=</span> <span class="n">instr</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">mytable</span><span class="p">)</span>
             <span class="n">kazstr</span> <span class="o">=</span> <span class="n">yomustr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
             <span class="n">n_qubit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">outmode</span> <span class="o">==</span> <span class="s2">&quot;put&quot;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">instr</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;U(&quot;</span><span class="p">:</span>
             <span class="n">mytable</span> <span class="o">=</span> <span class="n">instr</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s2">&quot;U()q[];&quot;</span><span class="p">,</span> <span class="s2">&quot;   ,   &quot;</span><span class="p">)</span>
@@ -377,18 +384,18 @@
         <span class="k">if</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Z-rotation&quot;</span><span class="p">:</span>
             <span class="n">matrix</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">()</span>
             <span class="n">angle</span> <span class="o">=</span> <span class="n">phase</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;u1(&quot;</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="s2">&quot;) q[&quot;</span><span class="p">,</span> <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;]&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;u1(&quot;</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="s2">&quot;) q[&quot;</span><span class="p">,</span> <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;];&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X q[&quot;</span><span class="p">,</span> <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;]&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X q[&quot;</span><span class="p">,</span> <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;];&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;sqrtX&quot;</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sx q[&quot;</span><span class="p">,</span> <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;]&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sx q[&quot;</span><span class="p">,</span> <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;];&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;CNOT&quot;</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
                 <span class="s2">&quot;cx q[&quot;</span><span class="p">,</span>
                 <span class="n">it</span><span class="o">.</span><span class="n">get_control_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
-                <span class="s2">&quot;] q[&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;],q[&quot;</span><span class="p">,</span>
                 <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
-                <span class="s2">&quot;]&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;];&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>  <span class="c1"># 直接プリントできるらしい、　困ったらそうするしかない</span>
