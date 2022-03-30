@@ -1,3 +1,4 @@
+import re
 import typing
 from cmath import phase
 
@@ -17,14 +18,27 @@ def input_strings() -> typing.List[str]:
             break
     return input_strs
 
-
+#remap_remove = True のとき、 
+# Layout (physical --> virtual)　の部分を読み取り、
+# 変数マッピングを元に戻す
 def str_to_gate(
-    input_strs: typing.List[str], outmode: str
+    input_strs: typing.List[str], outmode: str,remap_remove:bool
 ) -> typing.Tuple[int, typing.List[qulacs.QuantumGateBase]]:
     n_qubit: int = 0  # 暫定
     input_list: typing.List[qulacs.QuantumGateBase] = []
+    mapping=[]
+    if remap_remove:
+        print("rha")
+    for i in range(123):
+        mapping.append(i)
     for instr in input_strs:
-        if instr[0:7] == "qreg q[":
+        if ( remap_remove  and instr[0:6] == "// \tq["):
+            mytable = instr.maketrans("/\tq[]->", "      ,")
+            yomustr = instr.translate(mytable)
+            kazstr = yomustr.split(",")
+            mapping[int(kazstr[0])]=int(kazstr[1])
+            print("aaa")
+        elif instr[0:7] == "qreg q[":
             mytable = instr.maketrans("qreg[];", "       ")
             yomustr = instr.translate(mytable)
             kazstr = yomustr.split(",")
@@ -35,10 +49,9 @@ def str_to_gate(
         elif instr[0:2] == "U(":
             mytable = instr.maketrans("U()q[];", "   ,   ")
             yomustr = instr.translate(mytable)
-            # print(yomustr)
             kazstr = yomustr.split(",")
             newgate = U3(
-                int(kazstr[3]), float(kazstr[0]), float(kazstr[1]), float(kazstr[2])
+                mapping[int(kazstr[3])], float(kazstr[0]), float(kazstr[1]), float(kazstr[2])
             )
             input_list.append(newgate)
             if n_qubit < int(kazstr[3]) + 1:
@@ -47,9 +60,8 @@ def str_to_gate(
         elif instr[0:2] == "CX":
             mytable = instr.maketrans("CXq[];", "      ")
             yomustr = instr.translate(mytable)
-            # print(yomustr)
             kazstr = yomustr.split(",")
-            newgate = CNOT(int(kazstr[0]), int(kazstr[1]))
+            newgate = CNOT(mapping[int(kazstr[0])], mapping[int(kazstr[1])])
             input_list.append(newgate)
 
             if n_qubit < int(kazstr[0]) + 1:
@@ -59,6 +71,8 @@ def str_to_gate(
 
         elif outmode == "put":
             print(instr)
+    for i in range(10):
+        print(i,mapping[i])
     return (n_qubit, input_list)
 
 

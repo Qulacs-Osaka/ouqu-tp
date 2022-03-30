@@ -1,3 +1,45 @@
+メモ　qiskitの回路をouqu-tpで実行してみる
+ouqu-tpは複数のバージョンがあるが、いろいろに対して行う
+
+グローバーとか、よさそう
+https://qiskit.org/textbook/ja/ch-algorithms/grover.html
+
+test_gro_qiskit.py
+グローバーのQASMを出力
+|110>と|101> を返す
+
+poetry run ouqu-tp ideal simulate --input-qasm-file=sample/grover_moto.qasm --shots=20
+poetry run ouqu-tp noisy simulate --input-qasm-file=sample/grover_moto.qasm --shots=50 --p1=0.01 --p2=0.01 --pm=0.01 --pp=0.01
+poetry run ouqu-tp ideal getval --input-qasm-file=sample/grover_moto.qasm --input-openfermion-file=sample/fer_sam.txt
+poetry run ouqu-tp noisy getval --input-qasm-file=sample/grover_moto.qasm --input-openfermion-file=sample/fer_sam.txt --p1=0.01 --p2=0.01 --pm=0.01 --pp=0.01
+poetry run ouqu-tp ideal sampleval --input-qasm-file=sample/grover_moto.qasm --input-openfermion-file=sample/fer_sam.txt --shots=900
+poetry run ouqu-tp noisy sampleval --input-qasm-file=sample/grover_moto.qasm --input-openfermion-file=sample/fer_sam.txt --shots=900 --p1=0.01 --p2=0.01 --pm=0.01 --pp=0.01
+
+
+
+CXとRZに直したやつから、パルスシークエンスを作る。
+
+__|~~|__
+
+rz(Θ)   = e^-{iΘ/2}
+
+矩形波　長さt=Θ/2Ω
+tはΔt の倍数
+
+rx(π/2)  つまり、rx用のゲートが与えられる
+
+CX -> e^{-iπ/4 X㊥Z}   CX用のゲートが与えられる
+
+うまく並列にやる
+
+各ゲートは、同じqubitに作用しなければ並列に動かせる
+
+とりあえずは、「すべてのゲートは非可換」で行う
+
+
+
+
+
 「サンプリングで期待値を求める」という動作、よく考えると,一回ずつサンプリングせずに、確率だけ求めて、二項分布で求めることが可能です。
 しかし、ノイズなしで確率を厳密に求めるには、
 

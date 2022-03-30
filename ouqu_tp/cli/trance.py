@@ -32,7 +32,7 @@ def trance_call(
         .splitlines()
     )
 
-    (n_qubit, input_list) = str_to_gate(cpl_qasm, "put")
+    (n_qubit, input_list) = str_to_gate(cpl_qasm, "put",False)
     tran_gates = tran_ouqu_multi(n_qubit, input_list)
     output_gates_QASMfuu(tran_gates)
 
