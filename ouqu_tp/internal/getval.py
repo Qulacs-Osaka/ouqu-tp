@@ -7,7 +7,7 @@ from ouqu_tp.internal.ot_io import str_to_gate
 
 
 def getval_do(input_strs: List[str], ferfile: str) -> float:
-    (n_qubit, input_list) = str_to_gate(input_strs, "notput",True)
+    (n_qubit, input_list) = str_to_gate(input_strs, "notput", True)
 
     testcircuit = QuantumCircuit(n_qubit)
     for it in input_list:
@@ -24,7 +24,7 @@ def getval_do(input_strs: List[str], ferfile: str) -> float:
 def getval_noise_do(
     input_strs: List[str], ferfile: str, p1: float, p2: float, pm: float, pp: float
 ) -> float:
-    (n_qubit, input_list) = str_to_gate(input_strs, "notput",True)
+    (n_qubit, input_list) = str_to_gate(input_strs, "notput", True)
 
     testcircuit = auto_noise(input_list, n_qubit, p1, p2, pm, pp)
 
