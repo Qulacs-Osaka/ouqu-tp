@@ -11,7 +11,11 @@
 - QASM ファイルを受け取り、量子状態を得た後、オブザーバブルを openfermion の形式で受けとり、期待値を厳密に求める機能
 - QASM ファイルを受け取り、量子状態を得た後、オブザーバブルを openfermion の形式で受けとり、shot の回数サンプリングしてオブザーバブルの値を求める機能
 
-の四つの機能が実装されています。
+の4つの機能が実装されています。
+
+- CNOT の制約と QASM ファイルから、実機で可能な QASM ファイルを作り、それをパルスシークエンスとして出力する機能
+
+が予定されています。
 
 入出力例として、サンプルの各ファイルが、すでに sample フォルダに入っています。参考にしてください。
 
@@ -111,6 +115,11 @@ ouqu-tp trance trance --input-qasm-file=sample/input.qasm --input-cnot-json-file
 
 ```
 
+### trance_pulse
+
+poetry run ouqu-tp trance trance_res --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json
+
+poetry run ouqu-tp trance trance_pulse --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json --dt=0.005 --oz=10 --ox=10 --ores=1
 ### make_Cnet
 ```
 # poetryの場合
