@@ -6,7 +6,7 @@ import qulacs
 from qulacs.gate import CNOT, U3
 
 #qelib1.inc にあるゲートのほとんどにqulacsを対応させる
-
+# sqrtYはない
 #まずは、qulacs to QASM
 def qulacs_to_QASM(cir :qulacs.Quantumcircit) -> None:
     # QASM風です
@@ -34,16 +34,27 @@ def qulacs_to_QASM(cir :qulacs.Quantumcircit) -> None:
             print(f"y q[{tlis[0]}];")
         elif it.get_name() == "Z":
             print(f"z q[{tlis[0]}];")
+        elif it.get_name() == "H":
+            print(f"h q[{tlis[0]}];")
+        elif it.get_name() == "S":
+            print(f"s q[{tlis[0]}];")
+        elif it.get_name() == "Sdag":
+            print(f"sdg q[{tlis[0]}];")
+        elif it.get_name() == "T":
+            print(f"t q[{tlis[0]}];")
+        elif it.get_name() == "Tdag":
+            print(f"tdg q[{tlis[0]}];")
+        elif it.get_name() == "sqrtX":
+            print(f"sx q[{tlis[0]}];")
+        elif it.get_name() == "sqrtXdag":
+            print(f"sxdg q[{tlis[0]}];")
+        
         elif it.get_name() == "Z-rotation":
             matrix = it.get_matrix()
             angle = phase(matrix[1][1] / matrix[0][0])
             target=tlis[0]
             if abs(angle) > 1e-5:
                 print(f"u1({angle}) q[{target}];")
-        elif it.get_name() == "X":
-            print("X q[", it.get_target_index_list()[0], "];")
-        elif it.get_name() == "sqrtX":
-            print("sx q[", it.get_target_index_list()[0], "];")
         else:
             print(it)  # 直接プリントできるらしい、　困ったらそうするしかない
     return
