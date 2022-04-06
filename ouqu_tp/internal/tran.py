@@ -135,7 +135,11 @@ def check_is_CRes(ingate: qulacs.QuantumGateBase) -> bool:
         return False
     if len(ingate.get_target_index_list()) != 2:
         return False
-    return True
+
+    true_mat = np.array(
+        [[1, 0, -1.0j, 0], [0, 1, 0, 1.0j], [-1.0j, 0, 1, 0], [0, 1.0j, 0, 1]]
+    )/ sqrt(2)
+    return np.allclose(true_mat,ingate.get_matrix())
 
 
 def tran_to_pulse(

@@ -4,7 +4,7 @@ from cmath import phase
 import qulacs
 from qulacs.gate import CNOT, U3
 
-
+from ouqu_tp.internal.tran import check_is_CRes
 def input_strings() -> typing.List[str]:
     input_strs = []
     while True:
@@ -123,6 +123,8 @@ def output_gates_QASMfuu(gates: typing.List[qulacs.QuantumGateBase]) -> None:
                 it.get_target_index_list()[0],
                 "];",
             )
+        elif check_is_CRes(it):
+            print(f"CRes q[{it.get_target_index_list()[0]}],q[{it.get_target_index_list()[1]}];")
         else:
             print(it)  # 直接プリントできるらしい、　困ったらそうするしかない
     return
