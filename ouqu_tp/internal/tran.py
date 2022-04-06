@@ -28,7 +28,7 @@ def tran_ouqu_single(
 
     out_gates: typing.List[qulacs.QuantumGateBase] = []
     # Rz単騎
-    if cmath.isclose(abs(matrix[0][0]), 1):
+    if cmath.isclose(abs(matrix[0][0]), 1, abs_tol = 1e-5):
         degA = phase(matrix[1][1] / matrix[0][0]) * fugouZ
         # print(degA)
         if isclose(degA, 0):
@@ -37,7 +37,7 @@ def tran_ouqu_single(
         return out_gates
 
     # Rz X
-    if isclose(abs(matrix[0][0]), 0):
+    if isclose(abs(matrix[0][0]), 0, abs_tol = 1e-5):
 
         degA = phase(matrix[1][0] / matrix[0][1]) * fugouZ
         # print(degA,"X")
@@ -47,7 +47,7 @@ def tran_ouqu_single(
 
     # Rz sqrtX Rz
 
-    if isclose(abs(matrix[0][0]), cmath.sqrt(0.5)):
+    if isclose(abs(matrix[0][0]), cmath.sqrt(0.5), abs_tol = 1e-5):
         degA = (phase(matrix[0][1] / matrix[0][0]) + pi / 2) * fugouZ
         degB = (phase(matrix[1][0] / matrix[0][0]) + pi / 2) * fugouZ
         # print(degA,degB)
@@ -105,6 +105,8 @@ def tran_ouqu_multi(
     for i in range(n_qubit):
         tran_gates += tran_ouqu_single(bitSingleGates[i])
 
+
+    
     return tran_gates
 
 

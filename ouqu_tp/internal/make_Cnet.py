@@ -30,3 +30,10 @@ def make_Cnet_put(input_strs: List[str]) -> None:
             print("    }")
     print("  ]")
     print("}")
+
+def get_connect(input_strs: List[str]) -> None:
+    con = []
+    for i in range(3, len(input_strs)):
+        kazstr = input_strs[i].rstrip("\n").split(",")
+        con.append([int(kazstr[0]), int(kazstr[1])])
+    return con

@@ -119,7 +119,7 @@ ouqu-tp trance trance --input-qasm-file=sample/input.qasm --input-cnot-json-file
 
 poetry run ouqu-tp trance trance_res --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json
 
-poetry run ouqu-tp trance trance_pulse --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json --dt=0.005 --oz=10 --ox=10 --ores=1
+poetry run ouqu-tp trance trance_pulse --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json --cnot-net-file=sample/CNOT_net.txt --dt=0.005 --oz=10 --ox=10 --ores=1
 ### make_Cnet
 ```
 # poetryの場合
