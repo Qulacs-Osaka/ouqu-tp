@@ -126,4 +126,3 @@ def output_gates_QASMfuu(gates: typing.List[qulacs.QuantumGateBase]) -> None:
         else:
             print(it)  # 直接プリントできるらしい、　困ったらそうするしかない
     return
-

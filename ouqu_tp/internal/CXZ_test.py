@@ -1,6 +1,7 @@
 from math import pi, sqrt
 
 import numpy as np
+from QASMtoqulacs import QASM_to_qulacs, qulacs_to_QASM
 from qulacs import (
     Observable,
     ParametricQuantumCircuit,
@@ -21,12 +22,14 @@ from qulacs.gate import (
 )
 from qulacs.state import inner_product
 
-cir = QuantumCircuit(2)
-print(sqrt(2))
+"""
+cir = QuantumCircuit(3)
+
 gate_mat = np.array(
     [[1, 0, -1.0j, 0], [0, 1, 0, 1.0j], [-1.0j, 0, 1, 0], [0, 1.0j, 0, 1]]
 )
 dense_gate = DenseMatrix([0, 1], gate_mat / sqrt(2))
+dense_gate.add_control_qubit(2,0)
 print(dense_gate)
 cir.add_RX_gate(1, pi / 2)
 cir.add_gate(dense_gate)
@@ -37,6 +40,18 @@ cir.add_CNOT_gate(0, 1)
 
 state = QuantumState(2)
 
+qulacs_to_QASM(cir)
+"""
+mozi = [
+    "QulacsQASM Q.9",
+    "qreg q[4];",
+    "h q[1];",
+    "DenseMatrix(2,1,0.7071067811865475,0.0,0.0,0.0,-0.0,-0.7071067811865475,0.0,0.0,0.0,0.0,0.7071067811865475,0.0,0.0,0.0,0.0,0.7071067811865475,-0.0,-0.7071067811865475,0.0,0.0,0.7071067811865475,0.0,0.0,0.0,0.0,0.0,0.0,0.7071067811865475,0.0,0.0,0.7071067811865475,0.0,0) q[0],q[1],q[2];",
+]
+cir_aaa = QASM_to_qulacs(mozi)
+print(cir_aaa)
+print(cir_aaa.get_gate(1))
+"""
 for i in range(4):
     state.set_Haar_random_state()
     aaa = [0, 0, 0, 0]
@@ -47,3 +62,11 @@ for i in range(4):
     print(state)
     print(inner_product(state, stateA))
     #
+
+"QulacsQASM Q.9"
+"qreg q[4];"
+"u1(-1.5707963267948966) q[1];"
+DenseMatrix(2,1,0.7071067811865475,0.0,0.0,0.0,-0.0,-0.7071067811865475,0.0,0.0,0.0,0.0,0.7071067811865475,0.0,0.0,0.0,0.0,0.7071067811865475,-0.0,-0.7071067811865475,0.0,0.0,0.7071067811865475,0.0,0.0,0.0,0.0,0.0,0.0,0.7071067811865475,0.0,0.0,0.7071067811865475,0.0,0) q[0],q[1],q[2];
+u1(-1.5707963267948966) q[0];
+cx q[0],q[1];
+"""
