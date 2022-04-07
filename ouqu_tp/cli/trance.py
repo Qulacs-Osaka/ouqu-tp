@@ -1,10 +1,9 @@
-import re
 import subprocess
 from typing import List
 
 import typer
 
-from ouqu_tp.internal.make_Cnet import make_Cnet_put,get_connect
+from ouqu_tp.internal.make_Cnet import get_connect, make_Cnet_put
 from ouqu_tp.internal.ot_io import output_gates_QASMfuu, str_to_gate
 from ouqu_tp.internal.tran import CNOT_to_CRes, tran_ouqu_multi, tran_to_pulse
 

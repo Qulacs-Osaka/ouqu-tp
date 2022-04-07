@@ -1,24 +1,8 @@
 from math import pi, sqrt
 
 import numpy as np
-from qulacs import (
-    Observable,
-    ParametricQuantumCircuit,
-    QuantumCircuit,
-    QuantumState,
-)
-from qulacs.gate import (
-    CNOT,
-    RX,
-    RZ,
-    SWAP,
-    U1,
-    DenseMatrix,
-    H,
-    X,
-    Z,
-    to_matrix_gate,
-)
+from qulacs import QuantumCircuit, QuantumState
+from qulacs.gate import DenseMatrix
 from qulacs.state import inner_product
 
 cir = QuantumCircuit(2)

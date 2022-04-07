@@ -1,10 +1,10 @@
-from cmath import atan, isclose, phase, pi, sqrt
+from cmath import pi
 
 from qulacs import QuantumCircuit
 
 from ouqu_tp.internal.debug import check_circuit
 from ouqu_tp.internal.ot_io import str_to_gate
-from ouqu_tp.internal.tran import pulse_to_gate, tran_ouqu_multi, tran_to_pulse
+from ouqu_tp.internal.tran import pulse_to_gate, tran_to_pulse
 
 
 def test_kairo_pulse() -> None:

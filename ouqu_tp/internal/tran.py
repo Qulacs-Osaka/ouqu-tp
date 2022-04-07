@@ -1,12 +1,10 @@
 import cmath
 import typing
 from cmath import atan, isclose, phase, pi, sqrt
-from turtle import pu
-from xmlrpc.client import Boolean
+from typing import List, Tuple
 
 import numpy as np
 import qulacs
-from qulacs import QuantumState
 from qulacs.gate import RX, RZ, DenseMatrix, Identity, X, merge, sqrtX
 
 
@@ -28,7 +26,7 @@ def tran_ouqu_single(
 
     out_gates: typing.List[qulacs.QuantumGateBase] = []
     # Rz単騎
-    if cmath.isclose(abs(matrix[0][0]), 1, abs_tol = 1e-5):
+    if cmath.isclose(abs(matrix[0][0]), 1, abs_tol=1e-5):
         degA = phase(matrix[1][1] / matrix[0][0]) * fugouZ
         # print(degA)
         if isclose(degA, 0):
@@ -37,7 +35,7 @@ def tran_ouqu_single(
         return out_gates
 
     # Rz X
-    if isclose(abs(matrix[0][0]), 0, abs_tol = 1e-5):
+    if isclose(abs(matrix[0][0]), 0, abs_tol=1e-5):
 
         degA = phase(matrix[1][0] / matrix[0][1]) * fugouZ
         # print(degA,"X")
@@ -47,7 +45,7 @@ def tran_ouqu_single(
 
     # Rz sqrtX Rz
 
-    if isclose(abs(matrix[0][0]), cmath.sqrt(0.5), abs_tol = 1e-5):
+    if isclose(abs(matrix[0][0]), cmath.sqrt(0.5), abs_tol=1e-5):
         degA = (phase(matrix[0][1] / matrix[0][0]) + pi / 2) * fugouZ
         degB = (phase(matrix[1][0] / matrix[0][0]) + pi / 2) * fugouZ
         # print(degA,degB)
@@ -79,8 +77,8 @@ def tran_ouqu_single(
 
 
 def tran_ouqu_multi(
-    n_qubit: int, input_list: typing.List[qulacs.QuantumGateBase]
-) -> typing.List[qulacs.QuantumGateBase]:
+    n_qubit: int, input_list: List[qulacs.QuantumGateBase]
+) -> List[qulacs.QuantumGateBase]:
     bitSingleGates = []
     tran_gates = []
 
@@ -105,14 +103,12 @@ def tran_ouqu_multi(
     for i in range(n_qubit):
         tran_gates += tran_ouqu_single(bitSingleGates[i])
 
-
-    
     return tran_gates
 
 
 def CNOT_to_CRes(
-    input_list: typing.List[qulacs.QuantumGateBase],
-) -> typing.List[qulacs.QuantumGateBase]:
+    input_list: List[qulacs.QuantumGateBase],
+) -> List[qulacs.QuantumGateBase]:
     # 元のゲートにCNOTゲートが入っていたら、CResゲートに変換する
     tran_gates = []
     for ingate in input_list:
@@ -138,19 +134,19 @@ def check_is_CRes(ingate: qulacs.QuantumGateBase) -> bool:
 
     true_mat = np.array(
         [[1, 0, -1.0j, 0], [0, 1, 0, 1.0j], [-1.0j, 0, 1, 0], [0, 1.0j, 0, 1]]
-    )/ sqrt(2)
-    return np.allclose(true_mat,ingate.get_matrix())
+    ) / sqrt(2)
+    return np.allclose(true_mat, ingate.get_matrix())
 
 
 def tran_to_pulse(
     n_qubit: int,
     input_list: typing.List[qulacs.QuantumGateBase],
-    Res_list,
+    Res_list: List[Tuple[int, int]],
     RZome: float,
     RXome: float,
     CResome: float,
     mergin: int,
-):
+) -> List[List[float]]:
     input_list = CNOT_to_CRes(input_list)
     tran_gates = tran_ouqu_multi(n_qubit, input_list)
 
@@ -170,7 +166,7 @@ def tran_to_pulse(
         bangou[ppp][qqq] = i
 
     saigo_zikan = np.zeros(n_qubit, int)
-    pulse_comp = []
+    pulse_comp : List[List[Tuple[int,int]]] = []
     for i in range(n_qubit * 2 + len(Res_list)):
         pulse_comp.append([])
     for it in tran_gates:
