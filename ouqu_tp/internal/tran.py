@@ -1,12 +1,9 @@
 import cmath
 import typing
 from cmath import atan, isclose, phase, pi, sqrt
-from turtle import pu
-from xmlrpc.client import Boolean
 
 import numpy as np
 import qulacs
-from qulacs import QuantumState
 from qulacs.gate import RX, RZ, DenseMatrix, Identity, X, merge, sqrtX
 
 

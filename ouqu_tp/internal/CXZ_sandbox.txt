@@ -51,6 +51,8 @@ mozi = [
 cir_aaa = QASM_to_qulacs(mozi)
 print(cir_aaa)
 print(cir_aaa.get_gate(1))
+
+print(qulacs_to_QASM(cir_aaa))
 """
 for i in range(4):
     state.set_Haar_random_state()
