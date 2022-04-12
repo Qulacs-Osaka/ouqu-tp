@@ -3,11 +3,11 @@ from cmath import phase
 
 import numpy as np
 from parse import parse, search
-from qulacs import QuantumCircuit
+from qulacs import QuantumCircuit, QuantumGateBase
 from qulacs.gate import DenseMatrix
 
 
-def can_get_dence(gate):
+def can_get_dence(gate: QuantumGateBase) -> bool:
     # dencematrixにできるかの関数
     return True
 
@@ -17,7 +17,7 @@ def can_get_dence(gate):
 # まずは、qulacs to QASM
 
 
-def qulacs_to_QASM(cir) -> typing.List[str]:
+def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
     # QASM風です
     #
 

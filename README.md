@@ -117,11 +117,26 @@ ouqu-tp trance trance --input-qasm-file=sample/input.qasm --input-cnot-json-file
 
 ```
 
-### trance_pulse
+### trance_res
+上のやつで、　RZ,sqrtX,CNOT の代わりに、RZ,aqrtX,CRes を命令セットとしたものです。
 
+ただし、CResは、[[1, 0, -1.0j, 0], [0, 1, 0, 1.0j], [-1.0j, 0, 1, 0], [0, 1.0j, 0, 1]] / √2 の量子ゲートです。
+
+CResはOPENQASMにないことに注意してください
+
+```
 poetry run ouqu-tp trance trance_res --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json
+```
 
-poetry run ouqu-tp trance trance_pulse --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json --dt=0.005 --oz=10 --ox=10 --ores=1
+
+### trance_pulse
+例えば、サンプルを実行する場合は以下のコマンドを実行してください。
+```
+
+
+poetry run ouqu-tp trance trance_pulse --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json --cnot-net-file=sample/CNOT_net.txt --dt=0.005 --oz=10 --ox=10 --ores=1
+
+```
 ### make_Cnet
 ```
 # poetryの場合
