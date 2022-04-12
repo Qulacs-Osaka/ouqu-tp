@@ -140,13 +140,13 @@ def check_is_CRes(ingate: qulacs.QuantumGateBase) -> bool:
 
 def tran_to_pulse(
     n_qubit: int,
-    input_list: typing.List[qulacs.QuantumGateBase],
+    input_list: List[qulacs.QuantumGateBase],
     Res_list: List[Tuple[int, int]],
     RZome: float,
     RXome: float,
     CResome: float,
     mergin: int,
-) -> List[List[float]]:
+) -> np.ndarray:  # type:ignore
     input_list = CNOT_to_CRes(input_list)
     tran_gates = tran_ouqu_multi(n_qubit, input_list)
 
@@ -166,7 +166,7 @@ def tran_to_pulse(
         bangou[ppp][qqq] = i
 
     saigo_zikan = np.zeros(n_qubit, int)
-    pulse_comp : List[List[Tuple[int,int]]] = []
+    pulse_comp: List[List[Tuple[int, int]]] = []
     for i in range(n_qubit * 2 + len(Res_list)):
         pulse_comp.append([])
     for it in tran_gates:
@@ -222,8 +222,10 @@ def tran_to_pulse(
 
 
 def pulse_to_gate(
-    n_qubit: int, pulse_array, Res_list
-) -> typing.List[qulacs.QuantumGateBase]:
+    n_qubit: int,
+    pulse_array: np.ndarray,  # type:ignore
+    Res_list: List[Tuple[int, int]],
+) -> List[qulacs.QuantumGateBase]:
     # パルス情報が与えられたとき、量子回路を実行する関数です
     print(pulse_array)
     gates = []
