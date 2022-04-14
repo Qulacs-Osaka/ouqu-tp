@@ -3,8 +3,8 @@ from cmath import phase
 
 import numpy as np
 from parse import parse, search
-from qulacs import QuantumCircuit, QuantumGateBase
-from qulacs.gate import DenseMatrix
+from qulacs import QuantumCircuit, QuantumGateBase, QuantumState
+from qulacs.gate import DenseMatrix, Identity
 
 
 def can_get_dence(gate: QuantumGateBase) -> bool:
@@ -21,7 +21,6 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
     # QASM風です
     #
 
-    # 気を付けて　qreg情報はない
     out_strs = ["QulacsQASM Q.9", f"qreg q[{cir.get_qubit_count()}];"]
 
     for kai in range(cir.get_gate_count()):
@@ -36,7 +35,7 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
             out_strs.append(f"cz q[{clis[0]}],q[{tlis[0]}];")
         elif it.get_name() == "SWAP":
             out_strs.append(f"swap q[{tlis[0]}],q[{tlis[1]}];")
-        elif it.get_name() == "I":
+        elif it.get_name() == "Identity":
             out_strs.append(f"id q[{tlis[0]}];")
         elif it.get_name() == "X":
             out_strs.append(f"x q[{tlis[0]}];")
@@ -73,7 +72,7 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
             angle = phase(matrix[1][1] / matrix[0][0])
             if abs(angle) > 1e-5:
                 out_strs.append(f"rz({angle}) q[{tlis[0]}];")
-        else:
+        elif can_get_dence(it):
             now_string = ""
             bit = len(it.get_target_index_list())
             matrix = it.get_matrix()
@@ -100,6 +99,9 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
                 now_string += f",q[{aaa}]"
             now_string += ";"
             out_strs.append(now_string)
+        else:
+            out_strs.append("unknown gate:" + it.get_name())
+            print("unknown gate:" + it.get_name())
         # get_matrix が効かないゲートの対応
         # 1qubitのDenseMatrixはu3ゲートに直すべきだが、やってない
 
@@ -123,22 +125,25 @@ def QASM_to_qulacs(input_strs: typing.List[str]) -> QuantumCircuit:
         if instr[0:4] == "qreg":
             ary = parse("qreg q[{:d}];", instr)
             cir = QuantumCircuit(ary[0])
-        elif instr[0:2] == "cx":
+        elif instr[0:3] == "cx ":
             ary = parse("cx q[{:d}],q[{:d}];", instr)
             cir.add_CNOT_gate(ary[0], ary[1])
-        elif instr[0:2] == "cz":
+        elif instr[0:3] == "cz ":
             ary = parse("cz q[{:d}],q[{:d}];", instr)
             cir.add_CZ_gate(ary[0], ary[1])
         elif instr[0:4] == "swap":
             ary = parse("swap q[{:d}],q[{:d}];", instr)
             cir.add_SWAP_gate(ary[0], ary[1])
-        elif instr[0:1] == "x":
+        elif instr[0:3] == "id ":
+            ary = parse("id q[{:d}];", instr)
+            cir.add_gate(Identity(ary[0]))
+        elif instr[0:2] == "x ":
             ary = parse("x q[{:d}];", instr)
             cir.add_X_gate(ary[0])
-        elif instr[0:1] == "y":
+        elif instr[0:2] == "y ":
             ary = parse("y q[{:d}];", instr)
             cir.add_Y_gate(ary[0])
-        elif instr[0:1] == "z":
+        elif instr[0:2] == "z ":
             ary = parse("z q[{:d}];", instr)
             cir.add_Z_gate(ary[0])
         elif instr[0:1] == "h":
@@ -202,3 +207,19 @@ def QASM_to_qulacs(input_strs: typing.List[str]) -> QuantumCircuit:
                 dense_gate.add_control_qubit(control_index, control_values[i])
             cir.add_gate(dense_gate)
     return cir
+
+
+def state_to_strs(state: QuantumState) -> typing.List[str]:
+    return state.to_string().split("\n")
+
+
+def strs_to_state(strs: typing.List[str]) -> QuantumState:
+    qubit = parse(" * Qubit Count : {:d}", strs[1])[0]
+    Dim = 2 ** qubit
+    state_vec: typing.List[complex] = [0.0 + 0.0j] * Dim
+    for i in range(Dim):
+        ary = search("({:g},{:g})", strs[4 + i])
+        state_vec[i] = ary[0] + ary[1] * 1.0j
+    state = QuantumState(qubit)
+    state.load(state_vec)
+    return state

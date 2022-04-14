@@ -1,11 +1,17 @@
 from math import sqrt
 
 import numpy as np
-from qulacs import QuantumCircuit
-from qulacs.gate import DenseMatrix
+import qulacs
+from qulacs import QuantumCircuit, QuantumState
+from qulacs.gate import DenseMatrix, Identity
 
 from ouqu_tp.internal.debug import check_circuit
-from ouqu_tp.internal.QASMtoqulacs import QASM_to_qulacs, qulacs_to_QASM
+from ouqu_tp.internal.QASMtoqulacs import (
+    QASM_to_qulacs,
+    qulacs_to_QASM,
+    state_to_strs,
+    strs_to_state,
+)
 
 
 def test_cirQASMcir() -> None:
@@ -20,7 +26,11 @@ def test_cirQASMcir() -> None:
     circuit.add_CNOT_gate(4, 3)
     circuit.add_Y_gate(1)
     circuit.add_RX_gate(2, -1.2)
+    circuit.add_gate(Identity(2))
     circuit.add_Z_gate(4)
+    # circuit.add_gate(BitFlipNoise(0, 0.3))
+    # print(BitFlipNoise(0, 0.3).get_matrix())
+    # print(BitFlipNoise(0, 0.3))
     gate_mat = np.array(
         [[1, 0, -1.0j, 0], [0, 1, 0, 1.0j], [-1.0j, 0, 1, 0], [0, 1.0j, 0, 1]]
     )
@@ -36,8 +46,19 @@ def test_cirQASMcir() -> None:
     circuit.add_Tdag_gate(1)
 
     QASM_str = qulacs_to_QASM(circuit)
-
+    # print(QASM_str)
     rev_cir = QASM_to_qulacs(QASM_str)
 
     # print(testcircuit)
     check_circuit(circuit, rev_cir)
+
+    stateA = QuantumState(5)
+    # print(stateA)
+    circuit.update_quantum_state(stateA)
+    # print(stateA)
+    # print(state_to_strs(stateA))
+
+    assert (
+        abs(qulacs.state.inner_product(stateA, strs_to_state(state_to_strs(stateA))))
+        >= 0.9999
+    )
