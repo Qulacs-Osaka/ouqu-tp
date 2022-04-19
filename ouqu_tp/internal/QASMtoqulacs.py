@@ -82,10 +82,7 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
             now_string += str(len(it.get_control_index_list()))
             for i in range(2 ** bit):
                 for j in range(2 ** bit):
-                    now_string += ","
-                    now_string += str(matrix[i][j].real)
-                    now_string += ","
-                    now_string += str(matrix[i][j].imag)
+                    now_string += f",{matrix[i][j].real:.6g},{matrix[i][j].imag:.6g}"
             for i in range(len(it.get_control_index_list())):
                 now_string += ",1"  # control_valueが取得できないのでこうなった　あとで修正する
 
