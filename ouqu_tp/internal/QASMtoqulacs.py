@@ -118,7 +118,9 @@ DenseMatrix(2,1,0.707107,0,0,0,-0,-0.707107,0,0,0,0,0.707107,0,0,0,0,0.707107,-0
 
 def QASM_to_qulacs(input_strs: typing.List[str]) -> QuantumCircuit:
     # 仕様: キュービットレジスタはq[]のやつだけにしてください cregは無し
-    for instr in input_strs:
+
+    for instr_moto in input_strs:
+        instr = instr_moto.lower()
         if instr[0:4] == "qreg":
             ary = parse("qreg q[{:d}];", instr)
             cir = QuantumCircuit(ary[0])
@@ -167,10 +169,25 @@ def QASM_to_qulacs(input_strs: typing.List[str]) -> QuantumCircuit:
         elif instr[0:2] == "rz":
             ary = parse("rz({:g}) q[{:d}];", instr)
             cir.add_RZ_gate(ary[1], -ary[0])
-        elif instr[0:11] == "DenseMatrix":
-            ary = search("DenseMatrix({:d},{:d}", instr)
+        elif instr[0:1] == "p":
+            ary = parse("p({:g}) q[{:d}];", instr)
+            cir.add_U1_gate(ary[1], ary[0])
+        elif instr[0:2] == "u1":
+            ary = parse("u1({:g}) q[{:d}];", instr)
+            cir.add_U1_gate(ary[1], ary[0])
+        elif instr[0:2] == "u2":
+            ary = parse("u2({:g},{:g}) q[{:d}];", instr)
+            cir.add_U1_gate(ary[2], ary[0], ary[1])
+        elif instr[0:2] == "u3":
+            ary = parse("u3({:g},{:g},{:g}) q[{:d}];", instr)
+            cir.add_U3_gate(ary[3], ary[0], ary[1], ary[2])
+        elif instr[0:1] == "u":
+            ary = parse("u({:g},{:g},{:g}) q[{:d}];", instr)
+            cir.add_U3_gate(ary[3], ary[0], ary[1], ary[2])
+        elif instr[0:11] == "densematrix":
+            ary = search("densematrix({:d},{:d}", instr)
             # print(ary)
-            parsestr = "DenseMatrix({:d},{:d}"
+            parsestr = "densematrix({:d},{:d}"
             for i in range(4 ** ary[0]):
                 parsestr += ",{:g},{:g}"
             for i in range(ary[1]):
