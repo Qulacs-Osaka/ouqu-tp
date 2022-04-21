@@ -22,7 +22,7 @@ def input_strings() -> typing.List[str]:
 # Layout (physical --> virtual)　の部分を読み取り、
 # 変数マッピングを元に戻す
 def str_to_gate(
-    input_strs: typing.List[str], outmode: str, remap_remove: bool
+    input_strs: typing.List[str], outmode: str, *, remap_remove: bool = False
 ) -> typing.Tuple[int, typing.List[qulacs.QuantumGateBase]]:
     n_qubit: int = 0  # 暫定
     input_list: typing.List[qulacs.QuantumGateBase] = []
