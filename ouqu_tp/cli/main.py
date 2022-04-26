@@ -23,7 +23,7 @@ def is_staq_installed() -> Boolean:
 
 
 @app.callback()
-def debugflag(debug: bool = False):
+def debugflag(debug: bool = False) -> None:
     """
     Debug mode for output log files.
     """
