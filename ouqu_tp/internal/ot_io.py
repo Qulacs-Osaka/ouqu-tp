@@ -79,7 +79,7 @@ def str_to_gate(
         elif outmode == "put":
             print(instr)
     for i in range(10):
-        logger.debug(str(i)+" " + str(mapping[i]))
+        logger.debug(str(i) + " " + str(mapping[i]))
     return (n_qubit, input_list)
 
 
