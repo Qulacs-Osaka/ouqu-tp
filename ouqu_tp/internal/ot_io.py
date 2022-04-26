@@ -1,8 +1,12 @@
 import typing
 from cmath import phase
+from logging import NullHandler, getLogger
 
 import qulacs
 from qulacs.gate import CNOT, U3
+
+logger = getLogger(__name__)
+logger.addHandler(NullHandler())
 
 
 def input_strings() -> typing.List[str]:
@@ -28,7 +32,7 @@ def str_to_gate(
     input_list: typing.List[qulacs.QuantumGateBase] = []
     mapping = []
     if remap_remove:
-        print("rha")
+        logger.debug("rha")
     for i in range(123):
         mapping.append(i)
     for instr in input_strs:
@@ -37,7 +41,7 @@ def str_to_gate(
             yomustr = instr.translate(mytable)
             kazstr = yomustr.split(",")
             mapping[int(kazstr[0])] = int(kazstr[1])
-            print("aaa")
+            logger.debug("aaa")
         elif instr[0:7] == "qreg q[":
             mytable = instr.maketrans("qreg[];", "       ")
             yomustr = instr.translate(mytable)
@@ -75,7 +79,7 @@ def str_to_gate(
         elif outmode == "put":
             print(instr)
     for i in range(10):
-        print(i, mapping[i])
+        logger.debug(str(i)+" " + str(mapping[i]))
     return (n_qubit, input_list)
 
 

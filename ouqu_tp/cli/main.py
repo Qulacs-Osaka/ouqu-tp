@@ -1,3 +1,4 @@
+import logging
 import subprocess
 from xmlrpc.client import Boolean
 
@@ -19,6 +20,22 @@ def is_staq_installed() -> Boolean:
         return True
     except Exception:
         return False
+
+
+@app.callback()
+def debugflag(debug: bool = False):
+    """
+    Debug mode for output log files.
+    """
+    if debug:
+        logger = logging.getLogger()
+        formatter = logging.Formatter(
+            "%(asctime)s %(name)s %(funcName)s [%(levelname)s]: %(message)s"
+        )
+        handler = logging.StreamHandler()
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        logger.setLevel(logging.DEBUG)
 
 
 def main() -> None:
