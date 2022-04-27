@@ -194,6 +194,11 @@
        ouqu_tp.kasika module
       </a>
      </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../ouqu_tp.kasikb.html">
+       ouqu_tp.kasikb module
+      </a>
+     </li>
     </ul>
    </li>
   </ul>
@@ -320,7 +325,7 @@
         <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
     <span class="p">)</span>
 
-    <span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">input_list</span><span class="p">)</span> <span class="o">=</span> <span class="n">str_to_gate</span><span class="p">(</span><span class="n">cpl_qasm</span><span class="p">,</span> <span class="s2">&quot;put&quot;</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">input_list</span><span class="p">)</span> <span class="o">=</span> <span class="n">str_to_gate</span><span class="p">(</span><span class="n">cpl_qasm</span><span class="p">,</span> <span class="s2">&quot;put&quot;</span><span class="p">,</span> <span class="n">remap_remove</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">tran_gates</span> <span class="o">=</span> <span class="n">tran_ouqu_multi</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">input_list</span><span class="p">)</span>
     <span class="n">output_gates_QASMfuu</span><span class="p">(</span><span class="n">tran_gates</span><span class="p">)</span></div>
 

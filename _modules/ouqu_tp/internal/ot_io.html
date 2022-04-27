@@ -194,6 +194,11 @@
        ouqu_tp.kasika module
       </a>
      </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../ouqu_tp.kasikb.html">
+       ouqu_tp.kasikb module
+      </a>
+     </li>
     </ul>
    </li>
   </ul>
@@ -288,9 +293,13 @@
   <h1>Source code for ouqu_tp.internal.ot_io</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">from</span> <span class="nn">cmath</span> <span class="kn">import</span> <span class="n">phase</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">NullHandler</span><span class="p">,</span> <span class="n">getLogger</span>
 
 <span class="kn">import</span> <span class="nn">qulacs</span>
 <span class="kn">from</span> <span class="nn">qulacs.gate</span> <span class="kn">import</span> <span class="n">CNOT</span><span class="p">,</span> <span class="n">U3</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">NullHandler</span><span class="p">())</span>
 
 
 <div class="viewcode-block" id="input_strings"><a class="viewcode-back" href="../../../ouqu_tp.internal.ot_io.html#ouqu_tp.internal.ot_io.input_strings">[docs]</a><span class="k">def</span> <span class="nf">input_strings</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -306,13 +315,27 @@
     <span class="k">return</span> <span class="n">input_strs</span></div>
 
 
+<span class="c1"># remap_remove = True のとき、</span>
+<span class="c1"># Layout (physical --&gt; virtual)　の部分を読み取り、</span>
+<span class="c1"># 変数マッピングを元に戻す</span>
 <div class="viewcode-block" id="str_to_gate"><a class="viewcode-back" href="../../../ouqu_tp.internal.ot_io.html#ouqu_tp.internal.ot_io.str_to_gate">[docs]</a><span class="k">def</span> <span class="nf">str_to_gate</span><span class="p">(</span>
-    <span class="n">input_strs</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">outmode</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">input_strs</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">outmode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">remap_remove</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">qulacs</span><span class="o">.</span><span class="n">QuantumGateBase</span><span class="p">]]:</span>
     <span class="n">n_qubit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># 暫定</span>
     <span class="n">input_list</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">qulacs</span><span class="o">.</span><span class="n">QuantumGateBase</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">mapping</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">remap_remove</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;rha&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">123</span><span class="p">):</span>
+        <span class="n">mapping</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">instr</span> <span class="ow">in</span> <span class="n">input_strs</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;qreg q[&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">remap_remove</span> <span class="ow">and</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;// </span><span class="se">\t</span><span class="s2">q[&quot;</span><span class="p">:</span>
+            <span class="n">mytable</span> <span class="o">=</span> <span class="n">instr</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s2">&quot;/</span><span class="se">\t</span><span class="s2">q[]-&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;      ,&quot;</span><span class="p">)</span>
+            <span class="n">yomustr</span> <span class="o">=</span> <span class="n">instr</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">mytable</span><span class="p">)</span>
+            <span class="n">kazstr</span> <span class="o">=</span> <span class="n">yomustr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+            <span class="n">mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;aaa&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;qreg q[&quot;</span><span class="p">:</span>
             <span class="n">mytable</span> <span class="o">=</span> <span class="n">instr</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s2">&quot;qreg[];&quot;</span><span class="p">,</span> <span class="s2">&quot;       &quot;</span><span class="p">)</span>
             <span class="n">yomustr</span> <span class="o">=</span> <span class="n">instr</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">mytable</span><span class="p">)</span>
             <span class="n">kazstr</span> <span class="o">=</span> <span class="n">yomustr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
@@ -323,10 +346,12 @@
         <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;U(&quot;</span><span class="p">:</span>
             <span class="n">mytable</span> <span class="o">=</span> <span class="n">instr</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s2">&quot;U()q[];&quot;</span><span class="p">,</span> <span class="s2">&quot;   ,   &quot;</span><span class="p">)</span>
             <span class="n">yomustr</span> <span class="o">=</span> <span class="n">instr</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">mytable</span><span class="p">)</span>
-            <span class="c1"># print(yomustr)</span>
             <span class="n">kazstr</span> <span class="o">=</span> <span class="n">yomustr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
             <span class="n">newgate</span> <span class="o">=</span> <span class="n">U3</span><span class="p">(</span>
-                <span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                <span class="n">mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">3</span><span class="p">])],</span>
+                <span class="nb">float</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="nb">float</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="nb">float</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
             <span class="p">)</span>
             <span class="n">input_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newgate</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">n_qubit</span> <span class="o">&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
@@ -335,9 +360,8 @@
         <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;CX&quot;</span><span class="p">:</span>
             <span class="n">mytable</span> <span class="o">=</span> <span class="n">instr</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s2">&quot;CXq[];&quot;</span><span class="p">,</span> <span class="s2">&quot;      &quot;</span><span class="p">)</span>
             <span class="n">yomustr</span> <span class="o">=</span> <span class="n">instr</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">mytable</span><span class="p">)</span>
-            <span class="c1"># print(yomustr)</span>
             <span class="n">kazstr</span> <span class="o">=</span> <span class="n">yomustr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
-            <span class="n">newgate</span> <span class="o">=</span> <span class="n">CNOT</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">newgate</span> <span class="o">=</span> <span class="n">CNOT</span><span class="p">(</span><span class="n">mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">0</span><span class="p">])],</span> <span class="n">mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span>
             <span class="n">input_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newgate</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">n_qubit</span> <span class="o">&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">kazstr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
@@ -347,6 +371,8 @@
 
         <span class="k">elif</span> <span class="n">outmode</span> <span class="o">==</span> <span class="s2">&quot;put&quot;</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">instr</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">mapping</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">input_list</span><span class="p">)</span></div>
 
 

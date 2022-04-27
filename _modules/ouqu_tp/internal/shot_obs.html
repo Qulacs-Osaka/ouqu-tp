@@ -194,6 +194,11 @@
        ouqu_tp.kasika module
       </a>
      </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../ouqu_tp.kasikb.html">
+       ouqu_tp.kasikb module
+      </a>
+     </li>
     </ul>
    </li>
   </ul>
@@ -286,10 +291,10 @@
               <div>
                 
   <h1>Source code for ouqu_tp.internal.shot_obs</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">qulacs</span> <span class="kn">import</span> <span class="n">NoiseSimulator</span><span class="p">,</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">QuantumState</span><span class="p">,</span> <span class="n">observable</span>
+<span></span><span class="kn">from</span> <span class="nn">qulacs</span> <span class="kn">import</span> <span class="n">NoiseSimulator</span><span class="p">,</span> <span class="n">Observable</span><span class="p">,</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">QuantumState</span>
 
 
-<div class="viewcode-block" id="get_measurement"><a class="viewcode-back" href="../../../ouqu_tp.internal.shot_obs.html#ouqu_tp.internal.shot_obs.get_measurement">[docs]</a><span class="k">def</span> <span class="nf">get_measurement</span><span class="p">(</span><span class="n">circuit</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">obs</span><span class="p">:</span> <span class="n">observable</span><span class="p">,</span> <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="get_measurement"><a class="viewcode-back" href="../../../ouqu_tp.internal.shot_obs.html#ouqu_tp.internal.shot_obs.get_measurement">[docs]</a><span class="k">def</span> <span class="nf">get_measurement</span><span class="p">(</span><span class="n">circuit</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">obs</span><span class="p">:</span> <span class="n">Observable</span><span class="p">,</span> <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Args:</span>
 <span class="sd">        circuit (qulacs.Quantumcircuit):</span>
@@ -301,7 +306,7 @@
     <span class="n">n_term</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get_term_count</span><span class="p">()</span>
     <span class="n">n_qubit</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get_qubit_count</span><span class="p">()</span>
 
-    <span class="n">exp</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">exp</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="mf">0.0</span><span class="n">j</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_term</span><span class="p">):</span>
         <span class="n">pauli_term</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get_term</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
@@ -337,7 +342,7 @@
     <span class="k">return</span> <span class="n">exp</span><span class="o">.</span><span class="n">real</span></div>
 
 
-<div class="viewcode-block" id="get_noise_meseurment"><a class="viewcode-back" href="../../../ouqu_tp.internal.shot_obs.html#ouqu_tp.internal.shot_obs.get_noise_meseurment">[docs]</a><span class="k">def</span> <span class="nf">get_noise_meseurment</span><span class="p">(</span><span class="n">circuit</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">obs</span><span class="p">:</span> <span class="n">observable</span><span class="p">,</span> <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="get_noise_meseurment"><a class="viewcode-back" href="../../../ouqu_tp.internal.shot_obs.html#ouqu_tp.internal.shot_obs.get_noise_meseurment">[docs]</a><span class="k">def</span> <span class="nf">get_noise_meseurment</span><span class="p">(</span><span class="n">circuit</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">obs</span><span class="p">:</span> <span class="n">Observable</span><span class="p">,</span> <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Args:</span>
 <span class="sd">        circuit (qulacs.Quantumcircuit) (have noise)</span>
@@ -351,7 +356,7 @@
     <span class="n">n_term</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get_term_count</span><span class="p">()</span>
     <span class="n">n_qubit</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get_qubit_count</span><span class="p">()</span>
 
-    <span class="n">exp</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">exp</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="mf">0.0</span><span class="n">j</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_term</span><span class="p">):</span>
         <span class="n">pauli_term</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get_term</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>

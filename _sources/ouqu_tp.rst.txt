@@ -17,6 +17,7 @@ Submodules
    :maxdepth: 4
 
    ouqu_tp.kasika
+   ouqu_tp.kasikb
 
 Module contents
 ---------------
