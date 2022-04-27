@@ -329,3 +329,21 @@ ouqu-tp noisy sampleval --input-qasm-file=sample/input.qasm --input-openfermion-
 ## その他
 
 qulacs の仕様上、openfermion に虚数部分が含まれていても、それを無視して実数を返します。
+
+## グローバーのアルゴリズムのサンプルについて
+sample/grover_maker.pyは、　https://qiskit.org/textbook/ja/ch-algorithms/grover.html　をもとに作られました。
+実行すると、グローバーのアルゴリズムをqasm形式で表したものを返します。
+この回路は、実行すると|110>と|101>が等確率で返ってきます。
+
+下記は、それを様々なもので実行するためのコマンドです。
+poetry run ouqu-tp ideal simulate --input-qasm-file=sample/grover_moto.qasm --shots=20
+poetry run ouqu-tp noisy simulate --input-qasm-file=sample/grover_moto.qasm --shots=50 --p1=0.01 --p2=0.01 --pm=0.01 --pp=0.01
+poetry run ouqu-tp ideal getval --input-qasm-file=sample/grover_moto.qasm --input-openfermion-file=sample/fer_sam.txt
+poetry run ouqu-tp noisy getval --input-qasm-file=sample/grover_moto.qasm --input-openfermion-file=sample/fer_sam.txt --p1=0.01 --p2=0.01 --pm=0.01 --pp=0.01
+poetry run ouqu-tp ideal sampleval --input-qasm-file=sample/grover_moto.qasm --input-openfermion-file=sample/fer_sam.txt --shots=900
+poetry run ouqu-tp noisy sampleval --input-qasm-file=sample/grover_moto.qasm --input-openfermion-file=sample/fer_sam.txt --shots=900 --p1=0.01 --p2=0.01 --pm=0.01 --pp=0.01
+
+なお、フェルミオンを実行した結果については、　ノイズなしなら-1が帰ってくるはずです。
+
+
+

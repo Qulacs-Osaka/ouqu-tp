@@ -57,7 +57,7 @@ def test_kairo_A() -> None:
         "U(0,0,0.785398163397448) q[0];",
     ]
 
-    (n_qubit, input_list) = str_to_gate(input_strs, "notput")
+    (n_qubit, input_list) = str_to_gate(input_strs, "notput", remap_remove=False)
     tran_gates = tran_ouqu_multi(n_qubit, input_list)
 
     testcircuit = QuantumCircuit(7)
