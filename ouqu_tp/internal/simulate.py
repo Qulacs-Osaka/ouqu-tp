@@ -7,7 +7,6 @@ from ouqu_tp.internal.ot_io import str_to_gate
 
 
 def simulate_do(input_strs: List[str], shots: int) -> Tuple[List[int], int]:
-    print(input_strs)
     (n_qubit, input_list) = str_to_gate(input_strs, "notput", True)
 
     testcircuit = QuantumCircuit(n_qubit)
@@ -16,7 +15,6 @@ def simulate_do(input_strs: List[str], shots: int) -> Tuple[List[int], int]:
 
     out_state = QuantumState(n_qubit)
     testcircuit.update_quantum_state(out_state)
-    print(out_state)
     kekka = out_state.sampling(shots)
     return (kekka, n_qubit)
 

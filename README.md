@@ -122,7 +122,7 @@ ouqu-tp trance trance --input-qasm-file=sample/input.qasm --input-cnot-json-file
 
 ただし、CResは、[[1, 0, -1.0j, 0], [0, 1, 0, 1.0j], [-1.0j, 0, 1, 0], [0, 1.0j, 0, 1]] / √2 の量子ゲートです。
 
-CResはOPENQASMにないことに注意してください
+CResはOpenQASMにないことに注意してください
 
 ```
 poetry run ouqu-tp trance trance_res --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json

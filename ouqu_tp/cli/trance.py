@@ -1,6 +1,7 @@
 import subprocess
 from typing import List
 
+import numpy as np
 import typer
 
 from ouqu_tp.internal.make_Cnet import get_connect, make_Cnet_put
@@ -97,6 +98,7 @@ def trance_pulse_call(
     result_array = tran_to_pulse(
         n_qubit, input_list, can_gate, dt * OZ, dt * OX, dt * ORes, 0
     )
+    np.set_printoptions(threshold=99999999)
     print(result_array)
 
 
