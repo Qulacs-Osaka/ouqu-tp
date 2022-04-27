@@ -265,14 +265,6 @@ def pulse_to_gate(
                             [control, target], gate_mat  # type:ignore
                         )
                     )
-<<<<<<< HEAD
-=======
-                    gates.append(
-                        DenseMatrix(
-                            [control, target], gate_mat / sqrt(2)  # type:ignore
-                        )
-                    )
->>>>>>> pulse
                 print(renzoku[j] * 2)
                 renzoku[j] = 0
     return gates
