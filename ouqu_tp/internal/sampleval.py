@@ -8,7 +8,7 @@ from ouqu_tp.internal.shot_obs import get_measurement, get_noise_meseurment
 
 
 def sampleval_do(input_strs: List[str], ferfile: str, shots: int) -> float:
-    (n_qubit, input_list) = str_to_gate(input_strs, "notput", True)
+    (n_qubit, input_list) = str_to_gate(input_strs, "notput", remap_remove=True)
 
     testcircuit = QuantumCircuit(n_qubit)
     for it in input_list:
@@ -28,7 +28,7 @@ def sampleval_noise_do(
     pm: float,
     pp: float,
 ) -> float:
-    (n_qubit, input_list) = str_to_gate(input_strs, "notput", True)
+    (n_qubit, input_list) = str_to_gate(input_strs, "notput", remap_remove=True)
 
     testcircuit = auto_noise(input_list, n_qubit, p1, p2, pm, pp)
 
