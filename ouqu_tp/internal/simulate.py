@@ -7,7 +7,8 @@ from ouqu_tp.internal.ot_io import str_to_gate
 
 
 def simulate_do(input_strs: List[str], shots: int) -> Tuple[List[int], int]:
-    (n_qubit, input_list) = str_to_gate(input_strs, "notput", True)
+
+    (n_qubit, input_list) = str_to_gate(input_strs, "notput", remap_remove=True)
 
     testcircuit = QuantumCircuit(n_qubit)
     for it in input_list:
@@ -22,7 +23,7 @@ def simulate_do(input_strs: List[str], shots: int) -> Tuple[List[int], int]:
 def simulate_noise_do(
     input_strs: List[str], shots: int, p1: float, p2: float, pm: float, pp: float
 ) -> Tuple[List[int], int]:
-    (n_qubit, input_list) = str_to_gate(input_strs, "notput", True)
+    (n_qubit, input_list) = str_to_gate(input_strs, "notput", remap_remove=True)
 
     testcircuit = auto_noise(input_list, n_qubit, p1, p2, pm, pp)
 

@@ -33,7 +33,7 @@ def trance_call(
         .splitlines()
     )
 
-    (n_qubit, input_list) = str_to_gate(cpl_qasm, "put", False)
+    (n_qubit, input_list) = str_to_gate(cpl_qasm, "put", remap_remove=False)
     tran_gates = tran_ouqu_multi(n_qubit, input_list)
     output_gates_QASMfuu(tran_gates)
 
@@ -60,7 +60,7 @@ def trance_res_call(
         .splitlines()
     )
 
-    (n_qubit, input_list) = str_to_gate(cpl_qasm, "put", False)
+    (n_qubit, input_list) = str_to_gate(cpl_qasm, "put", remap_remove=False)
     tran_gates = tran_ouqu_multi(n_qubit, CNOT_to_CRes(input_list))
     output_gates_QASMfuu(tran_gates)
 
@@ -91,7 +91,7 @@ def trance_pulse_call(
         .decode()
         .splitlines()
     )
-    (n_qubit, input_list) = str_to_gate(cpl_qasm, "put", False)
+    (n_qubit, input_list) = str_to_gate(cpl_qasm, "put", remap_remove=False)
     ff = open(cnot_net_file, "r")
     Cnet_list = ff.readlines()
     can_gate = get_connect(Cnet_list)

@@ -1,10 +1,14 @@
 import typing
 from cmath import phase
+from logging import NullHandler, getLogger
 
 import qulacs
 from qulacs.gate import CNOT, U3
 
 from ouqu_tp.internal.tran import check_is_CRes
+
+logger = getLogger(__name__)
+logger.addHandler(NullHandler())
 
 
 def input_strings() -> typing.List[str]:
@@ -24,11 +28,13 @@ def input_strings() -> typing.List[str]:
 # Layout (physical --> virtual)　の部分を読み取り、
 # 変数マッピングを元に戻す
 def str_to_gate(
-    input_strs: typing.List[str], outmode: str, remap_remove: bool
+    input_strs: typing.List[str], outmode: str, *, remap_remove: bool = False
 ) -> typing.Tuple[int, typing.List[qulacs.QuantumGateBase]]:
     n_qubit: int = 0  # 暫定
     input_list: typing.List[qulacs.QuantumGateBase] = []
     mapping = []
+    if remap_remove:
+        logger.debug("rha")
     for i in range(123):
         mapping.append(i)
     for instr in input_strs:
@@ -37,7 +43,7 @@ def str_to_gate(
             yomustr = instr.translate(mytable)
             kazstr = yomustr.split(",")
             mapping[int(kazstr[0])] = int(kazstr[1])
-            print("aaa")
+            logger.debug("aaa")
         elif instr[0:7] == "qreg q[":
             mytable = instr.maketrans("qreg[];", "       ")
             yomustr = instr.translate(mytable)
@@ -74,6 +80,8 @@ def str_to_gate(
 
         elif outmode == "put":
             print(instr)
+    for i in range(10):
+        logger.debug(str(i) + " " + str(mapping[i]))
     return (n_qubit, input_list)
 
 

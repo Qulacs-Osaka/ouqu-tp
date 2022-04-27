@@ -61,7 +61,7 @@ def test_kairo_pulse() -> None:
         "U(0,0,0.785398163397448) q[0];",
     ]
 
-    (n_qubit, input_list) = str_to_gate(input_strs, "notput", False)
+    (n_qubit, input_list) = str_to_gate(input_strs, "notput", remap_remove=False)
     Res_list = [(1, 6), (0, 1), (1, 2), (3, 2)]
     pulse_array = tran_to_pulse(
         n_qubit, input_list, Res_list, pi / 20, pi / 40, pi / 100, 3
