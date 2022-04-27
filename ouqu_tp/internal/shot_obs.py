@@ -1,7 +1,7 @@
-from qulacs import NoiseSimulator, QuantumCircuit, QuantumState, observable
+from qulacs import NoiseSimulator, Observable, QuantumCircuit, QuantumState
 
 
-def get_measurement(circuit: QuantumCircuit, obs: observable, shots: int) -> float:
+def get_measurement(circuit: QuantumCircuit, obs: Observable, shots: int) -> float:
     """
     Args:
         circuit (qulacs.Quantumcircuit):
@@ -13,7 +13,7 @@ def get_measurement(circuit: QuantumCircuit, obs: observable, shots: int) -> flo
     n_term = obs.get_term_count()
     n_qubit = obs.get_qubit_count()
 
-    exp = 0
+    exp = 0 + 0.0j
 
     for i in range(n_term):
         pauli_term = obs.get_term(i)
@@ -49,7 +49,7 @@ def get_measurement(circuit: QuantumCircuit, obs: observable, shots: int) -> flo
     return exp.real
 
 
-def get_noise_meseurment(circuit: QuantumCircuit, obs: observable, shots: int) -> float:
+def get_noise_meseurment(circuit: QuantumCircuit, obs: Observable, shots: int) -> float:
     """
     Args:
         circuit (qulacs.Quantumcircuit) (have noise)
@@ -63,7 +63,7 @@ def get_noise_meseurment(circuit: QuantumCircuit, obs: observable, shots: int) -
     n_term = obs.get_term_count()
     n_qubit = obs.get_qubit_count()
 
-    exp = 0
+    exp = 0 + 0.0j
 
     for i in range(n_term):
         pauli_term = obs.get_term(i)

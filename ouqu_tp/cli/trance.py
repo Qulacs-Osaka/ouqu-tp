@@ -98,7 +98,7 @@ def trance_pulse_call(
     result_array = tran_to_pulse(
         n_qubit, input_list, can_gate, dt * OZ, dt * OX, dt * ORes, 0
     )
-    np.set_printoptions(threshold=np.inf)
+    np.set_printoptions(threshold=99999999)
     print(result_array)
 
 

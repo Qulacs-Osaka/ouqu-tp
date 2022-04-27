@@ -119,7 +119,9 @@ def CNOT_to_CRes(
             gate_mat = np.array(
                 [[1, 0, -1.0j, 0], [0, 1, 0, 1.0j], [-1.0j, 0, 1, 0], [0, 1.0j, 0, 1]]
             )
-            tran_gates.append(DenseMatrix([control, target], gate_mat / sqrt(2)))
+            tran_gates.append(
+                DenseMatrix([control, target], gate_mat / sqrt(2))  # type:ignore
+            )
             tran_gates.append(RZ(control, pi / 2))
         else:
             tran_gates.append(ingate)
@@ -135,7 +137,7 @@ def check_is_CRes(ingate: qulacs.QuantumGateBase) -> bool:
     true_mat = np.array(
         [[1, 0, -1.0j, 0], [0, 1, 0, 1.0j], [-1.0j, 0, 1, 0], [0, 1.0j, 0, 1]]
     ) / sqrt(2)
-    return np.allclose(true_mat, ingate.get_matrix())
+    return np.allclose(true_mat, ingate.get_matrix())  # type:ignore
 
 
 def tran_to_pulse(
@@ -253,7 +255,11 @@ def pulse_to_gate(
                             [0, 1.0j, 0, 1],
                         ]
                     )
-                    gates.append(DenseMatrix([control, target], gate_mat / sqrt(2)))
+                    gates.append(
+                        DenseMatrix(
+                            [control, target], gate_mat / sqrt(2)  # type:ignore
+                        )
+                    )
                 print(renzoku[j] * 2)
                 renzoku[j] = 0
     return gates
