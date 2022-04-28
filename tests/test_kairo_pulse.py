@@ -3,8 +3,8 @@ from cmath import pi
 from qulacs import QuantumCircuit
 
 from ouqu_tp.internal.debug import check_circuit
-from ouqu_tp.internal.ot_io import str_to_gate
-from ouqu_tp.internal.tran import pulse_to_gate, tran_to_pulse
+from ouqu_tp.internal.tran import pulse_to_circuit
+from ouqu_tp.internal.trancepile import trance_pulse_do
 
 
 def test_kairo_pulse() -> None:
@@ -37,6 +37,7 @@ def test_kairo_pulse() -> None:
     circuit.add_Tdag_gate(taiou[1])
 
     input_strs = [
+        "qreg q[7];",
         "U(1.256637,1.09955742,0.6283185) q[0];",
         "U(1.5707963267949,-0.47123889,0.94247779) q[3];",
         "U(-1.09955742,0,0) q[1];",
@@ -60,22 +61,18 @@ def test_kairo_pulse() -> None:
         "U(0,0,-1.5707963267949) q[1];",
         "U(0,0,0.785398163397448) q[0];",
     ]
-
-    (n_qubit, input_list) = str_to_gate(input_strs, "notput", remap_remove=False)
+    Cnet_list = [
+        "test",
+        "7",
+        "4",
+        "1,6",
+        "0,1",
+        "1,2",
+        "3,2",
+    ]
+    pulse_array = trance_pulse_do(input_strs, Cnet_list, pi / 20, 1, 1, 0.25, 5)
+    n_qubit = 7
     Res_list = [(1, 6), (0, 1), (1, 2), (3, 2)]
-    pulse_array = tran_to_pulse(
-        n_qubit, input_list, Res_list, pi / 20, pi / 40, pi / 100, 3
-    )
-    tran_gates = pulse_to_gate(n_qubit, pulse_array, Res_list)
-    """
-    (n_qubit, input_list) = str_to_gate(input_strs, "notput", False)
-    tran_gates = tran_ouqu_multi(n_qubit, input_list)
-    """
-    testcircuit = QuantumCircuit(7)
-    for it in tran_gates:
-        # print(it.get_name())
-        # print(it)
-        testcircuit.add_gate(it)
-
+    testcircuit = pulse_to_circuit(n_qubit, pulse_array, Res_list)
     # print(testcircuit)
     check_circuit(circuit, testcircuit)

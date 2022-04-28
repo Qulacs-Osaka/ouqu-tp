@@ -4,9 +4,12 @@ from typing import List
 import numpy as np
 import typer
 
-from ouqu_tp.internal.make_Cnet import get_connect, make_Cnet_put
-from ouqu_tp.internal.ot_io import output_gates_QASMfuu, str_to_gate
-from ouqu_tp.internal.tran import CNOT_to_CRes, tran_ouqu_multi, tran_to_pulse
+from ouqu_tp.internal.make_Cnet import make_Cnet_put
+from ouqu_tp.internal.trancepile import (
+    trance_do,
+    trance_pulse_do,
+    trance_res_do,
+)
 
 app = typer.Typer()
 
@@ -32,10 +35,13 @@ def trance_call(
         .decode()
         .splitlines()
     )
-
-    (n_qubit, input_list) = str_to_gate(cpl_qasm, "put", remap_remove=False)
-    tran_gates = tran_ouqu_multi(n_qubit, input_list)
-    output_gates_QASMfuu(tran_gates)
+    out_QASM = trance_do(cpl_qasm)
+    for aaa in cpl_qasm:
+        if aaa[0:2]=="//":
+            print(aaa)
+            #コメントの垂れ流しを行います
+    for aaa in out_QASM:
+        print(aaa)
 
 
 @app.command("trance_res")
@@ -59,10 +65,13 @@ def trance_res_call(
         .decode()
         .splitlines()
     )
-
-    (n_qubit, input_list) = str_to_gate(cpl_qasm, "put", remap_remove=False)
-    tran_gates = tran_ouqu_multi(n_qubit, CNOT_to_CRes(input_list))
-    output_gates_QASMfuu(tran_gates)
+    out_QASM = trance_res_do(cpl_qasm)
+    for aaa in cpl_qasm:
+        if aaa[0:2]=="//":
+            print(aaa)
+            #コメントの垂れ流しを行います
+    for aaa in out_QASM:
+        print(aaa)
 
 
 @app.command("trance_pulse")
@@ -91,14 +100,14 @@ def trance_pulse_call(
         .decode()
         .splitlines()
     )
-    (n_qubit, input_list) = str_to_gate(cpl_qasm, "put", remap_remove=False)
     ff = open(cnot_net_file, "r")
     Cnet_list = ff.readlines()
-    can_gate = get_connect(Cnet_list)
-    result_array = tran_to_pulse(
-        n_qubit, input_list, can_gate, dt * OZ, dt * OX, dt * ORes, 0
-    )
+    result_array = trance_pulse_do(cpl_qasm, Cnet_list, dt, OZ, OX, ORes, 0)
     np.set_printoptions(threshold=99999999)
+    for aaa in cpl_qasm:
+        if aaa[0:2]=="//":
+            print(aaa)
+            #コメントの垂れ流しを行います
     print(result_array)
 
 

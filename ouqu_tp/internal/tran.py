@@ -6,6 +6,7 @@ from typing import List, Tuple
 import numpy as np
 import numpy.typing as npt
 import qulacs
+from qulacs import QuantumCircuit
 from qulacs.gate import RX, RZ, DenseMatrix, Identity, X, merge, sqrtX
 
 
@@ -77,16 +78,16 @@ def tran_ouqu_single(
     return out_gates
 
 
-def tran_ouqu_multi(
-    n_qubit: int, input_list: List[qulacs.QuantumGateBase]
-) -> List[qulacs.QuantumGateBase]:
+def tran_ouqu_multi(inputcircuit: QuantumCircuit) -> QuantumCircuit:
+    n_qubit = inputcircuit.get_qubit_count()
+    anscircuit = QuantumCircuit(n_qubit)
     bitSingleGates = []
-    tran_gates = []
 
     for i in range(n_qubit):
         bitSingleGates.append(Identity(i))
-
-    for ingate in input_list:
+    gate_num = inputcircuit.get_gate_count()
+    for i in range(gate_num):
+        ingate = inputcircuit.get_gate(i)
         if (
             len(ingate.get_control_index_list()) + len(ingate.get_target_index_list())
             <= 1
@@ -97,42 +98,56 @@ def tran_ouqu_multi(
         else:
             bits = ingate.get_control_index_list() + ingate.get_target_index_list()
             for i in bits:
-                tran_gates += tran_ouqu_single(bitSingleGates[i])
+                for tuigate in tran_ouqu_single(bitSingleGates[i]):
+                    anscircuit.add_gate(tuigate)
                 bitSingleGates[i] = Identity(i)
-            tran_gates.append(ingate)
+            anscircuit.add_gate(ingate)
 
     for i in range(n_qubit):
-        tran_gates += tran_ouqu_single(bitSingleGates[i])
+        for tuigate in tran_ouqu_single(bitSingleGates[i]):
+            anscircuit.add_gate(tuigate)
 
-    return tran_gates
+    return anscircuit
 
 
-def CNOT_to_CRes(
-    input_list: List[qulacs.QuantumGateBase],
-) -> List[qulacs.QuantumGateBase]:
+def CRes(targetA: int, targetB: int) -> qulacs.QuantumGateBase:
+    gate_mat = np.array(
+        [[1, 0, -1.0j, 0], [0, 1, 0, 1.0j], [-1.0j, 0, 1, 0], [0, 1.0j, 0, 1]]
+    )
+    return DenseMatrix([targetA, targetB], gate_mat / sqrt(2))  # type:ignore
+
+
+def CResdag(targetA: int, targetB: int) -> qulacs.QuantumGateBase:
+    gate_mat = np.array(
+        [[1, 0, 1.0j, 0], [0, 1, 0, -1.0j], [1.0j, 0, 1, 0], [0, -1.0j, 0, 1]]
+    )
+    return DenseMatrix([targetA, targetB], gate_mat / sqrt(2))  # type:ignore
+
+
+def CNOT_to_CRes(inputcircuit: QuantumCircuit) -> QuantumCircuit:
+    n_qubit = inputcircuit.get_qubit_count()
     # 元のゲートにCNOTゲートが入っていたら、CResゲートに変換する
-    tran_gates = []
-    for ingate in input_list:
+    anscircuit = QuantumCircuit(n_qubit)
+    gate_num = inputcircuit.get_gate_count()
+    for i in range(gate_num):
+        ingate = inputcircuit.get_gate(i)
         if ingate.get_name() == "CNOT":
             target = ingate.get_target_index_list()[0]
             control = ingate.get_control_index_list()[0]
-            tran_gates.append(RX(target, pi / 2))
-            gate_mat = np.array(
-                [[1, 0, -1.0j, 0], [0, 1, 0, 1.0j], [-1.0j, 0, 1, 0], [0, 1.0j, 0, 1]]
-            )
-            tran_gates.append(
-                DenseMatrix([control, target], gate_mat / sqrt(2))  # type:ignore
-            )
-            tran_gates.append(RZ(control, pi / 2))
+            anscircuit.add_gate(RX(target, pi / 2))
+            anscircuit.add_gate(CRes(control,target))
+            anscircuit.add_gate(RZ(control, pi / 2))
         else:
-            tran_gates.append(ingate)
-    return tran_gates
+            anscircuit.add_gate(ingate)
+    return anscircuit
 
 
 def check_is_CRes(ingate: qulacs.QuantumGateBase) -> bool:
     if not ingate.get_name() == "DenseMatrix":
         return False
     if len(ingate.get_target_index_list()) != 2:
+        return False
+    if len(ingate.get_control_index_list()) != 0:
         return False
 
     true_mat = np.array(
@@ -141,17 +156,31 @@ def check_is_CRes(ingate: qulacs.QuantumGateBase) -> bool:
     return np.allclose(true_mat, ingate.get_matrix())  # type:ignore
 
 
+def check_is_CResdag(ingate: qulacs.QuantumGateBase) -> bool:
+    if not ingate.get_name() == "DenseMatrix":
+        return False
+    if len(ingate.get_target_index_list()) != 2:
+        return False
+    if len(ingate.get_control_index_list()) != 2:
+        return False
+
+    true_mat = np.array(
+        [[1, 0, 1.0j, 0], [0, 1, 0, -1.0j], [1.0j, 0, 1, 0], [0, -1.0j, 0, 1]]
+    ) / sqrt(2)
+    return np.allclose(true_mat, ingate.get_matrix())  # type:ignore
+
+
 def tran_to_pulse(
-    n_qubit: int,
-    input_list: List[qulacs.QuantumGateBase],
+    inputcircuit: QuantumCircuit,
     Res_list: List[Tuple[int, int]],
     RZome: float,
     RXome: float,
     CResome: float,
     mergin: int,
 ) -> npt.NDArray[np.float64]:
-    input_list = CNOT_to_CRes(input_list)
-    tran_gates = tran_ouqu_multi(n_qubit, input_list)
+    n_qubit = inputcircuit.get_qubit_count()
+    inputcircuit = CNOT_to_CRes(inputcircuit)
+    inputcircuit = tran_ouqu_multi(inputcircuit)
 
     # 回転角/ome　を整数に直した時間だけパルスが入る
     # 各回転操作に対して、　mergin の分だけ空白が入る
@@ -159,7 +188,8 @@ def tran_to_pulse(
 
     # numpy arrayは[ゲート番号][時間]　で定義される
     # ゲート番号は、ZZZZZXXXXXRRRRR... のような定義をされる
-
+    print(n_qubit)
+    print(inputcircuit)
     bangou = np.zeros((n_qubit, n_qubit), int)
     for i in range(n_qubit):
         for j in range(n_qubit):
@@ -172,11 +202,14 @@ def tran_to_pulse(
     pulse_comp: List[List[Tuple[int, int]]] = []
     for i in range(n_qubit * 2 + len(Res_list)):
         pulse_comp.append([])
-    for it in tran_gates:
+    gate_num = inputcircuit.get_gate_count()
 
-        target = it.get_target_index_list()[0]
-        if it.get_name() == "Z-rotation":
-            matrix = it.get_matrix()
+    for i in range(gate_num):
+        ingate = inputcircuit.get_gate(i)
+
+        target = ingate.get_target_index_list()[0]
+        if ingate.get_name() == "Z-rotation":
+            matrix = ingate.get_matrix()
             angle = -phase(matrix[1][1] / matrix[0][0])
             if angle < -1e-6:
                 angle += pi * 2
@@ -185,17 +218,17 @@ def tran_to_pulse(
                 pulse_comp[target].append((saigo_zikan[target], pulse_kaz))
                 saigo_zikan[target] += pulse_kaz + mergin
 
-        elif it.get_name() == "sqrtX":
+        elif ingate.get_name() == "sqrtX":
             pulse_kaz = int(pi / 2 / (RXome * 2) + 0.5)
             pulse_comp[target + n_qubit].append((saigo_zikan[target], pulse_kaz))
             saigo_zikan[target] += pulse_kaz + mergin
-        elif it.get_name() == "X":
+        elif ingate.get_name() == "X":
             pulse_kaz = int(pi / (RXome * 2) + 0.5)
             pulse_comp[target + n_qubit].append((saigo_zikan[target], pulse_kaz))
             saigo_zikan[target] += pulse_kaz + mergin
-        elif check_is_CRes(it):
-            control = it.get_target_index_list()[0]
-            target = it.get_target_index_list()[1]
+        elif check_is_CRes(ingate):
+            control = ingate.get_target_index_list()[0]
+            target = ingate.get_target_index_list()[1]
             ban = bangou[control][target]
             if ban == -1:
                 print("error")
@@ -206,7 +239,7 @@ def tran_to_pulse(
             saigo_zikan[control] = start + pulse_kaz + mergin
         else:
             print("unknown gate ")
-            print(it)
+            print(ingate)
     for aaa in pulse_comp:
         print(aaa)
     T = np.amax(saigo_zikan)
@@ -225,18 +258,16 @@ def tran_to_pulse(
     return result_pulse
 
 
-def pulse_to_gate(
+def pulse_to_circuit(
     n_qubit: int,
     pulse_array: npt.NDArray[np.float64],
     Res_list: List[Tuple[int, int]],
-) -> List[qulacs.QuantumGateBase]:
+) -> QuantumCircuit:
     # パルス情報が与えられたとき、量子回路を実行する関数です
-    print(pulse_array)
-    gates = []
+    anscircuit = QuantumCircuit(n_qubit)
     m_kaz = n_qubit * 2 + len(Res_list)
     renzoku = np.zeros(m_kaz)
     T = len(pulse_array[0])
-    print(T)
     for i in range(T + 1):
         for j in range(m_kaz):
             if i < T and pulse_array[j][i] > 1e-8:
@@ -244,27 +275,11 @@ def pulse_to_gate(
             elif renzoku[j] > 1e-8:
                 if j < n_qubit:
                     # RZ gate
-                    gates.append(RZ(j, renzoku[j] * 2))
+                    anscircuit.add_gate(RZ(j, renzoku[j] * 2))
                 elif j < n_qubit * 2:
-                    gates.append(RX(j - n_qubit, -renzoku[j] * 2))
+                    anscircuit.add_gate(RX(j - n_qubit, -renzoku[j] * 2))
                 else:
                     (control, target) = Res_list[j - n_qubit * 2]
-                    gate_mat = (
-                        np.array(
-                            [
-                                [1, 0, -1.0j, 0],
-                                [0, 1, 0, 1.0j],
-                                [-1.0j, 0, 1, 0],
-                                [0, 1.0j, 0, 1],
-                            ]
-                        )
-                        / sqrt(2)
-                    )
-                    gates.append(
-                        DenseMatrix(
-                            [control, target], gate_mat  # type:ignore
-                        )
-                    )
-                print(renzoku[j] * 2)
+                    anscircuit.add_gate(CRes(control, target))
                 renzoku[j] = 0
-    return gates
+    return anscircuit

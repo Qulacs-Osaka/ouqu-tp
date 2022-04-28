@@ -5,6 +5,7 @@ from ouqu_tp.internal.sampleval import sampleval_do, sampleval_noise_do
 def test_getval_sampleval() -> None:
     # getval　と　sampleval　で　大きな誤差が出ないか試します
     input_strs = [
+        "qreg q[5];",
         "U(1.20000004748372,2.1,0.9) q[0];",
         "U(1.5707943247949,-0.5,1.20000004748372) q[3];",
         "U(1.400000005940444,0,0) q[1];",
@@ -39,6 +40,7 @@ def test_getval_sampleval() -> None:
 def test_getval_sampleval_noise() -> None:
     # getval　と　sampleval　で　大きな誤差が出ないか試します
     input_strs = [
+        "qreg q[5];",
         "U(1.20000004748372,2.1,0.9) q[0];",
         "U(1.5707943247949,-0.5,1.20000004748372) q[3];",
         "U(1.400000005940444,0,0) q[1];",

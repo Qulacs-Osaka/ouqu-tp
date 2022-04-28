@@ -1,17 +1,35 @@
-# from ouqu_tp.debug import check_circuit
-from ouqu_tp.internal.ot_io import (
-    input_strings,
-    output_gates_QASMfuu,
-    str_to_gate,
-)
-from ouqu_tp.internal.tran import tran_ouqu_multi
+from typing import List
 
-input_strs = input_strings()
-(n_qubit, input_list) = str_to_gate(input_strs, "put", remap_remove=False)
-tran_gates = tran_ouqu_multi(n_qubit, input_list)
-output_gates_QASMfuu(tran_gates)
+import numpy as np
+import numpy.typing as npt
+
+from ouqu_tp.internal.make_Cnet import get_connect
+from ouqu_tp.internal.QASMtoqulacs import QASM_to_qulacs, qulacs_to_QASM
+from ouqu_tp.internal.tran import CNOT_to_CRes, tran_ouqu_multi, tran_to_pulse
 
 
-# ここからメモ
-# やっぱりこの形式はやめて、qulacs.QuantumGateBaseを受け渡しすることになった
-# staq -S -O2 -m --device qasm/ibm_tokyo.json --evaluate-all qasm/test_watle.qasm
+def trance_do(input_strs: List[str]) -> List[str]:
+    mtocircuit = QASM_to_qulacs(input_strs, remap_remove=False)
+    trancircuit = tran_ouqu_multi(mtocircuit)
+    return qulacs_to_QASM(trancircuit)
+
+
+def trance_res_do(input_strs: List[str]) -> List[str]:
+    mtocircuit = QASM_to_qulacs(input_strs, remap_remove=False)
+    mtocircuit = CNOT_to_CRes(mtocircuit)
+    trancircuit = tran_ouqu_multi(mtocircuit)
+    return qulacs_to_QASM(trancircuit)
+
+
+def trance_pulse_do(
+    input_strs: List[str],
+    Cnet_list: List[str],
+    dt: float,
+    OZ: float,
+    OX: float,
+    ORes: float,
+    mergen: int = 0,
+) -> npt.NDArray[np.float64]:
+    mtocircuit = QASM_to_qulacs(input_strs, remap_remove=False)
+    can_gate = get_connect(Cnet_list)
+    return tran_to_pulse(mtocircuit, can_gate, dt * OZ, dt * OX, dt * ORes, mergen)

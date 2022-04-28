@@ -1,18 +1,14 @@
 from typing import List, Tuple
 
-from qulacs import NoiseSimulator, QuantumCircuit, QuantumState
+from qulacs import NoiseSimulator, QuantumState
 
 from ouqu_tp.internal.auto_noise import auto_noise
-from ouqu_tp.internal.ot_io import str_to_gate
+from ouqu_tp.internal.QASMtoqulacs import QASM_to_qulacs
 
 
 def simulate_do(input_strs: List[str], shots: int) -> Tuple[List[int], int]:
-
-    (n_qubit, input_list) = str_to_gate(input_strs, "notput", remap_remove=True)
-
-    testcircuit = QuantumCircuit(n_qubit)
-    for it in input_list:
-        testcircuit.add_gate(it)
+    testcircuit = QASM_to_qulacs(input_strs, remap_remove=True)
+    n_qubit = testcircuit.get_qubit_count()
 
     out_state = QuantumState(n_qubit)
     testcircuit.update_quantum_state(out_state)
@@ -23,9 +19,9 @@ def simulate_do(input_strs: List[str], shots: int) -> Tuple[List[int], int]:
 def simulate_noise_do(
     input_strs: List[str], shots: int, p1: float, p2: float, pm: float, pp: float
 ) -> Tuple[List[int], int]:
-    (n_qubit, input_list) = str_to_gate(input_strs, "notput", remap_remove=True)
-
-    testcircuit = auto_noise(input_list, n_qubit, p1, p2, pm, pp)
+    precircuit = QASM_to_qulacs(input_strs, remap_remove=True)
+    testcircuit = auto_noise(precircuit, p1, p2, pm, pp)
+    n_qubit = testcircuit.get_qubit_count()
 
     out_state = QuantumState(n_qubit)
     nsim = NoiseSimulator(testcircuit, out_state)

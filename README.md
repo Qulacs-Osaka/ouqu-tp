@@ -118,7 +118,7 @@ ouqu-tp trance trance --input-qasm-file=sample/input.qasm --input-cnot-json-file
 ```
 
 ### trance_res
-上のやつで、　RZ,sqrtX,CNOT の代わりに、RZ,aqrtX,CRes を命令セットとしたものです。
+上のやつで、　RZ,sqrtX,CNOT の代わりに、RZ,sqrtX,CRes を命令セットとしたものです。
 
 ただし、CResは、[[1, 0, -1.0j, 0], [0, 1, 0, 1.0j], [-1.0j, 0, 1, 0], [0, 1.0j, 0, 1]] / √2 の量子ゲートです。
 
@@ -132,8 +132,6 @@ poetry run ouqu-tp trance trance_res --input-qasm-file=sample/input.qasm --input
 ### trance_pulse
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
 ```
-
-
 poetry run ouqu-tp trance trance_pulse --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json --cnot-net-file=sample/CNOT_net.txt --dt=0.005 --oz=10 --ox=10 --ores=1
 
 ```
@@ -355,6 +353,15 @@ ouqu-tp noisy sampleval --input-qasm-file=sample/input.qasm --input-openfermion-
 ## その他
 
 qulacs の仕様上、openfermion に虚数部分が含まれていても、それを無視して実数を返します。
+
+## 旧バージョンから変更点のまとめ
+trance系の出力について変更がある
+u1ゲートではなく、rzゲートになった(機能は変わらない)
+空白が減って、staqのOPENQASM仕様になった
+例:u1( 0.5000000000000001 ) q[ 0 ]; -> rz(0.5000000000000001) q[0];
+
+
+
 
 ## グローバーのアルゴリズムのサンプルについて
 sample/grover_maker.pyは、　https://qiskit.org/textbook/ja/ch-algorithms/grover.html　をもとに作られました。

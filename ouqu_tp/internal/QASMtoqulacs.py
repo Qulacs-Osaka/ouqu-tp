@@ -1,10 +1,18 @@
 import typing
 from cmath import phase
+from typing import List
 
 import numpy as np
 from parse import parse, search
 from qulacs import QuantumCircuit, QuantumGateBase, QuantumState
 from qulacs.gate import DenseMatrix, Identity
+
+from ouqu_tp.internal.tran import (
+    CRes,
+    CResdag,
+    check_is_CRes,
+    check_is_CResdag,
+)
 
 
 def can_get_dence(gate: QuantumGateBase) -> bool:
@@ -72,6 +80,10 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
             angle = phase(matrix[1][1] / matrix[0][0])
             if abs(angle) > 1e-5:
                 out_strs.append(f"rz({angle}) q[{tlis[0]}];")
+        elif check_is_CRes(it):
+            out_strs.append(f"CRes q[{tlis[0]}],q[{tlis[1]}];")
+        elif check_is_CResdag(it):
+            out_strs.append(f"CResdag q[{tlis[0]}],q[{tlis[1]}];")
         elif can_get_dence(it):
             now_string = ""
             bit = len(it.get_target_index_list())
@@ -116,17 +128,19 @@ DenseMatrix(2,1,0.707107,0,0,0,-0,-0.707107,0,0,0,0,0.707107,0,0,0,0,0.707107,-0
 """
 
 
-def QASM_to_qulacs(input_strs: typing.List[str],*, remap_remove: bool = False) -> QuantumCircuit:
+def QASM_to_qulacs(
+    input_strs: typing.List[str], *, remap_remove: bool = False
+) -> QuantumCircuit:
     # 仕様: キュービットレジスタはq[]のやつだけにしてください cregは無し
-    mapping = []
+    mapping: List[int] = []
 
     for instr_moto in input_strs:
         instr = instr_moto.lower()
         if instr[0:4] == "qreg":
             ary = parse("qreg q[{:d}];", instr)
             cir = QuantumCircuit(ary[0])
-            if len(mapping)==0:
-                mapping=list(range(ary[0]))
+            if len(mapping) == 0:
+                mapping = list(range(ary[0]))
         elif instr[0:3] == "cx ":
             ary = parse("cx q[{:d}],q[{:d}];", instr)
             cir.add_CNOT_gate(mapping[ary[0]], mapping[ary[1]])
@@ -187,6 +201,12 @@ def QASM_to_qulacs(input_strs: typing.List[str],*, remap_remove: bool = False) -
         elif instr[0:1] == "u":
             ary = parse("u({:g},{:g},{:g}) q[{:d}];", instr)
             cir.add_U3_gate(mapping[ary[3]], ary[0], ary[1], ary[2])
+        elif instr[0:5] == "cres ":
+            ary = parse("CRes q[{:d}],q[{:d}];", instr)
+            cir.add_gate(CRes(mapping[ary[0]], mapping[ary[1]]))
+        elif instr[0:8] == "cresdag ":
+            ary = parse("CResdag q[{:d}],q[{:d}];", instr)
+            cir.add_gate(CResdag(mapping[ary[0]], mapping[ary[1]]))
         elif instr[0:11] == "densematrix":
             ary = search("densematrix({:d},{:d}", instr)
             # print(ary)
@@ -225,10 +245,10 @@ def QASM_to_qulacs(input_strs: typing.List[str],*, remap_remove: bool = False) -
             cir.add_gate(dense_gate)
         elif remap_remove and instr[0:6] == "// \tq[":
             ary = parse("// \tq[{:d}] --> q[{:d}]", instr)
-            mapping[ary[0]]=ary[1]
+            mapping[ary[0]] = ary[1]
         elif remap_remove and instr[0:9] == "// qubits":
             ary = parse("// qubits: {:d}", instr)
-            mapping=list(range(ary[0]))
+            mapping = list(range(ary[0]))
     return cir
 
 
