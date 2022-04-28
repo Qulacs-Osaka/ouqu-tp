@@ -135,7 +135,7 @@ def CNOT_to_CRes(inputcircuit: QuantumCircuit) -> QuantumCircuit:
             target = ingate.get_target_index_list()[0]
             control = ingate.get_control_index_list()[0]
             anscircuit.add_gate(RX(target, pi / 2))
-            anscircuit.add_gate(CRes(control,target))
+            anscircuit.add_gate(CRes(control, target))
             anscircuit.add_gate(RZ(control, pi / 2))
         else:
             anscircuit.add_gate(ingate)

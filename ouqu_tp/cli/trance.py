@@ -37,9 +37,9 @@ def trance_call(
     )
     out_QASM = trance_do(cpl_qasm)
     for aaa in cpl_qasm:
-        if aaa[0:2]=="//":
+        if aaa[0:2] == "//":
             print(aaa)
-            #コメントの垂れ流しを行います
+            # コメントの垂れ流しを行います
     for aaa in out_QASM:
         print(aaa)
 
@@ -67,9 +67,9 @@ def trance_res_call(
     )
     out_QASM = trance_res_do(cpl_qasm)
     for aaa in cpl_qasm:
-        if aaa[0:2]=="//":
+        if aaa[0:2] == "//":
             print(aaa)
-            #コメントの垂れ流しを行います
+            # コメントの垂れ流しを行います
     for aaa in out_QASM:
         print(aaa)
 
@@ -105,9 +105,9 @@ def trance_pulse_call(
     result_array = trance_pulse_do(cpl_qasm, Cnet_list, dt, OZ, OX, ORes, 0)
     np.set_printoptions(threshold=99999999)
     for aaa in cpl_qasm:
-        if aaa[0:2]=="//":
+        if aaa[0:2] == "//":
             print(aaa)
-            #コメントの垂れ流しを行います
+            # コメントの垂れ流しを行います
     print(result_array)
 
 
