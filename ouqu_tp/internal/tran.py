@@ -1,6 +1,7 @@
 import cmath
 import typing
 from cmath import atan, isclose, phase, pi, sqrt
+from logging import NullHandler, getLogger
 from typing import List, Tuple
 
 import numpy as np
@@ -9,19 +10,21 @@ import qulacs
 from qulacs import QuantumCircuit
 from qulacs.gate import RX, RZ, DenseMatrix, Identity, X, merge, sqrtX
 
+logger = getLogger(__name__)
+logger.addHandler(NullHandler())
+
 
 def tran_ouqu_single(
     input_gate: qulacs.QuantumGateBase,
 ) -> typing.List[qulacs.QuantumGateBase]:
-    # print(input_gate)
     # 1qubitのDenseMatrixゲートを入力し、 阪大のList[gate]の形に合わせます
     fugouZ = -1
 
     if len(input_gate.get_target_index_list()) != 1:
-        print("input gate is not single")
+        logger.error("input gate is not single")
         return []
     if len(input_gate.get_control_index_list()) != 0:
-        print("input gate have control qubit")
+        logger.error("input gate have control qubit")
         return []
     matrix = input_gate.get_matrix()
     qubit = input_gate.get_target_index_list()[0]
@@ -30,7 +33,6 @@ def tran_ouqu_single(
     # Rz単騎
     if cmath.isclose(abs(matrix[0][0]), 1, abs_tol=1e-5):
         degA = phase(matrix[1][1] / matrix[0][0]) * fugouZ
-        # print(degA)
         if isclose(degA, 0):
             return out_gates
         out_gates.append(RZ(qubit, degA))
@@ -38,9 +40,7 @@ def tran_ouqu_single(
 
     # Rz X
     if isclose(abs(matrix[0][0]), 0, abs_tol=1e-5):
-
         degA = phase(matrix[1][0] / matrix[0][1]) * fugouZ
-        # print(degA,"X")
         out_gates.append(RZ(qubit, degA))
         out_gates.append(X(qubit))
         return out_gates
@@ -50,7 +50,6 @@ def tran_ouqu_single(
     if isclose(abs(matrix[0][0]), cmath.sqrt(0.5), abs_tol=1e-5):
         degA = (phase(matrix[0][1] / matrix[0][0]) + pi / 2) * fugouZ
         degB = (phase(matrix[1][0] / matrix[0][0]) + pi / 2) * fugouZ
-        # print(degA,degB)
         out_gates.append(RZ(qubit, degA))
         out_gates.append(sqrtX(qubit))
         out_gates.append(RZ(qubit, degB))
@@ -58,18 +57,12 @@ def tran_ouqu_single(
 
     # Rz sqrtX Rz sqrtX Rz
     adbc_mto = (matrix[0][0] * matrix[1][1]) / (matrix[0][1] * matrix[1][0])
-    # print(adbc_mto)
     adbc = abs(adbc_mto)
-    # print(adbc)
     degB_com = -2 * atan(sqrt(adbc))  # 0～-π
-    # print(degB_com)
     degB = degB_com.real * fugouZ
     degA = phase(-matrix[0][1] / matrix[0][0]) * fugouZ
     degC = phase(-matrix[1][0] / matrix[0][0]) * fugouZ
 
-    # print(degA,degB,degC)
-    # print(matrix)
-    # print(tan(degB_com/2))
     out_gates.append(RZ(qubit, degA))
     out_gates.append(sqrtX(qubit))
     out_gates.append(RZ(qubit, degB))
@@ -188,8 +181,8 @@ def tran_to_pulse(
 
     # numpy arrayは[ゲート番号][時間]　で定義される
     # ゲート番号は、ZZZZZXXXXXRRRRR... のような定義をされる
-    print(n_qubit)
-    print(inputcircuit)
+    logger.debug(n_qubit)
+    logger.debug(inputcircuit)
     bangou = np.zeros((n_qubit, n_qubit), int)
     for i in range(n_qubit):
         for j in range(n_qubit):
@@ -231,17 +224,17 @@ def tran_to_pulse(
             target = ingate.get_target_index_list()[1]
             ban = bangou[control][target]
             if ban == -1:
-                print("error")
+                logger.error(f"({control},{target}) gate is not in Res_list")
             start = max(saigo_zikan[target], saigo_zikan[control])
             pulse_kaz = int(pi / (CResome * 4) + 0.5)
             pulse_comp[ban + n_qubit * 2].append((start, pulse_kaz))
             saigo_zikan[target] = start + pulse_kaz + mergin
             saigo_zikan[control] = start + pulse_kaz + mergin
         else:
-            print("unknown gate ")
-            print(ingate)
+            logger.error("this gate is not (RZ,sx,x,CRes)")
+            logger.error(ingate)
     for aaa in pulse_comp:
-        print(aaa)
+        logger.debug(aaa)
     T = np.amax(saigo_zikan)
     result_pulse = np.zeros((n_qubit * 2 + len(Res_list), int(T)))
     for i in range((n_qubit * 2 + len(Res_list))):
@@ -254,7 +247,6 @@ def tran_to_pulse(
             (start, time) = ple
             for j in range(start, time + start):
                 result_pulse[i][j] = omega
-    print(type(result_pulse))
     return result_pulse
 
 

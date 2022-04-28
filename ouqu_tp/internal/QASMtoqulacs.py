@@ -1,5 +1,6 @@
 import typing
 from cmath import phase
+from logging import NullHandler, getLogger
 from typing import List
 
 import numpy as np
@@ -13,6 +14,9 @@ from ouqu_tp.internal.tran import (
     check_is_CRes,
     check_is_CResdag,
 )
+
+logger = getLogger(__name__)
+logger.addHandler(NullHandler())
 
 
 def can_get_dence(gate: QuantumGateBase) -> bool:
@@ -32,7 +36,6 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
     out_strs = ["QulacsQASM Q.9", f"qreg q[{cir.get_qubit_count()}];"]
 
     for kai in range(cir.get_gate_count()):
-        # #print(it.get_name())
         it = cir.get_gate(kai)
         clis = it.get_control_index_list()
         tlis = it.get_target_index_list()
@@ -110,7 +113,7 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
             out_strs.append(now_string)
         else:
             out_strs.append("unknown gate:" + it.get_name())
-            print("unknown gate:" + it.get_name())
+            logger.warning("unknown gate:" + it.get_name())
         # get_matrix が効かないゲートの対応
         # 1qubitのDenseMatrixはu3ゲートに直すべきだが、やってない
 
@@ -209,7 +212,6 @@ def QASM_to_qulacs(
             cir.add_gate(CResdag(mapping[ary[0]], mapping[ary[1]]))
         elif instr[0:11] == "densematrix":
             ary = search("densematrix({:d},{:d}", instr)
-            # print(ary)
             parsestr = "densematrix({:d},{:d}"
             for i in range(4 ** ary[0]):
                 parsestr += ",{:g},{:g}"
@@ -219,9 +221,7 @@ def QASM_to_qulacs(
             for i in range(ary[0] + ary[1] - 1):
                 parsestr += ",q[{:d}]"
             parsestr += ";"
-            # print(parsestr)
             deary = parse(parsestr, instr)
-            # print(deary)
             gate_mat = np.zeros((2 ** ary[0], 2 ** ary[0]), dtype="complex")
             bas = 2
             for i in range(2 ** ary[0]):

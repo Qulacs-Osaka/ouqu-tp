@@ -51,7 +51,6 @@ transpiled_grover_circuit = transpile(grover_circuit, aer_sim)
 qobj = assemble(transpiled_grover_circuit)
 results = aer_sim.run(qobj).result()
 counts = results.get_counts()
-#print(counts)
 print(grover_circuit.qasm())
 
 """
