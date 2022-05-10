@@ -55,7 +55,7 @@ def test_cirQASMcir() -> None:
     # print(testcircuit)
     check_circuit(circuit, rev_cir)
 
-    #つぎに、量子状態 -> str -> 量子状態　のテストします
+    # つぎに、量子状態 -> str -> 量子状態　のテストします
     stateA = QuantumState(5)
     # print(stateA)
     circuit.update_quantum_state(stateA)
