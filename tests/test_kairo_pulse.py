@@ -75,4 +75,5 @@ def test_kairo_pulse() -> None:
     Res_list = [(1, 6), (0, 1), (1, 2), (3, 2)]
     testcircuit = pulse_to_circuit(n_qubit, pulse_array, Res_list)
     # print(testcircuit)
-    check_circuit(circuit, testcircuit)
+    # パルスが整数の長さしか取れないので、　誤差が生じるから閾値が0.9
+    check_circuit(circuit, testcircuit, 0.9)
