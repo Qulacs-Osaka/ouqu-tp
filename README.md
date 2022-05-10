@@ -11,7 +11,13 @@
 - QASM ファイルを受け取り、量子状態を得た後、オブザーバブルを openfermion の形式で受けとり、期待値を厳密に求める機能
 - QASM ファイルを受け取り、量子状態を得た後、オブザーバブルを openfermion の形式で受けとり、shot の回数サンプリングしてオブザーバブルの値を求める機能
 
-の四つの機能が実装されています。
+の4つの機能が実装されています。
+
+- CNOT の制約と QASM ファイルから、実機で可能な QASM ファイルを作り、それをパルスシークエンスとして出力する機能
+
+- QASMもどきとqulacsの相互変換
+
+が予定されています。
 
 入出力例として、サンプルの各ファイルが、すでに sample フォルダに入っています。参考にしてください。
 
@@ -111,6 +117,26 @@ ouqu-tp trance trance --input-qasm-file=sample/input.qasm --input-cnot-json-file
 
 ```
 
+### trance_res
+上のやつで、　RZ,sqrtX,CNOT の代わりに、RZ,aqrtX,CRes を命令セットとしたものです。
+
+ただし、CResは、[[1, 0, -1.0j, 0], [0, 1, 0, 1.0j], [-1.0j, 0, 1, 0], [0, 1.0j, 0, 1]] / √2 の量子ゲートです。
+
+CResはOpenQASMにないことに注意してください
+
+```
+poetry run ouqu-tp trance trance_res --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json
+```
+
+
+### trance_pulse
+例えば、サンプルを実行する場合は以下のコマンドを実行してください。
+```
+
+
+poetry run ouqu-tp trance trance_pulse --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json --cnot-net-file=sample/CNOT_net.txt --dt=0.005 --oz=10 --ox=10 --ores=1
+
+```
 ### make_Cnet
 ```
 # poetryの場合

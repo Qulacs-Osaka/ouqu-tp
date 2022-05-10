@@ -5,6 +5,8 @@ from logging import NullHandler, getLogger
 import qulacs
 from qulacs.gate import CNOT, U3
 
+from ouqu_tp.internal.tran import check_is_CRes
+
 logger = getLogger(__name__)
 logger.addHandler(NullHandler())
 
@@ -94,7 +96,8 @@ def output_gates(gates: typing.List[qulacs.QuantumGateBase]) -> None:
         if it.get_name() == "Z-rotation":
             matrix = it.get_matrix()
             angle = phase(matrix[1][1] / matrix[0][0])
-            print("RZ", it.get_target_index_list()[0], angle)
+            if abs(angle) > 1e-5:
+                print("RZ", it.get_target_index_list()[0], angle)
         elif it.get_name() == "X":
             print("X", it.get_target_index_list()[0])
         elif it.get_name() == "sqrtX":
@@ -111,13 +114,13 @@ def output_gates_QASMfuu(gates: typing.List[qulacs.QuantumGateBase]) -> None:
     # print("OPENQASM 2.0")
 
     # 気を付けて　qreg情報はない
-
     for it in gates:
         # print(it.get_name())
         if it.get_name() == "Z-rotation":
             matrix = it.get_matrix()
             angle = phase(matrix[1][1] / matrix[0][0])
-            print("u1(", angle, ") q[", it.get_target_index_list()[0], "];")
+            if abs(angle) > 1e-5:
+                print("u1(", angle, ") q[", it.get_target_index_list()[0], "];")
         elif it.get_name() == "X":
             print("X q[", it.get_target_index_list()[0], "];")
         elif it.get_name() == "sqrtX":
@@ -129,6 +132,10 @@ def output_gates_QASMfuu(gates: typing.List[qulacs.QuantumGateBase]) -> None:
                 "],q[",
                 it.get_target_index_list()[0],
                 "];",
+            )
+        elif check_is_CRes(it):
+            print(
+                f"CRes q[{it.get_target_index_list()[0]}],q[{it.get_target_index_list()[1]}];"
             )
         else:
             print(it)  # 直接プリントできるらしい、　困ったらそうするしかない

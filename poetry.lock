@@ -915,6 +915,14 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
+name = "parse"
+version = "1.19.0"
+description = "parse() is the opposite of format()"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "parso"
 version = "0.8.3"
 description = "A Python Parser"
@@ -1161,7 +1169,7 @@ py = {version = "*", markers = "implementation_name == \"pypy\""}
 
 [[package]]
 name = "qulacs-osaka"
-version = "0.2.0"
+version = "0.3.0"
 description = "Quantum circuit simulator for research"
 category = "main"
 optional = false
@@ -1575,7 +1583,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "00fb910caf9ae3814cb0944200d55458070cadf2fe9ac6cb19cbea122302df97"
+content-hash = "07dbab682ffe41d28d1eb30793f4d42443b653622277899d03a9aea64928fb13"
 
 [metadata.files]
 alabaster = [
@@ -2092,6 +2100,9 @@ pandocfilters = [
     {file = "pandocfilters-1.5.0-py2.py3-none-any.whl", hash = "sha256:33aae3f25fd1a026079f5d27bdd52496f0e0803b3469282162bafdcbdf6ef14f"},
     {file = "pandocfilters-1.5.0.tar.gz", hash = "sha256:0b679503337d233b4339a817bfc8c50064e2eff681314376a47cb582305a7a38"},
 ]
+parse = [
+    {file = "parse-1.19.0.tar.gz", hash = "sha256:9ff82852bcb65d139813e2a5197627a94966245c897796760a3a2a8eb66f020b"},
+]
 parso = [
     {file = "parso-0.8.3-py2.py3-none-any.whl", hash = "sha256:c001d4636cd3aecdaf33cbb40aebb59b094be2a74c556778ef5576c175e19e75"},
     {file = "parso-0.8.3.tar.gz", hash = "sha256:8c07be290bb59f03588915921e29e8a50002acaf2cdc5fa0e0114f91709fafa0"},
@@ -2296,27 +2307,27 @@ pyzmq = [
     {file = "pyzmq-22.3.0.tar.gz", hash = "sha256:8eddc033e716f8c91c6a2112f0a8ebc5e00532b4a6ae1eb0ccc48e027f9c671c"},
 ]
 qulacs-osaka = [
-    {file = "qulacs_osaka-0.2.0-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:eaab3731c4c2cd92212180173d1209c49570462da0a0685755f0ddd38ba0b32c"},
-    {file = "qulacs_osaka-0.2.0-cp36-cp36m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:edcad3007568ebabe62b869a0a36f4bd433cc05814d7e57f54936ee0e09f4bc0"},
-    {file = "qulacs_osaka-0.2.0-cp36-cp36m-win_amd64.whl", hash = "sha256:0ef113a0b81facea5714ab91ddf2ab97d1b9a08b1ec06bba2d7196676ff32df0"},
-    {file = "qulacs_osaka-0.2.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:d4f539c8299aed08c44accc69ffe4258a432139c35ac7cc57e7a559e9bf779bd"},
-    {file = "qulacs_osaka-0.2.0-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:4e548f810d8c13a701c8b4852b58c2aabedb148c44bee87f733211098d2fd433"},
-    {file = "qulacs_osaka-0.2.0-cp37-cp37m-win_amd64.whl", hash = "sha256:815e763190c3200f8f3cb644483dbd707bd34fadc952b493fbdd22f35c0148c4"},
-    {file = "qulacs_osaka-0.2.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:c52e07c679cbaee6088bf677ed67d3874fd2dbd399234cf194e56d6a6ebd4f3c"},
-    {file = "qulacs_osaka-0.2.0-cp38-cp38-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:ff50a3580a57b7131aa9c7bd9b145e0d56ebda6dfb0a82d7c60d061d632b60e6"},
-    {file = "qulacs_osaka-0.2.0-cp38-cp38-win_amd64.whl", hash = "sha256:f95d3949c6c8d53d8f781b4651f38078daa9dab83d52347ed1fbdc73aa084f5e"},
-    {file = "qulacs_osaka-0.2.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:35b644bced4cc441c29b9d28fe22a175661c2ac4949ccce15eecc6e3b1f5749d"},
-    {file = "qulacs_osaka-0.2.0-cp39-cp39-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:5987cc570e92516504a0e020a1f7d9672fd57377f1a2b91f13e257b9e5376610"},
-    {file = "qulacs_osaka-0.2.0-cp39-cp39-win_amd64.whl", hash = "sha256:305a88b73ab919ec068ce277d5c16555ccbcae93677bfc7235c30b4ee71dfc27"},
+    {file = "qulacs_osaka-0.3.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:63421a216ea4588a15d879f935d4935558ed4a308b74798f0af9347b98b7a596"},
+    {file = "qulacs_osaka-0.3.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c392ab148e6a1df137d97eac6b68bc7304ab801f9004fd723ae203e95a6c4d2b"},
+    {file = "qulacs_osaka-0.3.0-cp310-cp310-win_amd64.whl", hash = "sha256:bb0c408f415f3831d6d3e62075e3ed876acb909879c4a987002fb051bdf204db"},
+    {file = "qulacs_osaka-0.3.0-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:aa5a6f233f56f9f6b85a521146573c4ead6959b95ecfdf10931767d3b01819b1"},
+    {file = "qulacs_osaka-0.3.0-cp36-cp36m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1ac98fb00b01a19a97fc9a85102f0d45a9864234c48a97c1888dbd5429059094"},
+    {file = "qulacs_osaka-0.3.0-cp36-cp36m-win_amd64.whl", hash = "sha256:0d8b1c449a779c1548e95d41532b862f0bbe387935160135c0e8155e7898f06a"},
+    {file = "qulacs_osaka-0.3.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:67425361d7d0f6fa37044c238216e79899038019fab154c3c25dbc587d96e1cb"},
+    {file = "qulacs_osaka-0.3.0-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3fc014691fda45c7797547f43adfe52ed5036ba51de877bfa9af48db6e2aadd0"},
+    {file = "qulacs_osaka-0.3.0-cp37-cp37m-win_amd64.whl", hash = "sha256:818c19a326735603de3b21a2c7dba5b694e41fe2f375333e5050d6d3f5035b32"},
+    {file = "qulacs_osaka-0.3.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:3af2d92fbed397480566ada5e567cc3e695a46364a1ea1f40e049249ed731d33"},
+    {file = "qulacs_osaka-0.3.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:85833f0d1175f6d31633ce37428b6ef1a094e9eda059749fc7cb3695aae3d499"},
+    {file = "qulacs_osaka-0.3.0-cp38-cp38-win_amd64.whl", hash = "sha256:53fa0aca719c713b793566f213ac5ae920e63ff4c7c2918dd530464953764482"},
+    {file = "qulacs_osaka-0.3.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:92521157061cdadaa72d20858f059b49b3cc32d5b367a9dbbf278c3096e3d7f4"},
+    {file = "qulacs_osaka-0.3.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c3edb41d5e13b45a10a4645248e37ff62d6e2d23ee64a2907066e7f4e2e796ca"},
+    {file = "qulacs_osaka-0.3.0-cp39-cp39-win_amd64.whl", hash = "sha256:c1ac525057679b1313f804cc63e25a06e63e39fdf75620715f64bb473b1a4412"},
 ]
 requests = [
     {file = "requests-2.26.0-py2.py3-none-any.whl", hash = "sha256:6c1246513ecd5ecd4528a0906f910e8f0f9c6b8ec72030dc9fd154dc1a6efd24"},
     {file = "requests-2.26.0.tar.gz", hash = "sha256:b8aa58f8cf793ffd8782d3d8cb19e66ef36f7aba4353eec859e74678b01b07a7"},
 ]
 scipy = [
-    {file = "scipy-1.7.3-1-cp310-cp310-macosx_12_0_arm64.whl", hash = "sha256:c9e04d7e9b03a8a6ac2045f7c5ef741be86727d8f49c45db45f244bdd2bcff17"},
-    {file = "scipy-1.7.3-1-cp38-cp38-macosx_12_0_arm64.whl", hash = "sha256:b0e0aeb061a1d7dcd2ed59ea57ee56c9b23dd60100825f98238c06ee5cc4467e"},
-    {file = "scipy-1.7.3-1-cp39-cp39-macosx_12_0_arm64.whl", hash = "sha256:b78a35c5c74d336f42f44106174b9851c783184a85a3fe3e68857259b37b9ffb"},
     {file = "scipy-1.7.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:173308efba2270dcd61cd45a30dfded6ec0085b4b6eb33b5eb11ab443005e088"},
     {file = "scipy-1.7.3-cp310-cp310-macosx_12_0_arm64.whl", hash = "sha256:21b66200cf44b1c3e86495e3a436fc7a26608f92b8d43d344457c54f1c024cbc"},
     {file = "scipy-1.7.3-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ceebc3c4f6a109777c0053dfa0282fddb8893eddfb0d598574acfb734a926168"},

@@ -1,11 +1,12 @@
 import subprocess
 from typing import List
 
+import numpy as np
 import typer
 
-from ouqu_tp.internal.make_Cnet import make_Cnet_put
+from ouqu_tp.internal.make_Cnet import get_connect, make_Cnet_put
 from ouqu_tp.internal.ot_io import output_gates_QASMfuu, str_to_gate
-from ouqu_tp.internal.tran import tran_ouqu_multi
+from ouqu_tp.internal.tran import CNOT_to_CRes, tran_ouqu_multi, tran_to_pulse
 
 app = typer.Typer()
 
@@ -35,6 +36,70 @@ def trance_call(
     (n_qubit, input_list) = str_to_gate(cpl_qasm, "put", remap_remove=False)
     tran_gates = tran_ouqu_multi(n_qubit, input_list)
     output_gates_QASMfuu(tran_gates)
+
+
+@app.command("trance_res")
+def trance_res_call(
+    input_qasm_file: str = typer.Option(...),
+    input_cnot_json_file: str = typer.Option(...),
+) -> None:
+    cpl_qasm: List[str] = (
+        subprocess.check_output(
+            [
+                "staq",
+                "-S",
+                "-O2",
+                "-m",
+                "-d",
+                input_cnot_json_file,
+                "--evaluate-all",
+                input_qasm_file,
+            ]
+        )
+        .decode()
+        .splitlines()
+    )
+
+    (n_qubit, input_list) = str_to_gate(cpl_qasm, "put", remap_remove=False)
+    tran_gates = tran_ouqu_multi(n_qubit, CNOT_to_CRes(input_list))
+    output_gates_QASMfuu(tran_gates)
+
+
+@app.command("trance_pulse")
+def trance_pulse_call(
+    input_qasm_file: str = typer.Option(...),
+    input_cnot_json_file: str = typer.Option(...),
+    cnot_net_file: str = typer.Option(...),
+    dt: float = 0.01,
+    OZ: float = 10,
+    OX: float = 10,
+    ORes: float = 1,
+) -> None:
+    cpl_qasm: List[str] = (
+        subprocess.check_output(
+            [
+                "staq",
+                "-S",
+                "-O2",
+                "-m",
+                "-d",
+                input_cnot_json_file,
+                "--evaluate-all",
+                input_qasm_file,
+            ]
+        )
+        .decode()
+        .splitlines()
+    )
+    (n_qubit, input_list) = str_to_gate(cpl_qasm, "put", remap_remove=False)
+    ff = open(cnot_net_file, "r")
+    Cnet_list = ff.readlines()
+    can_gate = get_connect(Cnet_list)
+    result_array = tran_to_pulse(
+        n_qubit, input_list, can_gate, dt * OZ, dt * OX, dt * ORes, 0
+    )
+    np.set_printoptions(threshold=99999999)
+    print(result_array)
 
 
 @app.command("makeCnet")
