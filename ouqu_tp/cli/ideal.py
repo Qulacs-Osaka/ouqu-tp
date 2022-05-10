@@ -14,12 +14,17 @@ app = typer.Typer()
 def getval_ideal_call(
     input_qasm_file: str = typer.Option(...),
     input_openfermion_file: str = typer.Option(...),
+    direct_qasm: bool = False,
 ) -> None:
-    cpl_qasm: List[str] = (
-        subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
-        .decode()
-        .splitlines()
-    )
+    cpl_qasm: List[str]
+    if direct_qasm:
+        cpl_qasm = open(input_qasm_file, "r").readlines()
+    else:
+        cpl_qasm = (
+            subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
+            .decode()
+            .splitlines()
+        )
     print(getval_do(cpl_qasm, input_openfermion_file))
 
 
@@ -28,24 +33,34 @@ def sampleval_ideal_call(
     input_qasm_file: str = typer.Option(...),
     input_openfermion_file: str = typer.Option(...),
     shots: int = typer.Option(...),
+    direct_qasm: bool = False,
 ) -> None:
-    cpl_qasm: List[str] = (
-        subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
-        .decode()
-        .splitlines()
-    )
+    cpl_qasm: List[str]
+    if direct_qasm:
+        cpl_qasm = open(input_qasm_file, "r").readlines()
+    else:
+        cpl_qasm = (
+            subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
+            .decode()
+            .splitlines()
+        )
     print(sampleval_do(cpl_qasm, input_openfermion_file, shots))
 
 
 @app.command("simulate")
 def simulate_ideal_call(
-    input_qasm_file: str = typer.Option(...), shots: int = typer.Option(...)
+    input_qasm_file: str = typer.Option(...), shots: int = typer.Option(...),
+    direct_qasm: bool = False,
 ) -> None:
-    cpl_qasm: List[str] = (
-        subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
-        .decode()
-        .splitlines()
-    )
+    cpl_qasm: List[str]
+    if direct_qasm:
+        cpl_qasm = open(input_qasm_file, "r").readlines()
+    else:
+        cpl_qasm = (
+            subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
+            .decode()
+            .splitlines()
+        )
     (kekka, n_qubit) = simulate_do(cpl_qasm, shots)
     # input_listを直接ぶち込む
     for aaaa in kekka:

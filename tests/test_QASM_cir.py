@@ -55,12 +55,10 @@ def test_cirQASMcir() -> None:
     # print(testcircuit)
     check_circuit(circuit, rev_cir)
 
+    #つぎに、量子状態 -> str -> 量子状態　のテストします
     stateA = QuantumState(5)
     # print(stateA)
     circuit.update_quantum_state(stateA)
-    # print(stateA)
-    # print(state_to_strs(stateA))
-
     assert (
         abs(qulacs.state.inner_product(stateA, strs_to_state(state_to_strs(stateA))))
         >= 0.9999

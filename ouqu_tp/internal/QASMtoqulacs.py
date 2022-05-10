@@ -138,7 +138,7 @@ def QASM_to_qulacs(
     mapping: List[int] = []
 
     for instr_moto in input_strs:
-        instr = instr_moto.lower()
+        instr = instr_moto.lower().strip()
         if instr[0:4] == "qreg":
             ary = parse("qreg q[{:d}];", instr)
             cir = QuantumCircuit(ary[0])
@@ -197,7 +197,7 @@ def QASM_to_qulacs(
             cir.add_U1_gate(mapping[ary[1]], ary[0])
         elif instr[0:2] == "u2":
             ary = parse("u2({:g},{:g}) q[{:d}];", instr)
-            cir.add_U1_gate(mapping[ary[2]], ary[0], ary[1])
+            cir.add_U2_gate(mapping[ary[2]], ary[0], ary[1])
         elif instr[0:2] == "u3":
             ary = parse("u3({:g},{:g},{:g}) q[{:d}];", instr)
             cir.add_U3_gate(mapping[ary[3]], ary[0], ary[1], ary[2])
