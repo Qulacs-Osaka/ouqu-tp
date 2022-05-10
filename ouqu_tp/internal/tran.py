@@ -4,6 +4,7 @@ from cmath import atan, isclose, phase, pi, sqrt
 from typing import List, Tuple
 
 import numpy as np
+import numpy.typing as npt
 import qulacs
 from qulacs.gate import RX, RZ, DenseMatrix, Identity, X, merge, sqrtX
 
@@ -148,7 +149,7 @@ def tran_to_pulse(
     RXome: float,
     CResome: float,
     mergin: int,
-) -> np.ndarray:  # type:ignore
+) -> npt.NDArray[np.float64]:
     input_list = CNOT_to_CRes(input_list)
     tran_gates = tran_ouqu_multi(n_qubit, input_list)
 
@@ -220,12 +221,13 @@ def tran_to_pulse(
             (start, time) = ple
             for j in range(start, time + start):
                 result_pulse[i][j] = omega
+    print(type(result_pulse))
     return result_pulse
 
 
 def pulse_to_gate(
     n_qubit: int,
-    pulse_array: np.ndarray,  # type:ignore
+    pulse_array: npt.NDArray[np.float64],
     Res_list: List[Tuple[int, int]],
 ) -> List[qulacs.QuantumGateBase]:
     # パルス情報が与えられたとき、量子回路を実行する関数です
@@ -247,17 +249,20 @@ def pulse_to_gate(
                     gates.append(RX(j - n_qubit, -renzoku[j] * 2))
                 else:
                     (control, target) = Res_list[j - n_qubit * 2]
-                    gate_mat = np.array(
-                        [
-                            [1, 0, -1.0j, 0],
-                            [0, 1, 0, 1.0j],
-                            [-1.0j, 0, 1, 0],
-                            [0, 1.0j, 0, 1],
-                        ]
+                    gate_mat = (
+                        np.array(
+                            [
+                                [1, 0, -1.0j, 0],
+                                [0, 1, 0, 1.0j],
+                                [-1.0j, 0, 1, 0],
+                                [0, 1.0j, 0, 1],
+                            ]
+                        )
+                        / sqrt(2)
                     )
                     gates.append(
                         DenseMatrix(
-                            [control, target], gate_mat / sqrt(2)  # type:ignore
+                            [control, target], gate_mat  # type:ignore
                         )
                     )
                 print(renzoku[j] * 2)
