@@ -12,5 +12,5 @@ def check_circuit(cirA: QuantumCircuit, cirB: QuantumCircuit) -> None:
         cirA.update_quantum_state(stateA)
         cirB.update_quantum_state(stateB)
 
-        assert abs(inner_product(stateA, stateB)) > 0.9
+        assert abs(inner_product(stateA, stateB)) > 0.999
     return
