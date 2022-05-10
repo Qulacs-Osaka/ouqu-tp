@@ -138,6 +138,11 @@
       </label>
       <ul>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.internal.QASMtoqulacs.html">
+         ouqu_tp.internal.QASMtoqulacs module
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../ouqu_tp.internal.auto_noise.html">
          ouqu_tp.internal.auto_noise module
         </a>
@@ -294,11 +299,12 @@
 <span></span><span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">typer</span>
 
-<span class="kn">from</span> <span class="nn">ouqu_tp.internal.make_Cnet</span> <span class="kn">import</span> <span class="n">make_Cnet_put</span>
+<span class="kn">from</span> <span class="nn">ouqu_tp.internal.make_Cnet</span> <span class="kn">import</span> <span class="n">get_connect</span><span class="p">,</span> <span class="n">make_Cnet_put</span>
 <span class="kn">from</span> <span class="nn">ouqu_tp.internal.ot_io</span> <span class="kn">import</span> <span class="n">output_gates_QASMfuu</span><span class="p">,</span> <span class="n">str_to_gate</span>
-<span class="kn">from</span> <span class="nn">ouqu_tp.internal.tran</span> <span class="kn">import</span> <span class="n">tran_ouqu_multi</span>
+<span class="kn">from</span> <span class="nn">ouqu_tp.internal.tran</span> <span class="kn">import</span> <span class="n">CNOT_to_CRes</span><span class="p">,</span> <span class="n">tran_ouqu_multi</span><span class="p">,</span> <span class="n">tran_to_pulse</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Typer</span><span class="p">()</span>
 
@@ -328,6 +334,70 @@
     <span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">input_list</span><span class="p">)</span> <span class="o">=</span> <span class="n">str_to_gate</span><span class="p">(</span><span class="n">cpl_qasm</span><span class="p">,</span> <span class="s2">&quot;put&quot;</span><span class="p">,</span> <span class="n">remap_remove</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">tran_gates</span> <span class="o">=</span> <span class="n">tran_ouqu_multi</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">input_list</span><span class="p">)</span>
     <span class="n">output_gates_QASMfuu</span><span class="p">(</span><span class="n">tran_gates</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="trance_res_call"><a class="viewcode-back" href="../../../ouqu_tp.cli.trance.html#ouqu_tp.cli.trance.trance_res_call">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s2">&quot;trance_res&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">trance_res_call</span><span class="p">(</span>
+    <span class="n">input_qasm_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+    <span class="n">input_cnot_json_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;staq&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-S&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-O2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-d&quot;</span><span class="p">,</span>
+                <span class="n">input_cnot_json_file</span><span class="p">,</span>
+                <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span>
+                <span class="n">input_qasm_file</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+        <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">input_list</span><span class="p">)</span> <span class="o">=</span> <span class="n">str_to_gate</span><span class="p">(</span><span class="n">cpl_qasm</span><span class="p">,</span> <span class="s2">&quot;put&quot;</span><span class="p">,</span> <span class="n">remap_remove</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">tran_gates</span> <span class="o">=</span> <span class="n">tran_ouqu_multi</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">CNOT_to_CRes</span><span class="p">(</span><span class="n">input_list</span><span class="p">))</span>
+    <span class="n">output_gates_QASMfuu</span><span class="p">(</span><span class="n">tran_gates</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="trance_pulse_call"><a class="viewcode-back" href="../../../ouqu_tp.cli.trance.html#ouqu_tp.cli.trance.trance_pulse_call">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s2">&quot;trance_pulse&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">trance_pulse_call</span><span class="p">(</span>
+    <span class="n">input_qasm_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+    <span class="n">input_cnot_json_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+    <span class="n">cnot_net_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+    <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">OZ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">OX</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">ORes</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;staq&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-S&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-O2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-d&quot;</span><span class="p">,</span>
+                <span class="n">input_cnot_json_file</span><span class="p">,</span>
+                <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span>
+                <span class="n">input_qasm_file</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+        <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">input_list</span><span class="p">)</span> <span class="o">=</span> <span class="n">str_to_gate</span><span class="p">(</span><span class="n">cpl_qasm</span><span class="p">,</span> <span class="s2">&quot;put&quot;</span><span class="p">,</span> <span class="n">remap_remove</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ff</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">cnot_net_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+    <span class="n">Cnet_list</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="n">can_gate</span> <span class="o">=</span> <span class="n">get_connect</span><span class="p">(</span><span class="n">Cnet_list</span><span class="p">)</span>
+    <span class="n">result_array</span> <span class="o">=</span> <span class="n">tran_to_pulse</span><span class="p">(</span>
+        <span class="n">n_qubit</span><span class="p">,</span> <span class="n">input_list</span><span class="p">,</span> <span class="n">can_gate</span><span class="p">,</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">OZ</span><span class="p">,</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">OX</span><span class="p">,</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">ORes</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mi">99999999</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result_array</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="makeCnet_call"><a class="viewcode-back" href="../../../ouqu_tp.cli.trance.html#ouqu_tp.cli.trance.makeCnet_call">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s2">&quot;makeCnet&quot;</span><span class="p">)</span>

@@ -138,6 +138,11 @@
       </label>
       <ul>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.internal.QASMtoqulacs.html">
+         ouqu_tp.internal.QASMtoqulacs module
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../ouqu_tp.internal.auto_noise.html">
          ouqu_tp.internal.auto_noise module
         </a>
@@ -300,7 +305,7 @@
 
 
 <div class="viewcode-block" id="simulate_do"><a class="viewcode-back" href="../../../ouqu_tp.internal.simulate.html#ouqu_tp.internal.simulate.simulate_do">[docs]</a><span class="k">def</span> <span class="nf">simulate_do</span><span class="p">(</span><span class="n">input_strs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">input_strs</span><span class="p">)</span>
+
     <span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">input_list</span><span class="p">)</span> <span class="o">=</span> <span class="n">str_to_gate</span><span class="p">(</span><span class="n">input_strs</span><span class="p">,</span> <span class="s2">&quot;notput&quot;</span><span class="p">,</span> <span class="n">remap_remove</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">testcircuit</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span>
@@ -309,7 +314,6 @@
 
     <span class="n">out_state</span> <span class="o">=</span> <span class="n">QuantumState</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span>
     <span class="n">testcircuit</span><span class="o">.</span><span class="n">update_quantum_state</span><span class="p">(</span><span class="n">out_state</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">out_state</span><span class="p">)</span>
     <span class="n">kekka</span> <span class="o">=</span> <span class="n">out_state</span><span class="o">.</span><span class="n">sampling</span><span class="p">(</span><span class="n">shots</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">kekka</span><span class="p">,</span> <span class="n">n_qubit</span><span class="p">)</span></div>
 

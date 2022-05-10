@@ -138,6 +138,11 @@
       </label>
       <ul>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.internal.QASMtoqulacs.html">
+         ouqu_tp.internal.QASMtoqulacs module
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../ouqu_tp.internal.auto_noise.html">
          ouqu_tp.internal.auto_noise module
         </a>
@@ -298,6 +303,8 @@
 <span class="kn">import</span> <span class="nn">qulacs</span>
 <span class="kn">from</span> <span class="nn">qulacs.gate</span> <span class="kn">import</span> <span class="n">CNOT</span><span class="p">,</span> <span class="n">U3</span>
 
+<span class="kn">from</span> <span class="nn">ouqu_tp.internal.tran</span> <span class="kn">import</span> <span class="n">check_is_CRes</span>
+
 <span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">NullHandler</span><span class="p">())</span>
 
@@ -387,7 +394,8 @@
         <span class="k">if</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Z-rotation&quot;</span><span class="p">:</span>
             <span class="n">matrix</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">()</span>
             <span class="n">angle</span> <span class="o">=</span> <span class="n">phase</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RZ&quot;</span><span class="p">,</span> <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">angle</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-5</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RZ&quot;</span><span class="p">,</span> <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">angle</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;sqrtX&quot;</span><span class="p">:</span>
@@ -404,13 +412,13 @@
     <span class="c1"># print(&quot;OPENQASM 2.0&quot;)</span>
 
     <span class="c1"># 気を付けて　qreg情報はない</span>
-
     <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">gates</span><span class="p">:</span>
         <span class="c1"># print(it.get_name())</span>
         <span class="k">if</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Z-rotation&quot;</span><span class="p">:</span>
             <span class="n">matrix</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">()</span>
             <span class="n">angle</span> <span class="o">=</span> <span class="n">phase</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;u1(&quot;</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="s2">&quot;) q[&quot;</span><span class="p">,</span> <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;];&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-5</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;u1(&quot;</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="s2">&quot;) q[&quot;</span><span class="p">,</span> <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;];&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X q[&quot;</span><span class="p">,</span> <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;];&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;sqrtX&quot;</span><span class="p">:</span>
@@ -422,6 +430,10 @@
                 <span class="s2">&quot;],q[&quot;</span><span class="p">,</span>
                 <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
                 <span class="s2">&quot;];&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">check_is_CRes</span><span class="p">(</span><span class="n">it</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;CRes q[</span><span class="si">{</span><span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">],q[</span><span class="si">{</span><span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>  <span class="c1"># 直接プリントできるらしい、　困ったらそうするしかない</span>

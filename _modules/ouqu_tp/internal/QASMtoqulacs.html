@@ -1,0 +1,568 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ouqu_tp.internal.QASMtoqulacs &#8212; ouqu_tp  documentation</title>
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">ouqu_tp  documentation</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../modules.html">
+   ouqu_tp
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../ouqu_tp.html">
+     ouqu_tp package
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../../ouqu_tp.cli.html">
+       ouqu_tp.cli package
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+      <label for="toctree-checkbox-3">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.cli.ideal.html">
+         ouqu_tp.cli.ideal module
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.cli.main.html">
+         ouqu_tp.cli.main module
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.cli.noisy.html">
+         ouqu_tp.cli.noisy module
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.cli.trance.html">
+         ouqu_tp.cli.trance module
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../../ouqu_tp.internal.html">
+       ouqu_tp.internal package
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+      <label for="toctree-checkbox-4">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.internal.QASMtoqulacs.html">
+         ouqu_tp.internal.QASMtoqulacs module
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.internal.auto_noise.html">
+         ouqu_tp.internal.auto_noise module
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.internal.debug.html">
+         ouqu_tp.internal.debug module
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.internal.getval.html">
+         ouqu_tp.internal.getval module
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.internal.make_Cnet.html">
+         ouqu_tp.internal.make_Cnet module
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.internal.ot_io.html">
+         ouqu_tp.internal.ot_io module
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.internal.sampleval.html">
+         ouqu_tp.internal.sampleval module
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.internal.shot_obs.html">
+         ouqu_tp.internal.shot_obs module
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.internal.simulate.html">
+         ouqu_tp.internal.simulate module
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.internal.tran.html">
+         ouqu_tp.internal.tran module
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.internal.trancepile.html">
+         ouqu_tp.internal.trancepile module
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../ouqu_tp.kasika.html">
+       ouqu_tp.kasika module
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../ouqu_tp.kasikb.html">
+       ouqu_tp.kasikb module
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../notebooks/index.html">
+   Notebooks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../notebooks/0_example.html">
+     Example Notebook
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/Qulacs-Osaka/python-project-template"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <h1>Source code for ouqu_tp.internal.QASMtoqulacs</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">typing</span>
+<span class="kn">from</span> <span class="nn">cmath</span> <span class="kn">import</span> <span class="n">phase</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">parse</span> <span class="kn">import</span> <span class="n">parse</span><span class="p">,</span> <span class="n">search</span>
+<span class="kn">from</span> <span class="nn">qulacs</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">QuantumGateBase</span><span class="p">,</span> <span class="n">QuantumState</span>
+<span class="kn">from</span> <span class="nn">qulacs.gate</span> <span class="kn">import</span> <span class="n">DenseMatrix</span><span class="p">,</span> <span class="n">Identity</span>
+
+
+<div class="viewcode-block" id="can_get_dence"><a class="viewcode-back" href="../../../ouqu_tp.internal.QASMtoqulacs.html#ouqu_tp.internal.QASMtoqulacs.can_get_dence">[docs]</a><span class="k">def</span> <span class="nf">can_get_dence</span><span class="p">(</span><span class="n">gate</span><span class="p">:</span> <span class="n">QuantumGateBase</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="c1"># dencematrixにできるかの関数</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<span class="c1"># qelib1.inc にあるゲートのほとんどにqulacsを対応させる</span>
+<span class="c1"># sqrtYはない</span>
+<span class="c1"># まずは、qulacs to QASM</span>
+
+
+<div class="viewcode-block" id="qulacs_to_QASM"><a class="viewcode-back" href="../../../ouqu_tp.internal.QASMtoqulacs.html#ouqu_tp.internal.QASMtoqulacs.qulacs_to_QASM">[docs]</a><span class="k">def</span> <span class="nf">qulacs_to_QASM</span><span class="p">(</span><span class="n">cir</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="c1"># QASM風です</span>
+    <span class="c1">#</span>
+
+    <span class="n">out_strs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;QulacsQASM Q.9&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;qreg q[</span><span class="si">{</span><span class="n">cir</span><span class="o">.</span><span class="n">get_qubit_count</span><span class="p">()</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">kai</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cir</span><span class="o">.</span><span class="n">get_gate_count</span><span class="p">()):</span>
+        <span class="c1"># #print(it.get_name())</span>
+        <span class="n">it</span> <span class="o">=</span> <span class="n">cir</span><span class="o">.</span><span class="n">get_gate</span><span class="p">(</span><span class="n">kai</span><span class="p">)</span>
+        <span class="n">clis</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">get_control_index_list</span><span class="p">()</span>
+        <span class="n">tlis</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;CNOT&quot;</span><span class="p">:</span>
+            <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cx q[</span><span class="si">{</span><span class="n">clis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">],q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;CZ&quot;</span><span class="p">:</span>
+            <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cz q[</span><span class="si">{</span><span class="n">clis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">],q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;SWAP&quot;</span><span class="p">:</span>
+            <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;swap q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">],q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Identity&quot;</span><span class="p">:</span>
+            <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;id q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span>
+            <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;x q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span>
+            <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;y q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Z&quot;</span><span class="p">:</span>
+            <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;z q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;H&quot;</span><span class="p">:</span>
+            <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;h q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;S&quot;</span><span class="p">:</span>
+            <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;s q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Sdag&quot;</span><span class="p">:</span>
+            <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;sdg q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span>
+            <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;t q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Tdag&quot;</span><span class="p">:</span>
+            <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;tdg q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;sqrtX&quot;</span><span class="p">:</span>
+            <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;sx q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;sqrtXdag&quot;</span><span class="p">:</span>
+            <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;sxdg q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;X-rotation&quot;</span><span class="p">:</span>
+            <span class="n">matrix</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">()</span>
+            <span class="n">angle</span> <span class="o">=</span> <span class="n">phase</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mi">2</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-5</span><span class="p">:</span>
+                <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;rx(</span><span class="si">{</span><span class="n">angle</span><span class="si">}</span><span class="s2">) q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Y-rotation&quot;</span><span class="p">:</span>
+            <span class="n">matrix</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">()</span>
+            <span class="n">angle</span> <span class="o">=</span> <span class="n">phase</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.0</span><span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-5</span><span class="p">:</span>
+                <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ry(</span><span class="si">{</span><span class="n">angle</span><span class="si">}</span><span class="s2">) q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Z-rotation&quot;</span><span class="p">:</span>
+            <span class="n">matrix</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">()</span>
+            <span class="n">angle</span> <span class="o">=</span> <span class="n">phase</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-5</span><span class="p">:</span>
+                <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;rz(</span><span class="si">{</span><span class="n">angle</span><span class="si">}</span><span class="s2">) q[</span><span class="si">{</span><span class="n">tlis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">can_get_dence</span><span class="p">(</span><span class="n">it</span><span class="p">):</span>
+            <span class="n">now_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">bit</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">())</span>
+            <span class="n">matrix</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">()</span>
+            <span class="n">now_string</span> <span class="o">+=</span> <span class="s2">&quot;DenseMatrix(&quot;</span>
+            <span class="n">now_string</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()))</span>
+            <span class="n">now_string</span> <span class="o">+=</span> <span class="s2">&quot;,&quot;</span>
+            <span class="n">now_string</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">get_control_index_list</span><span class="p">()))</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">bit</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">bit</span><span class="p">):</span>
+                    <span class="n">now_string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;,</span><span class="si">{</span><span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s2">.6g</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="si">:</span><span class="s2">.6g</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">get_control_index_list</span><span class="p">())):</span>
+                <span class="n">now_string</span> <span class="o">+=</span> <span class="s2">&quot;,1&quot;</span>  <span class="c1"># control_valueが取得できないのでこうなった　あとで修正する</span>
+
+            <span class="n">now_string</span> <span class="o">+=</span> <span class="s2">&quot;) &quot;</span>
+            <span class="k">for</span> <span class="n">aaa</span> <span class="ow">in</span> <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">aaa</span> <span class="o">==</span> <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">now_string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;q[</span><span class="si">{</span><span class="n">aaa</span><span class="si">}</span><span class="s2">]&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">now_string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;,q[</span><span class="si">{</span><span class="n">aaa</span><span class="si">}</span><span class="s2">]&quot;</span>
+            <span class="k">for</span> <span class="n">aaa</span> <span class="ow">in</span> <span class="n">it</span><span class="o">.</span><span class="n">get_control_index_list</span><span class="p">():</span>
+                <span class="n">now_string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;,q[</span><span class="si">{</span><span class="n">aaa</span><span class="si">}</span><span class="s2">]&quot;</span>
+            <span class="n">now_string</span> <span class="o">+=</span> <span class="s2">&quot;;&quot;</span>
+            <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">now_string</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;unknown gate:&quot;</span> <span class="o">+</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unknown gate:&quot;</span> <span class="o">+</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+        <span class="c1"># get_matrix が効かないゲートの対応</span>
+        <span class="c1"># 1qubitのDenseMatrixはu3ゲートに直すべきだが、やってない</span>
+
+    <span class="k">return</span> <span class="n">out_strs</span></div>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  (0.707107,0)          (0,0) (-0,-0.707107)          (0,0)</span>
+<span class="sd">         (0,0)   (0.707107,0)          (0,0)   (0,0.707107)</span>
+<span class="sd">(-0,-0.707107)          (0,0)   (0.707107,0)          (0,0)</span>
+<span class="sd">         (0,0)   (0,0.707107)          (0,0)   (0.707107,0)</span>
+
+<span class="sd">DenseMatrix(2,1,0.707107,0,0,0,-0,-0.707107,0,0,0,0,0.707107,0,0,0,0,0.707107,-0,-0.707107,0,0,0.707107,0,0,0,0,0,0,0.707107,0,0,0.707107,0,1) q[0],q[1],q[2];</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="QASM_to_qulacs"><a class="viewcode-back" href="../../../ouqu_tp.internal.QASMtoqulacs.html#ouqu_tp.internal.QASMtoqulacs.QASM_to_qulacs">[docs]</a><span class="k">def</span> <span class="nf">QASM_to_qulacs</span><span class="p">(</span><span class="n">input_strs</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">QuantumCircuit</span><span class="p">:</span>
+    <span class="c1"># 仕様: キュービットレジスタはq[]のやつだけにしてください cregは無し</span>
+
+    <span class="k">for</span> <span class="n">instr_moto</span> <span class="ow">in</span> <span class="n">input_strs</span><span class="p">:</span>
+        <span class="n">instr</span> <span class="o">=</span> <span class="n">instr_moto</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;qreg&quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;qreg q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;cx &quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;cx q[</span><span class="si">{:d}</span><span class="s2">],q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_CNOT_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;cz &quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;cz q[</span><span class="si">{:d}</span><span class="s2">],q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_CZ_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;swap&quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;swap q[</span><span class="si">{:d}</span><span class="s2">],q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_SWAP_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;id &quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;id q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">Identity</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;x &quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;x q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_X_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;y &quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;y q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_Y_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;z &quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;z q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_Z_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;h&quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;h q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_H_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;s &quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;s q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_S_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;sdg &quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;sdg q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_Sdag_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;t &quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;t q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_T_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;tdg &quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;tdg q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_Tdag_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;rx&quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;rx(</span><span class="si">{:g}</span><span class="s2">) q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_RX_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ry&quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ry(</span><span class="si">{:g}</span><span class="s2">) q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_RY_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;rz&quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;rz(</span><span class="si">{:g}</span><span class="s2">) q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_RZ_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;p&quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;p(</span><span class="si">{:g}</span><span class="s2">) q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_U1_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;u1&quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;u1(</span><span class="si">{:g}</span><span class="s2">) q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_U1_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;u2&quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;u2(</span><span class="si">{:g}</span><span class="s2">,</span><span class="si">{:g}</span><span class="s2">) q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_U1_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;u3&quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;u3(</span><span class="si">{:g}</span><span class="s2">,</span><span class="si">{:g}</span><span class="s2">,</span><span class="si">{:g}</span><span class="s2">) q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_U3_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ary</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;u&quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;u(</span><span class="si">{:g}</span><span class="s2">,</span><span class="si">{:g}</span><span class="s2">,</span><span class="si">{:g}</span><span class="s2">) q[</span><span class="si">{:d}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_U3_gate</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ary</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">11</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;densematrix&quot;</span><span class="p">:</span>
+            <span class="n">ary</span> <span class="o">=</span> <span class="n">search</span><span class="p">(</span><span class="s2">&quot;densematrix(</span><span class="si">{:d}</span><span class="s2">,</span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="c1"># print(ary)</span>
+            <span class="n">parsestr</span> <span class="o">=</span> <span class="s2">&quot;densematrix(</span><span class="si">{:d}</span><span class="s2">,</span><span class="si">{:d}</span><span class="s2">&quot;</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span> <span class="o">**</span> <span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">parsestr</span> <span class="o">+=</span> <span class="s2">&quot;,</span><span class="si">{:g}</span><span class="s2">,</span><span class="si">{:g}</span><span class="s2">&quot;</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">parsestr</span> <span class="o">+=</span> <span class="s2">&quot;,</span><span class="si">{:d}</span><span class="s2">&quot;</span>
+            <span class="n">parsestr</span> <span class="o">+=</span> <span class="s2">&quot;) q[</span><span class="si">{:d}</span><span class="s2">]&quot;</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">parsestr</span> <span class="o">+=</span> <span class="s2">&quot;,q[</span><span class="si">{:d}</span><span class="s2">]&quot;</span>
+            <span class="n">parsestr</span> <span class="o">+=</span> <span class="s2">&quot;;&quot;</span>
+            <span class="c1"># print(parsestr)</span>
+            <span class="n">deary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">parsestr</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
+            <span class="c1"># print(deary)</span>
+            <span class="n">gate_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span> <span class="o">**</span> <span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;complex&quot;</span><span class="p">)</span>
+            <span class="n">bas</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                    <span class="n">gate_mat</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">deary</span><span class="p">[</span><span class="n">bas</span><span class="p">]</span> <span class="o">+</span> <span class="n">deary</span><span class="p">[</span><span class="n">bas</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.0</span><span class="n">j</span>
+                    <span class="n">bas</span> <span class="o">+=</span> <span class="mi">2</span>
+            <span class="n">control_values</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">control_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">deary</span><span class="p">[</span><span class="n">bas</span><span class="p">])</span>
+                <span class="n">bas</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">terget_indexes</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">terget_indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">deary</span><span class="p">[</span><span class="n">bas</span><span class="p">])</span>
+                <span class="n">bas</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">dense_gate</span> <span class="o">=</span> <span class="n">DenseMatrix</span><span class="p">(</span><span class="n">terget_indexes</span><span class="p">,</span> <span class="n">gate_mat</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">control_index</span> <span class="o">=</span> <span class="n">deary</span><span class="p">[</span><span class="n">bas</span><span class="p">]</span>
+                <span class="n">bas</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">dense_gate</span><span class="o">.</span><span class="n">add_control_qubit</span><span class="p">(</span><span class="n">control_index</span><span class="p">,</span> <span class="n">control_values</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">cir</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">dense_gate</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cir</span></div>
+
+
+<div class="viewcode-block" id="state_to_strs"><a class="viewcode-back" href="../../../ouqu_tp.internal.QASMtoqulacs.html#ouqu_tp.internal.QASMtoqulacs.state_to_strs">[docs]</a><span class="k">def</span> <span class="nf">state_to_strs</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">QuantumState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="n">state</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="strs_to_state"><a class="viewcode-back" href="../../../ouqu_tp.internal.QASMtoqulacs.html#ouqu_tp.internal.QASMtoqulacs.strs_to_state">[docs]</a><span class="k">def</span> <span class="nf">strs_to_state</span><span class="p">(</span><span class="n">strs</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">QuantumState</span><span class="p">:</span>
+    <span class="n">qubit</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot; * Qubit Count : </span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">strs</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">Dim</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">qubit</span>
+    <span class="n">state_vec</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">complex</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span> <span class="o">+</span> <span class="mf">0.0</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">Dim</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Dim</span><span class="p">):</span>
+        <span class="n">ary</span> <span class="o">=</span> <span class="n">search</span><span class="p">(</span><span class="s2">&quot;(</span><span class="si">{:g}</span><span class="s2">,</span><span class="si">{:g}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">strs</span><span class="p">[</span><span class="mi">4</span> <span class="o">+</span> <span class="n">i</span><span class="p">])</span>
+        <span class="n">state_vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.0</span><span class="n">j</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">QuantumState</span><span class="p">(</span><span class="n">qubit</span><span class="p">)</span>
+    <span class="n">state</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">state_vec</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">state</span></div>
+</pre></div>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Qulacs-Osaka<br/>
+        
+            &copy; Copyright 2021, Qulacs-Osaka.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

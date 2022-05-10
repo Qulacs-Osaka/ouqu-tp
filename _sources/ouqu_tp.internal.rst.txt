@@ -7,6 +7,7 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
+   ouqu_tp.internal.QASMtoqulacs
    ouqu_tp.internal.auto_noise
    ouqu_tp.internal.debug
    ouqu_tp.internal.getval
