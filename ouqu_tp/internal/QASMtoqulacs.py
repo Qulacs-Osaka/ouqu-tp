@@ -135,80 +135,82 @@ def QASM_to_qulacs(
     input_strs: typing.List[str], *, remap_remove: bool = False
 ) -> QuantumCircuit:
     # 仕様: キュービットレジスタはq[]のやつだけにしてください cregは無し
+
     mapping: List[int] = []
 
     for instr_moto in input_strs:
-        instr = instr_moto.lower().strip()
+        instr = instr_moto.lower().strip().replace(" ", "").replace("\t", "")
+        # 全部小文字にして、前後の改行を削除、　すべての空白とタブを削除した状態でマッチングします
         if instr[0:4] == "qreg":
-            ary = parse("qreg q[{:d}];", instr)
+            ary = parse("qregq[{:d}];", instr)
             cir = QuantumCircuit(ary[0])
             if len(mapping) == 0:
                 mapping = list(range(ary[0]))
-        elif instr[0:3] == "cx ":
-            ary = parse("cx q[{:d}],q[{:d}];", instr)
+        elif instr[0:2] == "cx":
+            ary = parse("cxq[{:d}],q[{:d}];", instr)
             cir.add_CNOT_gate(mapping[ary[0]], mapping[ary[1]])
-        elif instr[0:3] == "cz ":
-            ary = parse("cz q[{:d}],q[{:d}];", instr)
+        elif instr[0:2] == "cz":
+            ary = parse("czq[{:d}],q[{:d}];", instr)
             cir.add_CZ_gate(mapping[ary[0]], mapping[ary[1]])
         elif instr[0:4] == "swap":
-            ary = parse("swap q[{:d}],q[{:d}];", instr)
+            ary = parse("swapq[{:d}],q[{:d}];", instr)
             cir.add_SWAP_gate(mapping[ary[0]], mapping[ary[1]])
-        elif instr[0:3] == "id ":
-            ary = parse("id q[{:d}];", instr)
+        elif instr[0:2] == "id":
+            ary = parse("idq[{:d}];", instr)
             cir.add_gate(Identity(mapping[ary[0]]))
-        elif instr[0:2] == "x ":
-            ary = parse("x q[{:d}];", instr)
+        elif instr[0:2] == "xq":
+            ary = parse("xq[{:d}];", instr)
             cir.add_X_gate(mapping[ary[0]])
-        elif instr[0:2] == "y ":
-            ary = parse("y q[{:d}];", instr)
+        elif instr[0:2] == "yq":
+            ary = parse("yq[{:d}];", instr)
             cir.add_Y_gate(mapping[ary[0]])
-        elif instr[0:2] == "z ":
-            ary = parse("z q[{:d}];", instr)
+        elif instr[0:2] == "zq":
+            ary = parse("zq[{:d}];", instr)
             cir.add_Z_gate(mapping[ary[0]])
-        elif instr[0:1] == "h":
-            ary = parse("h q[{:d}];", instr)
+        elif instr[0:2] == "hq":
+            ary = parse("hq[{:d}];", instr)
             cir.add_H_gate(mapping[ary[0]])
-        elif instr[0:2] == "s ":
-            ary = parse("s q[{:d}];", instr)
+        elif instr[0:2] == "sq":
+            ary = parse("sq[{:d}];", instr)
             cir.add_S_gate(mapping[ary[0]])
-        elif instr[0:4] == "sdg ":
-            ary = parse("sdg q[{:d}];", instr)
+        elif instr[0:4] == "sdgq":
+            ary = parse("sdgq[{:d}];", instr)
             cir.add_Sdag_gate(mapping[ary[0]])
-        elif instr[0:2] == "t ":
-            ary = parse("t q[{:d}];", instr)
+        elif instr[0:2] == "tq":
+            ary = parse("tq[{:d}];", instr)
             cir.add_T_gate(mapping[ary[0]])
-        elif instr[0:4] == "tdg ":
-            ary = parse("tdg q[{:d}];", instr)
+        elif instr[0:4] == "tdgq":
+            ary = parse("tdgq[{:d}];", instr)
             cir.add_Tdag_gate(mapping[ary[0]])
         elif instr[0:2] == "rx":
-            ary = parse("rx({:g}) q[{:d}];", instr)
+            ary = parse("rx({:g})q[{:d}];", instr)
             cir.add_RX_gate(mapping[ary[1]], -ary[0])
         elif instr[0:2] == "ry":
-            ary = parse("ry({:g}) q[{:d}];", instr)
+            ary = parse("ry({:g})q[{:d}];", instr)
             cir.add_RY_gate(mapping[ary[1]], -ary[0])
         elif instr[0:2] == "rz":
-            ary = parse("rz({:g}) q[{:d}];", instr)
+            ary = parse("rz({:g})q[{:d}];", instr)
             cir.add_RZ_gate(mapping[ary[1]], -ary[0])
         elif instr[0:1] == "p":
-            ary = parse("p({:g}) q[{:d}];", instr)
+            ary = parse("p({:g})q[{:d}];", instr)
             cir.add_U1_gate(mapping[ary[1]], ary[0])
         elif instr[0:2] == "u1":
-            ary = parse("u1({:g}) q[{:d}];", instr)
+            ary = parse("u1({:g})q[{:d}];", instr)
             cir.add_U1_gate(mapping[ary[1]], ary[0])
         elif instr[0:2] == "u2":
-            ary = parse("u2({:g},{:g}) q[{:d}];", instr)
+            ary = parse("u2({:g},{:g})q[{:d}];", instr)
             cir.add_U2_gate(mapping[ary[2]], ary[0], ary[1])
         elif instr[0:2] == "u3":
-            ary = parse("u3({:g},{:g},{:g}) q[{:d}];", instr)
+            ary = parse("u3({:g},{:g},{:g})q[{:d}];", instr)
             cir.add_U3_gate(mapping[ary[3]], ary[0], ary[1], ary[2])
         elif instr[0:1] == "u":
-            ary = parse("u({:g},{:g},{:g}) q[{:d}];", instr)
+            ary = parse("u({:g},{:g},{:g})q[{:d}];", instr)
             cir.add_U3_gate(mapping[ary[3]], ary[0], ary[1], ary[2])
-        elif instr[0:5] == "cres ":
-            ary = parse("CRes q[{:d}],q[{:d}];", instr)
+        elif instr[0:5] == "cresq":
+            ary = parse("CResq[{:d}],q[{:d}];", instr)
             cir.add_gate(CRes(mapping[ary[0]], mapping[ary[1]]))
-        elif instr[0:8] == "cresdag ":
-            ary = parse("CResdag q[{:d}],q[{:d}];", instr)
+        elif instr[0:8] == "cresdagq":
+            ary = parse("CResdagq[{:d}],q[{:d}];", instr)
             cir.add_gate(CResdag(mapping[ary[0]], mapping[ary[1]]))
         elif instr[0:11] == "densematrix":
             ary = search("densematrix({:d},{:d}", instr)
@@ -217,7 +219,7 @@ def QASM_to_qulacs(
                 parsestr += ",{:g},{:g}"
             for i in range(ary[1]):
                 parsestr += ",{:d}"
-            parsestr += ") q[{:d}]"
+            parsestr += ")q[{:d}]"
             for i in range(ary[0] + ary[1] - 1):
                 parsestr += ",q[{:d}]"
             parsestr += ";"

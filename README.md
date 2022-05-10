@@ -325,6 +325,8 @@ p2 は、2 ビットの量子ゲートのノイズの確率で、 コンパイ�
 ノイズが入るのは、「コンパイルされた回路上」であることに注意してください。
 例えば、手元で 2qubit gete 一つでも、コンパイルされたら 2qubit gate+1qubit gate2 つ みたいになることがあります。
 
+それを防ぐためには、後述するオプション「--direct-qasm」を使うという方法があります。詳しくはそちらを見てく打差い
+
 pm は、状態測定ノイズの確率で、 回路の終わりに、qulacs の DepolarizingNoise が入ります。
 
 pp は、初期状態ノイズの確率で、 回路の始めに、qulacs の DepolarizingNoise が入ります。
@@ -349,6 +351,35 @@ ouqu-tp noisy getval --input-qasm-file=sample/input.qasm --input-openfermion-fil
 
 ouqu-tp noisy sampleval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt --shots=500 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
 ```
+
+
+## オプション  --direct-qasm について
+量子回路を入力するプログラム(つまり、make_Cnet以外のすべて)　に対して、オプション　 --direct-qasm が使用可能です。
+--direct-qasmを使わない場合、一度QASMファイルをstaqに渡して、解釈しやすいようにしてからouqu-tpを実行しています。
+--direct-qasmを使う場合、QASMを直接ouqu-tpに入れて回路を実行します。
+
+ただし、読めるQASMは独自拡張を含んだり、　対応していない機能があったりします。詳しくは、QASMtoqulacsのドキュメントを呼んでください。
+その場合の挙動は以下のようになります。
+
+
+### trance 
+本来はRZ,SqrtX,X,CNOT に分解するが、　渡されたQASMに2qubit以上のゲートがあった場合、そのゲートはそのまま出力される。
+1qubitのゲートならそれはRZ,SqrtX,Xに分解する機構に渡せる。
+### trance_res
+tranceした後、CNOTをCResと1qubitゲートで表すので、　同様に、qubit以上のゲートがあった場合、そのゲートはそのまま出力される。
+1qubitならRZ,SqrtX,Xになる。
+
+### trance_pulse
+1qubitでもCNOTでもCResでもないゲートが含まれている場合、エラーを出力する
+
+### ideal系
+特に問題なく渡せる。
+
+### noisy系
+2qubit以下のゲートであれば、問題なく渡せる。
+3qubit 以上のゲートに対しては、ノイズのシミュレーションをどうすればいいのかわからないので、エラーになる。
+
+また、staqを介さないことにより、ゲート表現が変わることがなくなり、渡されたQASM回路に忠実にノイズが入る。
 
 ## その他
 

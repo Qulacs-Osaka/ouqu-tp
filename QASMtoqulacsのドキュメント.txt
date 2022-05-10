@@ -1,26 +1,13 @@
 必要ライブラリ : https://github.com/r1chardj0n3s/parse
 
 
-今からやること: u,u1,u2,u3,u0ゲート対応
 重要注意事項
 
-非対応のゲートも、ゲート行列が取得できれば、DenseMatrixに変換されます。
-逆に、ゲート行列が取得不可能なゲートを含む回路は対応していません。
-DenseMatrixのcontrol_valueはすべて1にしてください。これは、qulacs 0.3.0にcontrol_valueを取得する関数がないのが原因です。
+qubit名はq　の配列で統一してください。
+ゲートを定義する機能は利用できません。
 
 QASMのゲート名は、qelib1.incで言うと、czまで対応しています。
 それ以上やりたいなら、staqを使うといいです。
-
-
-qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
-量子回路を、QASM風にします。
-
-バージョンは、OpenQASM 2.0ではなく、QulacsQASM Q.9です。
-対応するゲートは、CNOT,CZ,SWAP,I,X,Y,Z,H,S,Sdag,T,Tdag,sqrtX,sqrtXdag,RX,RY,RZ,DenseMatrixです。
-
-非対応のゲートも、ゲート行列が取得できれば、DenseMatrixに変換されます。
-DenseMatrixのcontrol_valueはすべて1にしてください。これは、qulacs 0.3.0にcontrol_valueを取得する関数がないのが原因です。
-
 
 
 QASM_to_qulacs(input_strs: typing.List[str]) -> QuantumCircuit:
@@ -43,6 +30,19 @@ DenseMatrix(2,1,0.707107,0,0,0,-0,-0.707107,0,0,0,0,0.707107,0,0,0,0,0.707107,-0
 コントロールビットはq[2]バリューは1 
 である。
 
+
+qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
+量子回路を、QASM風にします。
+
+バージョンは、OpenQASM 2.0ではなく、QulacsQASM Q.9です。
+対応するゲートは、CNOT,CZ,SWAP,I,X,Y,Z,H,S,Sdag,T,Tdag,sqrtX,sqrtXdag,RX,RY,RZ,DenseMatrixです。
+
+非対応のゲートも、ゲート行列が取得できれば、DenseMatrixに変換されます。
+DenseMatrixのcontrol_valueはすべて1にしてください。これは、qulacs 0.3.0にcontrol_valueを取得する関数がないのが原因です。
+
+非対応のゲートも、ゲート行列が取得できれば、DenseMatrixに変換されます。
+逆に、ゲート行列が取得不可能なゲートを含む回路は対応していません。
+DenseMatrixのcontrol_valueはすべて1にしてください。これは、qulacs 0.3.0にcontrol_valueを取得する関数がないのが原因です。
 
 stateのstr形式について
 
