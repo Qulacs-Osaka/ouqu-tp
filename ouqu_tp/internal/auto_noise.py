@@ -1,21 +1,21 @@
-from typing import List
-
-from qulacs import QuantumCircuit, QuantumGateBase
+from qulacs import QuantumCircuit
 from qulacs.gate import DepolarizingNoise, TwoQubitDepolarizingNoise
 
 
 def auto_noise(
-    gate_list: List[QuantumGateBase],
-    n_qubit: int,
+    inputcircuit: QuantumCircuit,
     p1: float,
     p2: float,
     pm: float,
     pp: float,
 ) -> QuantumCircuit:
+    n_qubit = inputcircuit.get_qubit_count()
     testcircuit = QuantumCircuit(n_qubit)
     for i in range(n_qubit):
         testcircuit.add_gate(DepolarizingNoise(i, pp))
-    for ingate in gate_list:
+    gate_num = inputcircuit.get_gate_count()
+    for i in range(gate_num):
+        ingate = inputcircuit.get_gate(i)
         testcircuit.add_gate(ingate)
 
         gate_index_list = (

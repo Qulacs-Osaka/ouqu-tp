@@ -27,6 +27,8 @@ def input_strings() -> typing.List[str]:
 # remap_remove = True のとき、
 # Layout (physical --> virtual)　の部分を読み取り、
 # 変数マッピングを元に戻す
+
+# 注意:old
 def str_to_gate(
     input_strs: typing.List[str], outmode: str, *, remap_remove: bool = False
 ) -> typing.Tuple[int, typing.List[qulacs.QuantumGateBase]]:
@@ -85,6 +87,7 @@ def str_to_gate(
     return (n_qubit, input_list)
 
 
+# old
 def output_gates(gates: typing.List[qulacs.QuantumGateBase]) -> None:
     # gateが直接渡されるようになった
     # print(gates)
@@ -109,6 +112,7 @@ def output_gates(gates: typing.List[qulacs.QuantumGateBase]) -> None:
     return
 
 
+# old
 def output_gates_QASMfuu(gates: typing.List[qulacs.QuantumGateBase]) -> None:
     # QASM風です
     # print("OPENQASM 2.0")

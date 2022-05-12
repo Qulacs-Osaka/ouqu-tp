@@ -1,7 +1,7 @@
 from qulacs import QuantumCircuit
 
 from ouqu_tp.internal.debug import check_circuit
-from ouqu_tp.internal.ot_io import str_to_gate
+from ouqu_tp.internal.QASMtoqulacs import QASM_to_qulacs
 from ouqu_tp.internal.tran import tran_ouqu_multi
 
 
@@ -33,6 +33,7 @@ def test_kairo_A() -> None:
     circuit.add_Tdag_gate(taiou[1])
 
     input_strs = [
+        "qreg q[7];",
         "U(1.20000004768372,2.1,0.9) q[0];",
         "U(1.5707963267949,-0.5,1.20000004768372) q[3];",
         "U(1.400000005960464,0,0) q[1];",
@@ -57,14 +58,7 @@ def test_kairo_A() -> None:
         "U(0,0,0.785398163397448) q[0];",
     ]
 
-    (n_qubit, input_list) = str_to_gate(input_strs, "notput", remap_remove=False)
-    tran_gates = tran_ouqu_multi(n_qubit, input_list)
-
-    testcircuit = QuantumCircuit(7)
-    for it in tran_gates:
-        # print(it.get_name())
-        # print(it)
-        testcircuit.add_gate(it)
-
+    testcircuit = QASM_to_qulacs(input_strs, remap_remove=False)
+    testcircuit = tran_ouqu_multi(testcircuit)
     # print(testcircuit)
     check_circuit(circuit, testcircuit)
