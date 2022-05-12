@@ -325,6 +325,8 @@
 <span class="c1"># remap_remove = True のとき、</span>
 <span class="c1"># Layout (physical --&gt; virtual)　の部分を読み取り、</span>
 <span class="c1"># 変数マッピングを元に戻す</span>
+
+<span class="c1"># 注意:old</span>
 <div class="viewcode-block" id="str_to_gate"><a class="viewcode-back" href="../../../ouqu_tp.internal.ot_io.html#ouqu_tp.internal.ot_io.str_to_gate">[docs]</a><span class="k">def</span> <span class="nf">str_to_gate</span><span class="p">(</span>
     <span class="n">input_strs</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">outmode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">remap_remove</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">qulacs</span><span class="o">.</span><span class="n">QuantumGateBase</span><span class="p">]]:</span>
@@ -383,6 +385,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">input_list</span><span class="p">)</span></div>
 
 
+<span class="c1"># old</span>
 <div class="viewcode-block" id="output_gates"><a class="viewcode-back" href="../../../ouqu_tp.internal.ot_io.html#ouqu_tp.internal.ot_io.output_gates">[docs]</a><span class="k">def</span> <span class="nf">output_gates</span><span class="p">(</span><span class="n">gates</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">qulacs</span><span class="o">.</span><span class="n">QuantumGateBase</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="c1"># gateが直接渡されるようになった</span>
     <span class="c1"># print(gates)</span>
@@ -407,6 +410,7 @@
     <span class="k">return</span></div>
 
 
+<span class="c1"># old</span>
 <div class="viewcode-block" id="output_gates_QASMfuu"><a class="viewcode-back" href="../../../ouqu_tp.internal.ot_io.html#ouqu_tp.internal.ot_io.output_gates_QASMfuu">[docs]</a><span class="k">def</span> <span class="nf">output_gates_QASMfuu</span><span class="p">(</span><span class="n">gates</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">qulacs</span><span class="o">.</span><span class="n">QuantumGateBase</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="c1"># QASM風です</span>
     <span class="c1"># print(&quot;OPENQASM 2.0&quot;)</span>

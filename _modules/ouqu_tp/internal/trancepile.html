@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ouqu_tp.internal.debug &#8212; ouqu_tp  documentation</title>
+    <title>ouqu_tp.internal.trancepile &#8212; ouqu_tp  documentation</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
   <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -295,25 +295,42 @@
         
               <div>
                 
-  <h1>Source code for ouqu_tp.internal.debug</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">qulacs</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">QuantumState</span>
-<span class="kn">from</span> <span class="nn">qulacs.state</span> <span class="kn">import</span> <span class="n">inner_product</span>
+  <h1>Source code for ouqu_tp.internal.trancepile</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy.typing</span> <span class="k">as</span> <span class="nn">npt</span>
+
+<span class="kn">from</span> <span class="nn">ouqu_tp.internal.make_Cnet</span> <span class="kn">import</span> <span class="n">get_connect</span>
+<span class="kn">from</span> <span class="nn">ouqu_tp.internal.QASMtoqulacs</span> <span class="kn">import</span> <span class="n">QASM_to_qulacs</span><span class="p">,</span> <span class="n">qulacs_to_QASM</span>
+<span class="kn">from</span> <span class="nn">ouqu_tp.internal.tran</span> <span class="kn">import</span> <span class="n">CNOT_to_CRes</span><span class="p">,</span> <span class="n">tran_ouqu_multi</span><span class="p">,</span> <span class="n">tran_to_pulse</span>
 
 
-<div class="viewcode-block" id="check_circuit"><a class="viewcode-back" href="../../../ouqu_tp.internal.debug.html#ouqu_tp.internal.debug.check_circuit">[docs]</a><span class="k">def</span> <span class="nf">check_circuit</span><span class="p">(</span>
-    <span class="n">cirA</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">cirB</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">ok_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.999</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="c1"># ランダムなstateで6回試して、二つのcircuitが同じものかどうか確かめます。</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
-        <span class="n">stateA</span> <span class="o">=</span> <span class="n">QuantumState</span><span class="p">(</span><span class="n">cirA</span><span class="o">.</span><span class="n">get_qubit_count</span><span class="p">())</span>
-        <span class="n">stateA</span><span class="o">.</span><span class="n">set_Haar_random_state</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-        <span class="n">stateB</span> <span class="o">=</span> <span class="n">stateA</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<div class="viewcode-block" id="trance_do"><a class="viewcode-back" href="../../../ouqu_tp.internal.trancepile.html#ouqu_tp.internal.trancepile.trance_do">[docs]</a><span class="k">def</span> <span class="nf">trance_do</span><span class="p">(</span><span class="n">input_strs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">mtocircuit</span> <span class="o">=</span> <span class="n">QASM_to_qulacs</span><span class="p">(</span><span class="n">input_strs</span><span class="p">,</span> <span class="n">remap_remove</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">trancircuit</span> <span class="o">=</span> <span class="n">tran_ouqu_multi</span><span class="p">(</span><span class="n">mtocircuit</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">qulacs_to_QASM</span><span class="p">(</span><span class="n">trancircuit</span><span class="p">)</span></div>
 
-        <span class="n">cirA</span><span class="o">.</span><span class="n">update_quantum_state</span><span class="p">(</span><span class="n">stateA</span><span class="p">)</span>
-        <span class="n">cirB</span><span class="o">.</span><span class="n">update_quantum_state</span><span class="p">(</span><span class="n">stateB</span><span class="p">)</span>
 
-        <span class="k">assert</span> <span class="nb">abs</span><span class="p">(</span><span class="n">inner_product</span><span class="p">(</span><span class="n">stateA</span><span class="p">,</span> <span class="n">stateB</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">ok_rate</span>
-    <span class="k">return</span></div>
+<div class="viewcode-block" id="trance_res_do"><a class="viewcode-back" href="../../../ouqu_tp.internal.trancepile.html#ouqu_tp.internal.trancepile.trance_res_do">[docs]</a><span class="k">def</span> <span class="nf">trance_res_do</span><span class="p">(</span><span class="n">input_strs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">mtocircuit</span> <span class="o">=</span> <span class="n">QASM_to_qulacs</span><span class="p">(</span><span class="n">input_strs</span><span class="p">,</span> <span class="n">remap_remove</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">mtocircuit</span> <span class="o">=</span> <span class="n">CNOT_to_CRes</span><span class="p">(</span><span class="n">mtocircuit</span><span class="p">)</span>
+    <span class="n">trancircuit</span> <span class="o">=</span> <span class="n">tran_ouqu_multi</span><span class="p">(</span><span class="n">mtocircuit</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">qulacs_to_QASM</span><span class="p">(</span><span class="n">trancircuit</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="trance_pulse_do"><a class="viewcode-back" href="../../../ouqu_tp.internal.trancepile.html#ouqu_tp.internal.trancepile.trance_pulse_do">[docs]</a><span class="k">def</span> <span class="nf">trance_pulse_do</span><span class="p">(</span>
+    <span class="n">input_strs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">Cnet_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">OZ</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">OX</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">ORes</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">mergen</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+    <span class="n">mtocircuit</span> <span class="o">=</span> <span class="n">QASM_to_qulacs</span><span class="p">(</span><span class="n">input_strs</span><span class="p">,</span> <span class="n">remap_remove</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">can_gate</span> <span class="o">=</span> <span class="n">get_connect</span><span class="p">(</span><span class="n">Cnet_list</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tran_to_pulse</span><span class="p">(</span><span class="n">mtocircuit</span><span class="p">,</span> <span class="n">can_gate</span><span class="p">,</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">OZ</span><span class="p">,</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">OX</span><span class="p">,</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">ORes</span><span class="p">,</span> <span class="n">mergen</span><span class="p">)</span></div>
 </pre></div>
 
               </div>

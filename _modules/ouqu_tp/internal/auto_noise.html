@@ -296,24 +296,24 @@
               <div>
                 
   <h1>Source code for ouqu_tp.internal.auto_noise</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
-
-<span class="kn">from</span> <span class="nn">qulacs</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">QuantumGateBase</span>
+<span></span><span class="kn">from</span> <span class="nn">qulacs</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span>
 <span class="kn">from</span> <span class="nn">qulacs.gate</span> <span class="kn">import</span> <span class="n">DepolarizingNoise</span><span class="p">,</span> <span class="n">TwoQubitDepolarizingNoise</span>
 
 
 <div class="viewcode-block" id="auto_noise"><a class="viewcode-back" href="../../../ouqu_tp.internal.auto_noise.html#ouqu_tp.internal.auto_noise.auto_noise">[docs]</a><span class="k">def</span> <span class="nf">auto_noise</span><span class="p">(</span>
-    <span class="n">gate_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">QuantumGateBase</span><span class="p">],</span>
-    <span class="n">n_qubit</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">inputcircuit</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span>
     <span class="n">p1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">p2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">pm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">pp</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuantumCircuit</span><span class="p">:</span>
+    <span class="n">n_qubit</span> <span class="o">=</span> <span class="n">inputcircuit</span><span class="o">.</span><span class="n">get_qubit_count</span><span class="p">()</span>
     <span class="n">testcircuit</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">):</span>
         <span class="n">testcircuit</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">DepolarizingNoise</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">pp</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">ingate</span> <span class="ow">in</span> <span class="n">gate_list</span><span class="p">:</span>
+    <span class="n">gate_num</span> <span class="o">=</span> <span class="n">inputcircuit</span><span class="o">.</span><span class="n">get_gate_count</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">gate_num</span><span class="p">):</span>
+        <span class="n">ingate</span> <span class="o">=</span> <span class="n">inputcircuit</span><span class="o">.</span><span class="n">get_gate</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
         <span class="n">testcircuit</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">ingate</span><span class="p">)</span>
 
         <span class="n">gate_index_list</span> <span class="o">=</span> <span class="p">(</span>
