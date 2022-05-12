@@ -22,10 +22,10 @@ def tran_ouqu_single(
 
     if len(input_gate.get_target_index_list()) != 1:
         logger.error("input gate is not single")
-        return []
+        raise RuntimeError("input gate is not single")
     if len(input_gate.get_control_index_list()) != 0:
         logger.error("input gate have control qubit")
-        return []
+        raise RuntimeError("input gate have control qubit")
     matrix = input_gate.get_matrix()
     qubit = input_gate.get_target_index_list()[0]
 
@@ -233,6 +233,7 @@ def tran_to_pulse(
         else:
             logger.error("this gate is not (RZ,sx,x,CRes)")
             logger.error(ingate)
+            raise RuntimeError("this gate is not (RZ,sx,x,CRes)")
     for aaa in pulse_comp:
         logger.debug(aaa)
     T = np.amax(saigo_zikan)
