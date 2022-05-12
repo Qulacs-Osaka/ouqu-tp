@@ -36,12 +36,12 @@ def trance_call(
         .splitlines()
     )
     out_QASM = trance_do(cpl_qasm)
-    for aaa in cpl_qasm:
-        if aaa[0:2] == "//":
-            print(aaa)
+    for cpl_qasm_comment_line in cpl_qasm:
+        if cpl_qasm_comment_line[0:2] == "//":
+            print(cpl_qasm_comment_line)
             # コメントの垂れ流しを行います
-    for aaa in out_QASM:
-        print(aaa)
+    for QASM_line in out_QASM:
+        print(QASM_line)
 
 
 @app.command("trance_res")
@@ -66,12 +66,12 @@ def trance_res_call(
         .splitlines()
     )
     out_QASM = trance_res_do(cpl_qasm)
-    for aaa in cpl_qasm:
-        if aaa[0:2] == "//":
-            print(aaa)
+    for cpl_qasm_comment_line in cpl_qasm:
+        if cpl_qasm_comment_line[0:2] == "//":
+            print(cpl_qasm_comment_line)
             # コメントの垂れ流しを行います
-    for aaa in out_QASM:
-        print(aaa)
+    for QASM_line in out_QASM:
+        print(QASM_line)
 
 
 @app.command("trance_pulse")
@@ -104,9 +104,9 @@ def trance_pulse_call(
     Cnet_list = ff.readlines()
     result_array = trance_pulse_do(cpl_qasm, Cnet_list, dt, OZ, OX, ORes, 0)
     np.set_printoptions(threshold=99999999)
-    for aaa in cpl_qasm:
-        if aaa[0:2] == "//":
-            print(aaa)
+    for cpl_qasm_comment_line in cpl_qasm:
+        if cpl_qasm_comment_line[0:2] == "//":
+            print(cpl_qasm_comment_line)
             # コメントの垂れ流しを行います
     print(result_array)
 
