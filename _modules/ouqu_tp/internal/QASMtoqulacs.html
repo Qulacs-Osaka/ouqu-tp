@@ -298,6 +298,7 @@
   <h1>Source code for ouqu_tp.internal.QASMtoqulacs</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">from</span> <span class="nn">cmath</span> <span class="kn">import</span> <span class="n">phase</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">NullHandler</span><span class="p">,</span> <span class="n">getLogger</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -311,6 +312,9 @@
     <span class="n">check_is_CRes</span><span class="p">,</span>
     <span class="n">check_is_CResdag</span><span class="p">,</span>
 <span class="p">)</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">NullHandler</span><span class="p">())</span>
 
 
 <div class="viewcode-block" id="can_get_dence"><a class="viewcode-back" href="../../../ouqu_tp.internal.QASMtoqulacs.html#ouqu_tp.internal.QASMtoqulacs.can_get_dence">[docs]</a><span class="k">def</span> <span class="nf">can_get_dence</span><span class="p">(</span><span class="n">gate</span><span class="p">:</span> <span class="n">QuantumGateBase</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -330,7 +334,6 @@
     <span class="n">out_strs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;QulacsQASM Q.9&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;qreg q[</span><span class="si">{</span><span class="n">cir</span><span class="o">.</span><span class="n">get_qubit_count</span><span class="p">()</span><span class="si">}</span><span class="s2">];&quot;</span><span class="p">]</span>
 
     <span class="k">for</span> <span class="n">kai</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cir</span><span class="o">.</span><span class="n">get_gate_count</span><span class="p">()):</span>
-        <span class="c1"># #print(it.get_name())</span>
         <span class="n">it</span> <span class="o">=</span> <span class="n">cir</span><span class="o">.</span><span class="n">get_gate</span><span class="p">(</span><span class="n">kai</span><span class="p">)</span>
         <span class="n">clis</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">get_control_index_list</span><span class="p">()</span>
         <span class="n">tlis</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()</span>
@@ -408,7 +411,7 @@
             <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">now_string</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">out_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;unknown gate:&quot;</span> <span class="o">+</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unknown gate:&quot;</span> <span class="o">+</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;unknown gate:&quot;</span> <span class="o">+</span> <span class="n">it</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
         <span class="c1"># get_matrix が効かないゲートの対応</span>
         <span class="c1"># 1qubitのDenseMatrixはu3ゲートに直すべきだが、やってない</span>
 
@@ -507,7 +510,6 @@
             <span class="n">cir</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">CResdag</span><span class="p">(</span><span class="n">mapping</span><span class="p">[</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">mapping</span><span class="p">[</span><span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">]]))</span>
         <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">11</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;densematrix&quot;</span><span class="p">:</span>
             <span class="n">ary</span> <span class="o">=</span> <span class="n">search</span><span class="p">(</span><span class="s2">&quot;densematrix(</span><span class="si">{:d}</span><span class="s2">,</span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
-            <span class="c1"># print(ary)</span>
             <span class="n">parsestr</span> <span class="o">=</span> <span class="s2">&quot;densematrix(</span><span class="si">{:d}</span><span class="s2">,</span><span class="si">{:d}</span><span class="s2">&quot;</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span> <span class="o">**</span> <span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
                 <span class="n">parsestr</span> <span class="o">+=</span> <span class="s2">&quot;,</span><span class="si">{:g}</span><span class="s2">,</span><span class="si">{:g}</span><span class="s2">&quot;</span>
@@ -517,9 +519,7 @@
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">ary</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="n">parsestr</span> <span class="o">+=</span> <span class="s2">&quot;,q[</span><span class="si">{:d}</span><span class="s2">]&quot;</span>
             <span class="n">parsestr</span> <span class="o">+=</span> <span class="s2">&quot;;&quot;</span>
-            <span class="c1"># print(parsestr)</span>
             <span class="n">deary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">parsestr</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
-            <span class="c1"># print(deary)</span>
             <span class="n">gate_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span> <span class="o">**</span> <span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;complex&quot;</span><span class="p">)</span>
             <span class="n">bas</span> <span class="o">=</span> <span class="mi">2</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">ary</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>

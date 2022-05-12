@@ -299,6 +299,7 @@
 <span></span><span class="kn">import</span> <span class="nn">cmath</span>
 <span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">from</span> <span class="nn">cmath</span> <span class="kn">import</span> <span class="n">atan</span><span class="p">,</span> <span class="n">isclose</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sqrt</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">NullHandler</span><span class="p">,</span> <span class="n">getLogger</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -307,20 +308,22 @@
 <span class="kn">from</span> <span class="nn">qulacs</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span>
 <span class="kn">from</span> <span class="nn">qulacs.gate</span> <span class="kn">import</span> <span class="n">RX</span><span class="p">,</span> <span class="n">RZ</span><span class="p">,</span> <span class="n">DenseMatrix</span><span class="p">,</span> <span class="n">Identity</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">merge</span><span class="p">,</span> <span class="n">sqrtX</span>
 
+<span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">NullHandler</span><span class="p">())</span>
+
 
 <div class="viewcode-block" id="tran_ouqu_single"><a class="viewcode-back" href="../../../ouqu_tp.internal.tran.html#ouqu_tp.internal.tran.tran_ouqu_single">[docs]</a><span class="k">def</span> <span class="nf">tran_ouqu_single</span><span class="p">(</span>
     <span class="n">input_gate</span><span class="p">:</span> <span class="n">qulacs</span><span class="o">.</span><span class="n">QuantumGateBase</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">qulacs</span><span class="o">.</span><span class="n">QuantumGateBase</span><span class="p">]:</span>
-    <span class="c1"># print(input_gate)</span>
     <span class="c1"># 1qubitのDenseMatrixゲートを入力し、 阪大のList[gate]の形に合わせます</span>
     <span class="n">fugouZ</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_gate</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">())</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;input gate is not single&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;input gate is not single&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;input gate is not single&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_gate</span><span class="o">.</span><span class="n">get_control_index_list</span><span class="p">())</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;input gate have control qubit&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;input gate have control qubit&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;input gate have control qubit&quot;</span><span class="p">)</span>
     <span class="n">matrix</span> <span class="o">=</span> <span class="n">input_gate</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">()</span>
     <span class="n">qubit</span> <span class="o">=</span> <span class="n">input_gate</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -328,7 +331,6 @@
     <span class="c1"># Rz単騎</span>
     <span class="k">if</span> <span class="n">cmath</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">abs_tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
         <span class="n">degA</span> <span class="o">=</span> <span class="n">phase</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">fugouZ</span>
-        <span class="c1"># print(degA)</span>
         <span class="k">if</span> <span class="n">isclose</span><span class="p">(</span><span class="n">degA</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">out_gates</span>
         <span class="n">out_gates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">RZ</span><span class="p">(</span><span class="n">qubit</span><span class="p">,</span> <span class="n">degA</span><span class="p">))</span>
@@ -336,9 +338,7 @@
 
     <span class="c1"># Rz X</span>
     <span class="k">if</span> <span class="n">isclose</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">abs_tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
-
         <span class="n">degA</span> <span class="o">=</span> <span class="n">phase</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">fugouZ</span>
-        <span class="c1"># print(degA,&quot;X&quot;)</span>
         <span class="n">out_gates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">RZ</span><span class="p">(</span><span class="n">qubit</span><span class="p">,</span> <span class="n">degA</span><span class="p">))</span>
         <span class="n">out_gates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="n">qubit</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">out_gates</span>
@@ -348,7 +348,6 @@
     <span class="k">if</span> <span class="n">isclose</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="n">cmath</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">abs_tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
         <span class="n">degA</span> <span class="o">=</span> <span class="p">(</span><span class="n">phase</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">fugouZ</span>
         <span class="n">degB</span> <span class="o">=</span> <span class="p">(</span><span class="n">phase</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">fugouZ</span>
-        <span class="c1"># print(degA,degB)</span>
         <span class="n">out_gates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">RZ</span><span class="p">(</span><span class="n">qubit</span><span class="p">,</span> <span class="n">degA</span><span class="p">))</span>
         <span class="n">out_gates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sqrtX</span><span class="p">(</span><span class="n">qubit</span><span class="p">))</span>
         <span class="n">out_gates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">RZ</span><span class="p">(</span><span class="n">qubit</span><span class="p">,</span> <span class="n">degB</span><span class="p">))</span>
@@ -356,18 +355,12 @@
 
     <span class="c1"># Rz sqrtX Rz sqrtX Rz</span>
     <span class="n">adbc_mto</span> <span class="o">=</span> <span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-    <span class="c1"># print(adbc_mto)</span>
     <span class="n">adbc</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">adbc_mto</span><span class="p">)</span>
-    <span class="c1"># print(adbc)</span>
     <span class="n">degB_com</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">atan</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">adbc</span><span class="p">))</span>  <span class="c1"># 0～-π</span>
-    <span class="c1"># print(degB_com)</span>
     <span class="n">degB</span> <span class="o">=</span> <span class="n">degB_com</span><span class="o">.</span><span class="n">real</span> <span class="o">*</span> <span class="n">fugouZ</span>
     <span class="n">degA</span> <span class="o">=</span> <span class="n">phase</span><span class="p">(</span><span class="o">-</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">fugouZ</span>
     <span class="n">degC</span> <span class="o">=</span> <span class="n">phase</span><span class="p">(</span><span class="o">-</span><span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">fugouZ</span>
 
-    <span class="c1"># print(degA,degB,degC)</span>
-    <span class="c1"># print(matrix)</span>
-    <span class="c1"># print(tan(degB_com/2))</span>
     <span class="n">out_gates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">RZ</span><span class="p">(</span><span class="n">qubit</span><span class="p">,</span> <span class="n">degA</span><span class="p">))</span>
     <span class="n">out_gates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sqrtX</span><span class="p">(</span><span class="n">qubit</span><span class="p">))</span>
     <span class="n">out_gates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">RZ</span><span class="p">(</span><span class="n">qubit</span><span class="p">,</span> <span class="n">degB</span><span class="p">))</span>
@@ -486,8 +479,8 @@
 
     <span class="c1"># numpy arrayは[ゲート番号][時間]　で定義される</span>
     <span class="c1"># ゲート番号は、ZZZZZXXXXXRRRRR... のような定義をされる</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">inputcircuit</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">inputcircuit</span><span class="p">)</span>
     <span class="n">bangou</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_qubit</span><span class="p">,</span> <span class="n">n_qubit</span><span class="p">),</span> <span class="nb">int</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">):</span>
@@ -529,17 +522,18 @@
             <span class="n">target</span> <span class="o">=</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">ban</span> <span class="o">=</span> <span class="n">bangou</span><span class="p">[</span><span class="n">control</span><span class="p">][</span><span class="n">target</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">ban</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">control</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2">) gate is not in Res_list&quot;</span><span class="p">)</span>
             <span class="n">start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">saigo_zikan</span><span class="p">[</span><span class="n">target</span><span class="p">],</span> <span class="n">saigo_zikan</span><span class="p">[</span><span class="n">control</span><span class="p">])</span>
             <span class="n">pulse_kaz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="n">CResome</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
             <span class="n">pulse_comp</span><span class="p">[</span><span class="n">ban</span> <span class="o">+</span> <span class="n">n_qubit</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="n">pulse_kaz</span><span class="p">))</span>
             <span class="n">saigo_zikan</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">pulse_kaz</span> <span class="o">+</span> <span class="n">mergin</span>
             <span class="n">saigo_zikan</span><span class="p">[</span><span class="n">control</span><span class="p">]</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">pulse_kaz</span> <span class="o">+</span> <span class="n">mergin</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unknown gate &quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">ingate</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;this gate is not (RZ,sx,x,CRes)&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">ingate</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;this gate is not (RZ,sx,x,CRes)&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">aaa</span> <span class="ow">in</span> <span class="n">pulse_comp</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">aaa</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">aaa</span><span class="p">)</span>
     <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">saigo_zikan</span><span class="p">)</span>
     <span class="n">result_pulse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_qubit</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">Res_list</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">T</span><span class="p">)))</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">((</span><span class="n">n_qubit</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">Res_list</span><span class="p">))):</span>
@@ -552,7 +546,6 @@
             <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span> <span class="o">=</span> <span class="n">ple</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">time</span> <span class="o">+</span> <span class="n">start</span><span class="p">):</span>
                 <span class="n">result_pulse</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">omega</span>
-    <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">result_pulse</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">result_pulse</span></div>
 
 
