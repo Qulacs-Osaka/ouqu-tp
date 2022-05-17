@@ -131,6 +131,17 @@ poetry run ouqu-tp trance trance_res --input-qasm-file=sample/input.qasm --input
 
 ### trance_pulse
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
+
+dt は 1パルスあたりの時間です。
+ozはZゲートの、oxはXゲートの、oresはレゾナンスゲートの1単位時間(1パルスではない)あたりの回転角です
+
+input json file と、それのもとになる cnot net file 両方を入力して下さい
+
+出力は2次元の　numpy arrayで、[ゲート番号][時間]　で表されます。
+値が0ではないとき、回転を行うということです
+
+ゲート番号は、前から、 各qubitのZゲート、各qubitのXゲート、　各Resゲート(make_Cnetの順) の順で定義されます。ZZZXXXRRRR...
+
 ```
 poetry run ouqu-tp trance trance_pulse --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json --cnot-net-file=sample/CNOT_net.txt --dt=0.005 --oz=10 --ox=10 --ores=1
 
