@@ -33,7 +33,11 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
     # QASM風です
     #
 
-    out_strs = ["QulacsQASM Q.9", f"qreg q[{cir.get_qubit_count()}];"]
+    out_strs = [
+        "OpenQASM2.0",
+        'include "qelib1.inc";',
+        f"qreg q[{cir.get_qubit_count()}];",
+    ]
 
     for kai in range(cir.get_gate_count()):
         it = cir.get_gate(kai)

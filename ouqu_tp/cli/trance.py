@@ -1,4 +1,5 @@
 import subprocess
+import sys
 from typing import List
 
 import numpy as np
@@ -119,11 +120,14 @@ def trance_pulse_call(
     Cnet_list = ff.readlines()
     result_array = trance_pulse_do(cpl_qasm, Cnet_list, dt, OZ, OX, ORes, 0)
     np.set_printoptions(threshold=99999999)
+    """
     for cpl_qasm_comment_line in cpl_qasm:
         if cpl_qasm_comment_line[0:2] == "//":
             print(cpl_qasm_comment_line)
             # コメントの垂れ流しを行います
-    print(result_array)
+    """
+    np.savetxt(sys.stdout.buffer, result_array)
+    # savetxt で出力したかったからこうなった
 
 
 @app.command("makeCnet")
