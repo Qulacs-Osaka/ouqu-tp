@@ -34,7 +34,7 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
     #
 
     out_strs = [
-        "OpenQASM2.0",
+        "OPENQASM 2.0;",
         'include "qelib1.inc";',
         f"qreg q[{cir.get_qubit_count()}];",
     ]
