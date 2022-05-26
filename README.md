@@ -130,11 +130,36 @@ poetry run ouqu-tp trance trance_res --input-qasm-file=sample/input.qasm --input
 
 
 ### trance_pulse
+
+
+```
+poetry run ouqu-tp trance trance_pulse --input-qasm-file=入力.qasm --input-cnot-json-file=CNOT制約.json
+--cnot-net-file=CNOT制約.txt --dt=1パルスの時間 --oz=RZゲートの1単位時間での回転量 --ox=RXゲートの1単位時間での回転量 --ores=CResゲートの1単位時間での回転量
+```
+
+numpy の　array を出力します。
+出力形式はsavetxtを使っているので、　loadtxt関数を使うと読み込むことができます。
+
+1行目はすべての要素がdt の配列です。
+2行目以降が、そのパルスでゲートを作用させるかさせないかです。
+
+numpy arrayは[ゲート番号][時間]　で定義されます。
+ゲート番号は、ZZZZZXXXXXRRRRR... のような定義をされるます。
+ただし、Rは　CRes のことで、　CNOT_net.txt でのゲートの順番です。
+
 例えば、サンプルを実行する場合は以下のコマンドを実行してください。
 ```
 poetry run ouqu-tp trance trance_pulse --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json --cnot-net-file=sample/CNOT_net.txt --dt=0.005 --oz=10 --ox=10 --ores=1
-
 ```
+
+パルスの入る数は、
+RZゲートなら、 int(回転角 / (dt*oz * 2) + 0.5)
+sqrtXゲートなら、int(pi / 2 / (dt*ox * 2) + 0.5)
+CResゲートなら、int(pi / (dt * ores * 4) + 0.5)
+です。
+定義の違い? とかで半減されていた気がします
+
+
 ### make_Cnet
 ```
 # poetryの場合
