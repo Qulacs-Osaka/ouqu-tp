@@ -237,7 +237,7 @@ def tran_to_pulse(
     for aaa in pulse_comp:
         logger.debug(aaa)
     T = np.amax(saigo_zikan)
-    result_pulse = np.zeros((n_qubit * 2 + len(Res_list), int(T)))
+    result_pulse = np.zeros((n_qubit * 2 + len(Res_list) + 1, int(T)))
     for i in range((n_qubit * 2 + len(Res_list))):
         omega = RZome
         if i >= n_qubit:
@@ -247,7 +247,7 @@ def tran_to_pulse(
         for ple in pulse_comp[i]:
             (start, time) = ple
             for j in range(start, time + start):
-                result_pulse[i][j] = omega
+                result_pulse[i + 1][j] = omega
     return result_pulse
 
 
@@ -263,8 +263,8 @@ def pulse_to_circuit(
     T = len(pulse_array[0])
     for i in range(T + 1):
         for j in range(m_kaz):
-            if i < T and pulse_array[j][i] > 1e-8:
-                renzoku[j] += pulse_array[j][i]
+            if i < T and pulse_array[j + 1][i] > 1e-8:
+                renzoku[j] += pulse_array[j + 1][i]
             elif renzoku[j] > 1e-8:
                 if j < n_qubit:
                     # RZ gate
