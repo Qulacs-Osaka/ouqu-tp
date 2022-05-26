@@ -166,11 +166,16 @@ def check_is_CResdag(ingate: qulacs.QuantumGateBase) -> bool:
 def tran_to_pulse(
     inputcircuit: QuantumCircuit,
     Res_list: List[Tuple[int, int]],
-    RZome: float,
-    RXome: float,
-    CResome: float,
-    mergin: int,
+    dt: float,
+    OZ: float,
+    OX: float,
+    ORes: float,
+    mergin: int = 0,
 ) -> npt.NDArray[np.float64]:
+    RZome = dt * OZ
+    RXome = dt * OX
+    CResome = dt * ORes
+
     n_qubit = inputcircuit.get_qubit_count()
     inputcircuit = CNOT_to_CRes(inputcircuit)
     inputcircuit = tran_ouqu_multi(inputcircuit)
@@ -248,6 +253,8 @@ def tran_to_pulse(
             (start, time) = ple
             for j in range(start, time + start):
                 result_pulse[i + 1][j] = omega
+    for j in range(T):
+        result_pulse[0][j] = dt * j
     return result_pulse
 
 

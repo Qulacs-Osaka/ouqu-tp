@@ -140,7 +140,8 @@ poetry run ouqu-tp trance trance_pulse --input-qasm-file=入力.qasm --input-cno
 numpy の　array を出力します。
 出力形式はsavetxtを使っているので、　loadtxt関数を使うと読み込むことができます。
 
-1行目はすべての要素がdt の配列です。
+1行目は時間の配列です。
+[0,dt,dt*2,dt*3 ...] が入ります。
 2行目以降が、そのパルスでゲートを作用させるかさせないかです。
 
 numpy arrayは[ゲート番号][時間]　で定義されます。
