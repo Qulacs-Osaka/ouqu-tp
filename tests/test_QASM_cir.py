@@ -37,7 +37,7 @@ def test_cirQASMcir() -> None:
         [[1, 0, -1.0j, 0], [0, 1, 0, 1.0j], [-1.0j, 0, 1, 0], [0, 1.0j, 0, 1]]
     )
     dense_gate = DenseMatrix([0, 1], gate_mat / sqrt(2))
-    dense_gate.add_control_qubit(2, 1)
+    dense_gate.add_control_qubit(2, 0)
 
     circuit.add_gate(dense_gate)
     circuit.add_H_gate(0)
