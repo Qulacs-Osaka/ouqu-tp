@@ -8,15 +8,12 @@ test_gro_qiskit.py
 グローバーのQASMを出力
 |110>と|101> を返す
 
-poetry run ouqu-tp ideal simulate --input-qasm-file=sample/grover_moto.qasm --shots=20
-poetry run ouqu-tp noisy simulate --input-qasm-file=sample/grover_moto.qasm --shots=50 --p1=0.01 --p2=0.01 --pm=0.01 --pp=0.01
-poetry run ouqu-tp ideal getval --input-qasm-file=sample/grover_moto.qasm --input-openfermion-file=sample/fer_sam.txt
-poetry run ouqu-tp noisy getval --input-qasm-file=sample/grover_moto.qasm --input-openfermion-file=sample/fer_sam.txt --p1=0.01 --p2=0.01 --pm=0.01 --pp=0.01
-poetry run ouqu-tp ideal sampleval --input-qasm-file=sample/grover_moto.qasm --input-openfermion-file=sample/fer_sam.txt --shots=900
-poetry run ouqu-tp noisy sampleval --input-qasm-file=sample/grover_moto.qasm --input-openfermion-file=sample/fer_sam.txt --shots=900 --p1=0.01 --p2=0.01 --pm=0.01 --pp=0.01
 
+kasika.py 
+sample/input.qasm　と、　sample/output.qasm を読み、　グラフにする + 回路が正しいことを検出
 
-
+kasikb.py
+sample/grover_moto.qasm と sample/grover_cpl.qasm を読み、　グラフにする
 CXとRZに直したやつから、パルスシークエンスを作る。
 
 __|~~|__

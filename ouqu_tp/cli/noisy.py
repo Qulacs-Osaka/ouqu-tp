@@ -18,12 +18,18 @@ def getval_noisy_call(
     p2: float = 0,
     pm: float = 0,
     pp: float = 0,
+    direct_qasm: bool = False,
 ) -> None:
-    cpl_qasm: List[str] = (
-        subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
-        .decode()
-        .splitlines()
-    )
+    cpl_qasm: List[str]
+    if direct_qasm:
+        cpl_qasm = open(input_qasm_file, "r").readlines()
+    else:
+        cpl_qasm = (
+            subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
+            .decode()
+            .splitlines()
+        )
+
     print(getval_noise_do(cpl_qasm, input_openfermion_file, p1, p2, pm, pp))
 
 
@@ -36,12 +42,17 @@ def sampleval_noisy_call(
     p2: float = 0,
     pm: float = 0,
     pp: float = 0,
+    direct_qasm: bool = False,
 ) -> None:
-    cpl_qasm: List[str] = (
-        subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
-        .decode()
-        .splitlines()
-    )
+    cpl_qasm: List[str]
+    if direct_qasm:
+        cpl_qasm = open(input_qasm_file, "r").readlines()
+    else:
+        cpl_qasm = (
+            subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
+            .decode()
+            .splitlines()
+        )
     print(sampleval_noise_do(cpl_qasm, input_openfermion_file, shots, p1, p2, pm, pp))
 
 
@@ -53,12 +64,17 @@ def simulate_noisy_call(
     p2: float = 0,
     pm: float = 0,
     pp: float = 0,
+    direct_qasm: bool = False,
 ) -> None:
-    cpl_qasm: List[str] = (
-        subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
-        .decode()
-        .splitlines()
-    )
+    cpl_qasm: List[str]
+    if direct_qasm:
+        cpl_qasm = open(input_qasm_file, "r").readlines()
+    else:
+        cpl_qasm = (
+            subprocess.check_output(["staq", "-m", "--evaluate-all", input_qasm_file])
+            .decode()
+            .splitlines()
+        )
     (kekka, n_qubit) = simulate_noise_do(cpl_qasm, shots, p1, p2, pm, pp)
     # input_listを直接ぶち込む
     for aaaa in kekka:

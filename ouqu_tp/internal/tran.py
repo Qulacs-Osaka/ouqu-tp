@@ -166,11 +166,16 @@ def check_is_CResdag(ingate: qulacs.QuantumGateBase) -> bool:
 def tran_to_pulse(
     inputcircuit: QuantumCircuit,
     Res_list: List[Tuple[int, int]],
-    RZome: float,
-    RXome: float,
-    CResome: float,
-    mergin: int,
+    dt: float,
+    OZ: float,
+    OX: float,
+    ORes: float,
+    mergin: int = 0,
 ) -> npt.NDArray[np.float64]:
+    RZome = dt * OZ
+    RXome = dt * OX
+    CResome = dt * ORes
+
     n_qubit = inputcircuit.get_qubit_count()
     inputcircuit = CNOT_to_CRes(inputcircuit)
     inputcircuit = tran_ouqu_multi(inputcircuit)
@@ -237,7 +242,7 @@ def tran_to_pulse(
     for aaa in pulse_comp:
         logger.debug(aaa)
     T = np.amax(saigo_zikan)
-    result_pulse = np.zeros((n_qubit * 2 + len(Res_list), int(T)))
+    result_pulse = np.zeros((n_qubit * 2 + len(Res_list) + 1, int(T)))
     for i in range((n_qubit * 2 + len(Res_list))):
         omega = RZome
         if i >= n_qubit:
@@ -247,7 +252,9 @@ def tran_to_pulse(
         for ple in pulse_comp[i]:
             (start, time) = ple
             for j in range(start, time + start):
-                result_pulse[i][j] = omega
+                result_pulse[i + 1][j] = omega
+    for j in range(T):
+        result_pulse[0][j] = dt * j
     return result_pulse
 
 
@@ -263,8 +270,8 @@ def pulse_to_circuit(
     T = len(pulse_array[0])
     for i in range(T + 1):
         for j in range(m_kaz):
-            if i < T and pulse_array[j][i] > 1e-8:
-                renzoku[j] += pulse_array[j][i]
+            if i < T and pulse_array[j + 1][i] > 1e-8:
+                renzoku[j] += pulse_array[j + 1][i]
             elif renzoku[j] > 1e-8:
                 if j < n_qubit:
                     # RZ gate
