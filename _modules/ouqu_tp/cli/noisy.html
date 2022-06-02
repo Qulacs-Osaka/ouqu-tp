@@ -316,12 +316,18 @@
     <span class="n">p2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">pm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">pp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">direct_qasm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;staq&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span> <span class="n">input_qasm_file</span><span class="p">])</span>
-        <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
-        <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
-    <span class="p">)</span>
+    <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">direct_qasm</span><span class="p">:</span>
+        <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_qasm_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;staq&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span> <span class="n">input_qasm_file</span><span class="p">])</span>
+            <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+        <span class="p">)</span>
+
     <span class="nb">print</span><span class="p">(</span><span class="n">getval_noise_do</span><span class="p">(</span><span class="n">cpl_qasm</span><span class="p">,</span> <span class="n">input_openfermion_file</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">pm</span><span class="p">,</span> <span class="n">pp</span><span class="p">))</span></div>
 
 
@@ -334,12 +340,17 @@
     <span class="n">p2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">pm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">pp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">direct_qasm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;staq&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span> <span class="n">input_qasm_file</span><span class="p">])</span>
-        <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
-        <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
-    <span class="p">)</span>
+    <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">direct_qasm</span><span class="p">:</span>
+        <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_qasm_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;staq&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span> <span class="n">input_qasm_file</span><span class="p">])</span>
+            <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+        <span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">sampleval_noise_do</span><span class="p">(</span><span class="n">cpl_qasm</span><span class="p">,</span> <span class="n">input_openfermion_file</span><span class="p">,</span> <span class="n">shots</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">pm</span><span class="p">,</span> <span class="n">pp</span><span class="p">))</span></div>
 
 
@@ -351,12 +362,17 @@
     <span class="n">p2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">pm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">pp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">direct_qasm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;staq&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span> <span class="n">input_qasm_file</span><span class="p">])</span>
-        <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
-        <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
-    <span class="p">)</span>
+    <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">direct_qasm</span><span class="p">:</span>
+        <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_qasm_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;staq&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span> <span class="n">input_qasm_file</span><span class="p">])</span>
+            <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+        <span class="p">)</span>
     <span class="p">(</span><span class="n">kekka</span><span class="p">,</span> <span class="n">n_qubit</span><span class="p">)</span> <span class="o">=</span> <span class="n">simulate_noise_do</span><span class="p">(</span><span class="n">cpl_qasm</span><span class="p">,</span> <span class="n">shots</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">pm</span><span class="p">,</span> <span class="n">pp</span><span class="p">)</span>
     <span class="c1"># input_listを直接ぶち込む</span>
     <span class="k">for</span> <span class="n">aaaa</span> <span class="ow">in</span> <span class="n">kekka</span><span class="p">:</span>

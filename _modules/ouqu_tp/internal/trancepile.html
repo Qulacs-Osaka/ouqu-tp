@@ -330,7 +330,8 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
     <span class="n">mtocircuit</span> <span class="o">=</span> <span class="n">QASM_to_qulacs</span><span class="p">(</span><span class="n">input_strs</span><span class="p">,</span> <span class="n">remap_remove</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">can_gate</span> <span class="o">=</span> <span class="n">get_connect</span><span class="p">(</span><span class="n">Cnet_list</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">tran_to_pulse</span><span class="p">(</span><span class="n">mtocircuit</span><span class="p">,</span> <span class="n">can_gate</span><span class="p">,</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">OZ</span><span class="p">,</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">OX</span><span class="p">,</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">ORes</span><span class="p">,</span> <span class="n">mergen</span><span class="p">)</span></div>
+    <span class="n">result_array</span> <span class="o">=</span> <span class="n">tran_to_pulse</span><span class="p">(</span><span class="n">mtocircuit</span><span class="p">,</span> <span class="n">can_gate</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">OZ</span><span class="p">,</span> <span class="n">OX</span><span class="p">,</span> <span class="n">ORes</span><span class="p">,</span> <span class="n">mergen</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result_array</span></div>
 </pre></div>
 
               </div>

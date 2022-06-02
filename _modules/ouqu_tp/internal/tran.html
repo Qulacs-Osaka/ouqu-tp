@@ -464,11 +464,16 @@
 <div class="viewcode-block" id="tran_to_pulse"><a class="viewcode-back" href="../../../ouqu_tp.internal.tran.html#ouqu_tp.internal.tran.tran_to_pulse">[docs]</a><span class="k">def</span> <span class="nf">tran_to_pulse</span><span class="p">(</span>
     <span class="n">inputcircuit</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span>
     <span class="n">Res_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
-    <span class="n">RZome</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">RXome</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">CResome</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">mergin</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">OZ</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">OX</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">ORes</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">mergin</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+    <span class="n">RZome</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">OZ</span>
+    <span class="n">RXome</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">OX</span>
+    <span class="n">CResome</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">ORes</span>
+
     <span class="n">n_qubit</span> <span class="o">=</span> <span class="n">inputcircuit</span><span class="o">.</span><span class="n">get_qubit_count</span><span class="p">()</span>
     <span class="n">inputcircuit</span> <span class="o">=</span> <span class="n">CNOT_to_CRes</span><span class="p">(</span><span class="n">inputcircuit</span><span class="p">)</span>
     <span class="n">inputcircuit</span> <span class="o">=</span> <span class="n">tran_ouqu_multi</span><span class="p">(</span><span class="n">inputcircuit</span><span class="p">)</span>
@@ -535,7 +540,7 @@
     <span class="k">for</span> <span class="n">aaa</span> <span class="ow">in</span> <span class="n">pulse_comp</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">aaa</span><span class="p">)</span>
     <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">saigo_zikan</span><span class="p">)</span>
-    <span class="n">result_pulse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_qubit</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">Res_list</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">T</span><span class="p">)))</span>
+    <span class="n">result_pulse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_qubit</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">Res_list</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">T</span><span class="p">)))</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">((</span><span class="n">n_qubit</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">Res_list</span><span class="p">))):</span>
         <span class="n">omega</span> <span class="o">=</span> <span class="n">RZome</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">n_qubit</span><span class="p">:</span>
@@ -545,7 +550,9 @@
         <span class="k">for</span> <span class="n">ple</span> <span class="ow">in</span> <span class="n">pulse_comp</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
             <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span> <span class="o">=</span> <span class="n">ple</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">time</span> <span class="o">+</span> <span class="n">start</span><span class="p">):</span>
-                <span class="n">result_pulse</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">omega</span>
+                <span class="n">result_pulse</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">omega</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+        <span class="n">result_pulse</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">j</span>
     <span class="k">return</span> <span class="n">result_pulse</span></div>
 
 
@@ -561,8 +568,8 @@
     <span class="n">T</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pulse_array</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m_kaz</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">T</span> <span class="ow">and</span> <span class="n">pulse_array</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1e-8</span><span class="p">:</span>
-                <span class="n">renzoku</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">pulse_array</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">T</span> <span class="ow">and</span> <span class="n">pulse_array</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1e-8</span><span class="p">:</span>
+                <span class="n">renzoku</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">pulse_array</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
             <span class="k">elif</span> <span class="n">renzoku</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1e-8</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n_qubit</span><span class="p">:</span>
                     <span class="c1"># RZ gate</span>

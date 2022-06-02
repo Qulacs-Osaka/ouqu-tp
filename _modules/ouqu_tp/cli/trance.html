@@ -297,6 +297,7 @@
                 
   <h1>Source code for ouqu_tp.cli.trance</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -316,23 +317,28 @@
 <span class="k">def</span> <span class="nf">trance_call</span><span class="p">(</span>
     <span class="n">input_qasm_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
     <span class="n">input_cnot_json_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+    <span class="n">direct_qasm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
-            <span class="p">[</span>
-                <span class="s2">&quot;staq&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;-S&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;-O2&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;-d&quot;</span><span class="p">,</span>
-                <span class="n">input_cnot_json_file</span><span class="p">,</span>
-                <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span>
-                <span class="n">input_qasm_file</span><span class="p">,</span>
-            <span class="p">]</span>
+    <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">direct_qasm</span><span class="p">:</span>
+        <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_qasm_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="s2">&quot;staq&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-S&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-O2&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-d&quot;</span><span class="p">,</span>
+                    <span class="n">input_cnot_json_file</span><span class="p">,</span>
+                    <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span>
+                    <span class="n">input_qasm_file</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+            <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
         <span class="p">)</span>
-        <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
-        <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
-    <span class="p">)</span>
     <span class="n">out_QASM</span> <span class="o">=</span> <span class="n">trance_do</span><span class="p">(</span><span class="n">cpl_qasm</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">cpl_qasm_comment_line</span> <span class="ow">in</span> <span class="n">cpl_qasm</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">cpl_qasm_comment_line</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;//&quot;</span><span class="p">:</span>
@@ -346,23 +352,28 @@
 <span class="k">def</span> <span class="nf">trance_res_call</span><span class="p">(</span>
     <span class="n">input_qasm_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
     <span class="n">input_cnot_json_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+    <span class="n">direct_qasm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
-            <span class="p">[</span>
-                <span class="s2">&quot;staq&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;-S&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;-O2&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;-d&quot;</span><span class="p">,</span>
-                <span class="n">input_cnot_json_file</span><span class="p">,</span>
-                <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span>
-                <span class="n">input_qasm_file</span><span class="p">,</span>
-            <span class="p">]</span>
+    <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">direct_qasm</span><span class="p">:</span>
+        <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_qasm_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="s2">&quot;staq&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-S&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-O2&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-d&quot;</span><span class="p">,</span>
+                    <span class="n">input_cnot_json_file</span><span class="p">,</span>
+                    <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span>
+                    <span class="n">input_qasm_file</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+            <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
         <span class="p">)</span>
-        <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
-        <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
-    <span class="p">)</span>
     <span class="n">out_QASM</span> <span class="o">=</span> <span class="n">trance_res_do</span><span class="p">(</span><span class="n">cpl_qasm</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">cpl_qasm_comment_line</span> <span class="ow">in</span> <span class="n">cpl_qasm</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">cpl_qasm_comment_line</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;//&quot;</span><span class="p">:</span>
@@ -381,32 +392,40 @@
     <span class="n">OZ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="n">OX</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="n">ORes</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">direct_qasm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
-            <span class="p">[</span>
-                <span class="s2">&quot;staq&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;-S&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;-O2&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;-d&quot;</span><span class="p">,</span>
-                <span class="n">input_cnot_json_file</span><span class="p">,</span>
-                <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span>
-                <span class="n">input_qasm_file</span><span class="p">,</span>
-            <span class="p">]</span>
+    <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">direct_qasm</span><span class="p">:</span>
+        <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_qasm_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="s2">&quot;staq&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-S&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-O2&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-d&quot;</span><span class="p">,</span>
+                    <span class="n">input_cnot_json_file</span><span class="p">,</span>
+                    <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span>
+                    <span class="n">input_qasm_file</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+            <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
         <span class="p">)</span>
-        <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
-        <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
-    <span class="p">)</span>
     <span class="n">ff</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">cnot_net_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
     <span class="n">Cnet_list</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
     <span class="n">result_array</span> <span class="o">=</span> <span class="n">trance_pulse_do</span><span class="p">(</span><span class="n">cpl_qasm</span><span class="p">,</span> <span class="n">Cnet_list</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">OZ</span><span class="p">,</span> <span class="n">OX</span><span class="p">,</span> <span class="n">ORes</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mi">99999999</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">cpl_qasm_comment_line</span> <span class="ow">in</span> <span class="n">cpl_qasm</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">cpl_qasm_comment_line</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;//&quot;</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">cpl_qasm_comment_line</span><span class="p">)</span>
-            <span class="c1"># コメントの垂れ流しを行います</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">result_array</span><span class="p">)</span></div>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    for cpl_qasm_comment_line in cpl_qasm:</span>
+<span class="sd">        if cpl_qasm_comment_line[0:2] == &quot;//&quot;:</span>
+<span class="sd">            print(cpl_qasm_comment_line)</span>
+<span class="sd">            # コメントの垂れ流しを行います</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span><span class="p">,</span> <span class="n">result_array</span><span class="p">)</span>  <span class="c1"># type:ignore</span></div>
+    <span class="c1"># savetxt で出力したかったからこうなった</span>
 
 
 <div class="viewcode-block" id="makeCnet_call"><a class="viewcode-back" href="../../../ouqu_tp.cli.trance.html#ouqu_tp.cli.trance.makeCnet_call">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s2">&quot;makeCnet&quot;</span><span class="p">)</span>
