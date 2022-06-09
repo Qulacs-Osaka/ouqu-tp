@@ -240,7 +240,7 @@ def QASM_to_qulacs(
                 terget_indexes.append(mapping[deary[bas]])
                 bas += 1
 
-            dense_gate = DenseMatrix(terget_indexes, gate_mat)
+            dense_gate = DenseMatrix(terget_indexes, gate_mat)  # type:ignore
             for i in range(ary[1]):
                 control_index = deary[bas]
                 bas += 1
