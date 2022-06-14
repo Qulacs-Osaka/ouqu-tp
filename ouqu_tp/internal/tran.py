@@ -163,7 +163,16 @@ def check_is_CResdag(ingate: qulacs.QuantumGateBase) -> bool:
     return np.allclose(true_mat, ingate.get_matrix())  # type:ignore
 
 
-def tran_to_pulse(
+"""
+中間表現　「　パルスゲートリスト」　を導入 したい
+パルスゲート」　の配列
+各パルスゲートは、 (gateban,start,time) を持つ
+
+
+この表現であれば、即座にパルスに変換できるし、　ゲートに変換することもできる。
+"""
+
+def tran_to_pulse_tyukan(
     inputcircuit: QuantumCircuit,
     Res_list: List[Tuple[int, int]],
     RZome: float,
@@ -174,13 +183,15 @@ def tran_to_pulse(
     n_qubit = inputcircuit.get_qubit_count()
     inputcircuit = CNOT_to_CRes(inputcircuit)
     inputcircuit = tran_ouqu_multi(inputcircuit)
+    """
+    pulse列を、中間表現に直します。
+    各パルスは、(ゲート番号、スタート時刻、ゲート長さ) を持ちます。
+    ゲート長さは、回転角/omeです。
 
-    # 回転角/ome　を整数に直した時間だけパルスが入る
-    # 各回転操作に対して、　mergin の分だけ空白が入る
-    # できるだけ短時間で行う
-
-    # numpy arrayは[ゲート番号][時間]　で定義される
-    # ゲート番号は、ZZZZZXXXXXRRRRR... のような定義をされる
+    「空白」を表すゲートも入れる、　(何もしない間にもデコヒーレンスは発生するので)
+    ゲート番号は、ZZZZZXXXXXRRRRR...RRSSSSS のような定義をされる
+    (Sは空白ゲートです)
+    """
     logger.debug(n_qubit)
     logger.debug(inputcircuit)
     bangou = np.zeros((n_qubit, n_qubit), int)
@@ -236,14 +247,35 @@ def tran_to_pulse(
             raise RuntimeError("this gate is not (RZ,sx,x,CRes)")
     for aaa in pulse_comp:
         logger.debug(aaa)
+    
     T = np.amax(saigo_zikan)
+
+    return (pulse_comp,T)
+
+def tran_to_pulse(
+    inputcircuit: QuantumCircuit,
+    Res_list: List[Tuple[int, int]],
+    RZome: float,
+    RXome: float,
+    CResome: float,
+    mergin: int,
+) -> npt.NDArray[np.float64]:
+    
+    (pulse_comp,T) = tran_to_pulse_tyukan(inputcircuit,Res_list,RZome,RXome,CResome,mergin)
+    """
+    ゲートパルス中間表現を関数内で取得し、それをnumpy array に直します。
+    arrayは、[ゲート名][時間] の配列です。
+    """
+    n_qubit = inputcircuit.get_qubit_count()
+    
     result_pulse = np.zeros((n_qubit * 2 + len(Res_list), int(T)))
-    for i in range((n_qubit * 2 + len(Res_list))):
+    for i in range(n_qubit * 2 + len(Res_list)):
         omega = RZome
         if i >= n_qubit:
             omega = RXome
         if i >= n_qubit * 2:
             omega = CResome
+        
         for ple in pulse_comp[i]:
             (start, time) = ple
             for j in range(start, time + start):
