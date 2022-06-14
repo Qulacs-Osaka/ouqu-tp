@@ -172,6 +172,7 @@ def check_is_CResdag(ingate: qulacs.QuantumGateBase) -> bool:
 この表現であれば、即座にパルスに変換できるし、　ゲートに変換することもできる。
 """
 
+
 def tran_to_pulse_tyukan(
     inputcircuit: QuantumCircuit,
     Res_list: List[Tuple[int, int]],
@@ -180,7 +181,7 @@ def tran_to_pulse_tyukan(
     OX: float,
     ORes: float,
     mergin: int = 0,
-) -> npt.NDArray[np.float64]:
+) -> Tuple[List[Tuple[int, int, int]], int]:
     RZome = dt * OZ
     RXome = dt * OX
     CResome = dt * ORes
@@ -208,10 +209,10 @@ def tran_to_pulse_tyukan(
         bangou[ppp][qqq] = i
 
     saigo_zikan = np.zeros(n_qubit, int)
-    pulse_comp: List[List[Tuple[int, int]]] = []
-    for i in range(n_qubit * 2 + len(Res_list)):
-        pulse_comp.append([])
+    pulse_comp: List[Tuple[int, int, int]] = []
     gate_num = inputcircuit.get_gate_count()
+
+    space_ban_start = n_qubit * 2 + len(Res_list)
 
     for i in range(gate_num):
         ingate = inputcircuit.get_gate(i)
@@ -224,16 +225,16 @@ def tran_to_pulse_tyukan(
                 angle += pi * 2
             pulse_kaz = int(angle / (RZome * 2) + 0.5)
             if pulse_kaz > 0:
-                pulse_comp[target].append((saigo_zikan[target], pulse_kaz))
+                pulse_comp.append((target, saigo_zikan[target], pulse_kaz))
                 saigo_zikan[target] += pulse_kaz + mergin
 
         elif ingate.get_name() == "sqrtX":
             pulse_kaz = int(pi / 2 / (RXome * 2) + 0.5)
-            pulse_comp[target + n_qubit].append((saigo_zikan[target], pulse_kaz))
+            pulse_comp.append((target + n_qubit, saigo_zikan[target], pulse_kaz))
             saigo_zikan[target] += pulse_kaz + mergin
         elif ingate.get_name() == "X":
             pulse_kaz = int(pi / (RXome * 2) + 0.5)
-            pulse_comp[target + n_qubit].append((saigo_zikan[target], pulse_kaz))
+            pulse_comp.append((target + n_qubit, saigo_zikan[target], pulse_kaz))
             saigo_zikan[target] += pulse_kaz + mergin
         elif check_is_CRes(ingate):
             control = ingate.get_target_index_list()[0]
@@ -242,8 +243,24 @@ def tran_to_pulse_tyukan(
             if ban == -1:
                 logger.error(f"({control},{target}) gate is not in Res_list")
             start = max(saigo_zikan[target], saigo_zikan[control])
+            if saigo_zikan[target] < start:
+                pulse_comp.append(
+                    (
+                        space_ban_start + target,
+                        saigo_zikan[target],
+                        start - saigo_zikan[target],
+                    )
+                )
+            if saigo_zikan[control] < start:
+                pulse_comp.append(
+                    (
+                        space_ban_start + control,
+                        saigo_zikan[control],
+                        start - saigo_zikan[control],
+                    )
+                )
             pulse_kaz = int(pi / (CResome * 4) + 0.5)
-            pulse_comp[ban + n_qubit * 2].append((start, pulse_kaz))
+            pulse_comp.append((ban + n_qubit * 2, start, pulse_kaz))
             saigo_zikan[target] = start + pulse_kaz + mergin
             saigo_zikan[control] = start + pulse_kaz + mergin
         else:
@@ -252,10 +269,11 @@ def tran_to_pulse_tyukan(
             raise RuntimeError("this gate is not (RZ,sx,x,CRes)")
     for aaa in pulse_comp:
         logger.debug(aaa)
-    
-    T = np.amax(saigo_zikan)
 
-    return (pulse_comp,T)
+    T = int(np.amax(saigo_zikan))
+
+    return (pulse_comp, T)
+
 
 def tran_to_pulse(
     inputcircuit: QuantumCircuit,
@@ -269,26 +287,31 @@ def tran_to_pulse(
     RZome = dt * OZ
     RXome = dt * OX
     CResome = dt * ORes
-    
-    (pulse_comp,T) = tran_to_pulse_tyukan(inputcircuit,Res_list,dt,OZ,OX,ORes,mergin)
+
+    (pulse_comp, T) = tran_to_pulse_tyukan(
+        inputcircuit, Res_list, dt, OZ, OX, ORes, mergin
+    )
     """
     ゲートパルス中間表現を関数内で取得し、それをnumpy array に直します。
-    arrayは、[ゲート名][時間] の配列です。
+    arrayは、[ゲート名+1][時間(1パルス単位)] の配列です。
+
+    array[0][時間(1パルス単位)]は、 実時間の配列です。{0,dt,dt*2,dt*3...}
     """
     n_qubit = inputcircuit.get_qubit_count()
-    
+
     result_pulse = np.zeros((n_qubit * 2 + len(Res_list) + 1, int(T)))
-    for i in range(n_qubit * 2 + len(Res_list)):
+
+    for ple in pulse_comp:
+        (gate_ban, start, time) = ple
+        if gate_ban >= n_qubit * 2 + len(Res_list):
+            continue  # 空白に対応するので
         omega = RZome
-        if i >= n_qubit:
+        if gate_ban >= n_qubit:
             omega = RXome
-        if i >= n_qubit * 2:
+        if gate_ban >= n_qubit * 2:
             omega = CResome
-        
-        for ple in pulse_comp[i]:
-            (start, time) = ple
-            for j in range(start, time + start):
-                result_pulse[i + 1][j] = omega
+        for j in range(start, time + start):
+            result_pulse[gate_ban + 1][j] = omega
     for j in range(T):
         result_pulse[0][j] = dt * j
     return result_pulse
