@@ -130,11 +130,48 @@ poetry run ouqu-tp trance trance_res --input-qasm-file=sample/input.qasm --input
 
 
 ### trance_pulse
-例えば、サンプルを実行する場合は以下のコマンドを実行してください。
-```
-poetry run ouqu-tp trance trance_pulse --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json --cnot-net-file=sample/CNOT_net.txt --dt=0.005 --oz=10 --ox=10 --ores=1
+
 
 ```
+poetry run ouqu-tp trance trance_pulse --input-qasm-file=入力.qasm --input-cnot-json-file=CNOT制約.json
+--cnot-net-file=CNOT制約.txt --dt=1パルスの時間 --oz=RZゲートの1単位時間での回転量 --ox=RXゲートの1単位時間での回転量 --ores=CResゲートの1単位時間での回転量
+```
+
+numpy の　array を出力します。
+出力形式はsavetxtを使っているので、　loadtxt関数を使うと読み込むことができます。
+
+1行目は時間の配列です。
+[0,dt,dt*2,dt*3 ...] が入ります。
+2行目以降が、そのパルスでゲートを作用させるかさせないかです。
+
+numpy arrayは[ゲート番号][時間]　で定義されます。
+ゲート番号は、ZZZZZXXXXXRRRRR... のような定義をされるます。
+ただし、Rは　CRes のことで、　CNOT_net.txt でのゲートの順番です。
+
+例えば、サンプルを実行する場合は以下のコマンドを実行してください。
+
+dt は 1パルスあたりの時間です。
+ozはZゲートの、oxはXゲートの、oresはレゾナンスゲートの1単位時間(1パルスではない)あたりの回転角です
+
+input json file と、それのもとになる cnot net file 両方を入力して下さい
+
+出力は2次元の　numpy arrayで、[ゲート番号][時間]　で表されます。
+値が0ではないとき、回転を行うということです
+
+ゲート番号は、前から、 各qubitのZゲート、各qubitのXゲート、　各Resゲート(make_Cnetの順) の順で定義されます。ZZZXXXRRRR...
+
+```
+poetry run ouqu-tp trance trance_pulse --input-qasm-file=sample/input.qasm --input-cnot-json-file=sample/created_Cnet.json --cnot-net-file=sample/CNOT_net.txt --dt=0.005 --oz=10 --ox=10 --ores=1
+```
+
+パルスの入る数は、
+RZゲートなら、 int(回転角 / (dt*oz * 2) + 0.5)
+sqrtXゲートなら、int(pi / 2 / (dt*ox * 2) + 0.5)
+CResゲートなら、int(pi / (dt * ores * 4) + 0.5)
+です。
+定義の違い? とかで半減されていた気がします
+
+
 ### make_Cnet
 ```
 # poetryの場合
@@ -325,6 +362,8 @@ p2 は、2 ビットの量子ゲートのノイズの確率で、 コンパイ�
 ノイズが入るのは、「コンパイルされた回路上」であることに注意してください。
 例えば、手元で 2qubit gete 一つでも、コンパイルされたら 2qubit gate+1qubit gate2 つ みたいになることがあります。
 
+それを防ぐためには、後述するオプション「--direct-qasm」を使うという方法があります。詳しくはそちらを見てく打差い
+
 pm は、状態測定ノイズの確率で、 回路の終わりに、qulacs の DepolarizingNoise が入ります。
 
 pp は、初期状態ノイズの確率で、 回路の始めに、qulacs の DepolarizingNoise が入ります。
@@ -349,6 +388,35 @@ ouqu-tp noisy getval --input-qasm-file=sample/input.qasm --input-openfermion-fil
 
 ouqu-tp noisy sampleval --input-qasm-file=sample/input.qasm --input-openfermion-file=sample/fermion.txt --shots=500 --p1=0.05 --p2=0.05 --pm=0.05 --pp=0.05
 ```
+
+
+## オプション  --direct-qasm について
+量子回路を入力するプログラム(つまり、make_Cnet以外のすべて)　に対して、オプション　 --direct-qasm が使用可能です。
+--direct-qasmを使わない場合、一度QASMファイルをstaqに渡して、解釈しやすいようにしてからouqu-tpを実行しています。
+--direct-qasmを使う場合、QASMを直接ouqu-tpに入れて回路を実行します。
+
+ただし、読めるQASMは独自拡張を含んだり、　対応していない機能があったりします。詳しくは、QASMtoqulacsのドキュメントを呼んでください。
+その場合の挙動は以下のようになります。
+
+
+### trance 
+本来はRZ,SqrtX,X,CNOT に分解するが、　渡されたQASMに2qubit以上のゲートがあった場合、そのゲートはそのまま出力される。
+1qubitのゲートならそれはRZ,SqrtX,Xに分解する機構に渡せる。
+### trance_res
+tranceした後、CNOTをCResと1qubitゲートで表すので、　同様に、qubit以上のゲートがあった場合、そのゲートはそのまま出力される。
+1qubitならRZ,SqrtX,Xになる。
+
+### trance_pulse
+1qubitでもCNOTでもCResでもないゲートが含まれている場合、エラーを出力する
+
+### ideal系
+特に問題なく渡せる。
+
+### noisy系
+2qubit以下のゲートであれば、問題なく渡せる。
+3qubit 以上のゲートに対しては、ノイズのシミュレーションをどうすればいいのかわからないので、エラーになる。
+
+また、staqを介さないことにより、ゲート表現が変わることがなくなり、渡されたQASM回路に忠実にノイズが入る。
 
 ## その他
 
