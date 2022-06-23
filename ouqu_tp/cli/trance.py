@@ -126,7 +126,7 @@ def trance_pulse_call(
             print(cpl_qasm_comment_line)
             # コメントの垂れ流しを行います
     """
-    np.savetxt(sys.stdout.buffer, result_array)  # type:ignore
+    np.savetxt(sys.stdout.buffer, result_array)
     # savetxt で出力したかったからこうなった
 
 

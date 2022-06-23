@@ -22,7 +22,7 @@ naiseki = 0
 for i in range(32):
     bit_ter = 0
     for j in range(5):
-        if (i & (2 ** j)) > 0:
+        if (i & (2**j)) > 0:
             bit_ter += 2 ** bit_narabe[j]
 
     print(ket2[bit_ter])

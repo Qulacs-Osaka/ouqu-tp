@@ -99,11 +99,14 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
             now_string += str(len(it.get_target_index_list()))
             now_string += ","
             now_string += str(len(it.get_control_index_list()))
-            for i in range(2 ** bit):
-                for j in range(2 ** bit):
+            for i in range(2**bit):
+                for j in range(2**bit):
                     now_string += f",{matrix[i][j].real:.6g},{matrix[i][j].imag:.6g}"
             for i in range(len(it.get_control_index_list())):
-                now_string += ",1"  # control_valueが取得できないのでこうなった　あとで修正する
+                if it.get_control_value_list()[i] == 1:
+                    now_string += ",1"
+                else:
+                    now_string += ",0"
 
             now_string += ") "
             for aaa in it.get_target_index_list():
@@ -243,7 +246,7 @@ def QASM_to_qulacs(
                 terget_indexes.append(mapping[deary[bas]])
                 bas += 1
 
-            dense_gate = DenseMatrix(terget_indexes, gate_mat)
+            dense_gate = DenseMatrix(terget_indexes, gate_mat)  # type:ignore
             for i in range(ary[1]):
                 control_index = deary[bas]
                 bas += 1
@@ -264,7 +267,7 @@ def state_to_strs(state: QuantumState) -> typing.List[str]:
 
 def strs_to_state(strs: typing.List[str]) -> QuantumState:
     qubit = parse(" * Qubit Count : {:d}", strs[1])[0]
-    Dim = 2 ** qubit
+    Dim = 2**qubit
     state_vec: typing.List[complex] = [0.0 + 0.0j] * Dim
     for i in range(Dim):
         ary = search("({:g},{:g})", strs[4 + i])
