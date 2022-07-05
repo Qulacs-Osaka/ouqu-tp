@@ -163,16 +163,6 @@ def check_is_CResdag(ingate: qulacs.QuantumGateBase) -> bool:
     return np.allclose(true_mat, ingate.get_matrix())  # type:ignore
 
 
-"""
-中間表現　「　パルスゲートリスト」　を導入 したい
-パルスゲート」　の配列
-各パルスゲートは、 (gateban,start,time) を持つ
-
-
-この表現であれば、即座にパルスに変換できるし、　ゲートに変換することもできる。
-"""
-
-
 def tran_to_pulse_tyukan(
     inputcircuit: QuantumCircuit,
     Res_list: List[Tuple[int, int]],
@@ -190,7 +180,7 @@ def tran_to_pulse_tyukan(
     inputcircuit = CNOT_to_CRes(inputcircuit)
     inputcircuit = tran_ouqu_multi(inputcircuit)
     """
-    pulse列を、中間表現に直します。
+    「任意の1qubit回転 + CNOT,CRes 」でできたcircuitを、中間表現に直します。
     各パルスは、(ゲート番号、スタート時刻、ゲート長さ) を持ちます。
     ゲート長さは、回転角/omeです。
 

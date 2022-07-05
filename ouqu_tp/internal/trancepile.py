@@ -31,6 +31,6 @@ def trance_pulse_do(
     mergen: int = 0,
 ) -> npt.NDArray[np.float64]:
     mtocircuit = QASM_to_qulacs(input_strs, remap_remove=False)
-    can_gate = get_connect(Cnet_list)
-    result_array = tran_to_pulse(mtocircuit, can_gate, dt, OZ, OX, ORes, mergen)
+    Res_list = get_connect(Cnet_list)
+    result_array = tran_to_pulse(mtocircuit, Res_list, dt, OZ, OX, ORes, mergen)
     return result_array
