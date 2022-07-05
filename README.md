@@ -447,4 +447,16 @@ poetry run ouqu-tp noisy sampleval --input-qasm-file=sample/grover_moto.qasm --i
 なお、フェルミオンを実行した結果については、　ノイズなしなら-1が帰ってくるはずです。
 
 
+#　エラー対応
+
+QASMファイルをstaq経由で読む(--direct-qasm 無し)のとき、
+
+Gate "sx" undeclared
+
+のように、　qelib1.incで定義されているはずのゲートが使えないことがあります。
+
+これは、　qiskitのqelib1.incに比べて、　staqのqelibが古いのが原因です。
+
+対処法として、　読み込むファイルのinclude"qelib1.inc" の後に、　(直下/)qelib_tuika.txt の内容をコピペすると動きます。
+
 
