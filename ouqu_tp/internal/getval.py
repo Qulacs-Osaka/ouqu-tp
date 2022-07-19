@@ -35,6 +35,7 @@ def getval_noise_do(
 def getval_noiseevo_do(
     input_strs: List[str],
     ferfile: str,
+    shots: int,
     dt: float,
     OZ: float,
     OX: float,
@@ -47,9 +48,11 @@ def getval_noiseevo_do(
     testcircuit = auto_evo_noise(
         precircuit, dt, OZ, OX, ORes, decay_rate_ph, decay_rate_amp, evodt
     )
-
-    out_state = DensityMatrix(testcircuit.get_qubit_count())
-    testcircuit.update_quantum_state(out_state)
-
-    obs = observable.create_observable_from_openfermion_file(ferfile)
-    return float(obs.get_expectation_value(out_state))
+    print(testcircuit)
+    ans = 0.0
+    for _ in range(shots):
+        out_state = QuantumState(testcircuit.get_qubit_count())
+        testcircuit.update_quantum_state(out_state)
+        obs = observable.create_observable_from_openfermion_file(ferfile)
+        ans += float(obs.get_expectation_value(out_state)) / shots
+    return ans

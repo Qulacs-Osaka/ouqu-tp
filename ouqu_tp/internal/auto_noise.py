@@ -11,12 +11,13 @@ from ouqu_tp.internal.tran import tran_to_pulse_tyukan
 
 
 def auto_noise(
-    inputcircuit: QuantumCircuit,
+    inputcircuit_in: QuantumCircuit,
     p1: float,
     p2: float,
     pm: float,
     pp: float,
 ) -> QuantumCircuit:
+    inputcircuit = inputcircuit_in.copy()
     n_qubit = inputcircuit.get_qubit_count()
     testcircuit = QuantumCircuit(n_qubit)
     for i in range(n_qubit):
@@ -67,7 +68,7 @@ def auto_Res_list(inputcircuit: QuantumCircuit) -> List[Tuple[int, int]]:
 
 
 def auto_evo_noise(
-    inputcircuit: QuantumCircuit,
+    inputcircuit_in: QuantumCircuit,
     dt: float,
     OZ: float,
     OX: float,
@@ -87,23 +88,23 @@ def auto_evo_noise(
     :param n_qubit: キュービット数
     :param evodt: NoisyEvolutionでの1ステップの時間 これが小さいほど正確だけど計算負荷かかる
     """
+    inputcircuit = inputcircuit_in.copy()
     Res_list = auto_Res_list(inputcircuit)
     (pulse_comp, unuse) = tran_to_pulse_tyukan(inputcircuit, Res_list, dt, OZ, OX, ORes)
     n_qubit = inputcircuit.get_qubit_count()
     anscircuit = QuantumCircuit(n_qubit)
     for ple in pulse_comp:
         (gate_ban, start, time) = ple
+        print(gate_ban, start, time)
         if gate_ban < n_qubit * 2 or n_qubit * 2 + len(Res_list) <= gate_ban:
             if gate_ban < n_qubit:  # Z gate
                 target = gate_ban
-                hamiltonian = Observable(n_qubit).add_operator(
-                    OZ, "Z {0}".format(target)
-                )
+                hamiltonian = Observable(n_qubit)
+                hamiltonian.add_operator(OZ, "Z {0}".format(target))
             elif gate_ban < n_qubit * 2:  # X gate
                 target = gate_ban - n_qubit
-                hamiltonian = Observable(n_qubit).add_operator(
-                    OX, "X {0}".format(target)
-                )
+                hamiltonian = Observable(n_qubit)
+                hamiltonian.add_operator(OX, "X {0}".format(target))
             elif gate_ban >= n_qubit * 2 + len(Res_list):  # I gate
                 target = gate_ban - (n_qubit * 2 + len(Res_list))
                 hamiltonian = Observable(n_qubit)
@@ -113,13 +114,11 @@ def auto_evo_noise(
                 decay_rate_amp / 2 * 1j, "Y {0}".format(target)
             )
             jump_op_list[1].add_operator(decay_rate_amp / 2, "X {0}".format(target))
-            opr = NoisyEvolution(hamiltonian, jump_op_list, time * dt, evodt)
-            anscircuit.add_gate(opr)
+
         else:
-            (target, control) = Res_list[gate_ban - n_qubit * 2]
-            hamiltonian = Observable(n_qubit).add_operator(
-                ORes, "X {0} Z {1}".format(target, control)
-            )
+            (control, target) = Res_list[gate_ban - n_qubit * 2]
+            hamiltonian = Observable(n_qubit)
+            hamiltonian.add_operator(ORes, "X {0} Z {1}".format(target, control))
             jump_op_list = [GeneralQuantumOperator(n_qubit) for i in range(4)]
             jump_op_list[0].add_operator(decay_rate_ph, "Z {0}".format(target))
             jump_op_list[1].add_operator(
@@ -131,7 +130,10 @@ def auto_evo_noise(
                 decay_rate_amp / 2 * 1j, "Y {0}".format(control)
             )
             jump_op_list[3].add_operator(decay_rate_amp / 2, "X {0}".format(control))
-            opr = NoisyEvolution(hamiltonian, jump_op_list, time * dt, evodt)
-            anscircuit.add_gate(opr)
+
+        # print(gate_ban,n_qubit,len(Res_list))
+        print(hamiltonian, start, time, evodt)
+        opr = NoisyEvolution(hamiltonian, jump_op_list, time * dt, evodt)
+        anscircuit.add_gate(opr)
 
     return anscircuit

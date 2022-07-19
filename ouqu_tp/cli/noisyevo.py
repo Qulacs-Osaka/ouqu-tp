@@ -15,6 +15,7 @@ def getval_noisyevo_call(
     input_qasm_file: str = typer.Option(...),
     input_cnot_json_file: str = typer.Option(...),
     input_openfermion_file: str = typer.Option(...),
+    shots: int = typer.Option(...),
     dt: float = 0.01,
     OZ: float = 1.0,
     OX: float = 1.0,
@@ -48,6 +49,7 @@ def getval_noisyevo_call(
         getval_noiseevo_do(
             cpl_qasm,
             input_openfermion_file,
+            shots,
             dt,
             OZ,
             OX,
