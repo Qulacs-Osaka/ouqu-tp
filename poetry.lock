@@ -1232,8 +1232,8 @@ cffi = {version = "*", markers = "implementation_name == \"pypy\""}
 py = {version = "*", markers = "implementation_name == \"pypy\""}
 
 [[package]]
-name = "qulacs-osaka"
-version = "0.4.2"
+name = "qulacs"
+version = "0.5.0"
 description = "Quantum circuit simulator for research"
 category = "main"
 optional = false
@@ -1667,7 +1667,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "1ca9eb1f075d1000742d7f6411cb0eb0d7f77fa9fd502b1e26826c6032cef5ac"
+content-hash = "960724fd9b5a39d4f0c85ef54c8dd433f65367914c70636bccde859fad40eada"
 
 [metadata.files]
 alabaster = [
@@ -2190,7 +2190,7 @@ pyyaml = [
     {file = "PyYAML-6.0.tar.gz", hash = "sha256:68fb519c14306fec9720a2a5b45bc9f0c8d1b9c72adf45c37baedfcd949c35a2"},
 ]
 pyzmq = []
-qulacs-osaka = []
+qulacs = []
 requests = []
 scipy = [
     {file = "scipy-1.8.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:65b77f20202599c51eb2771d11a6b899b97989159b7975e9b5259594f1d35ef4"},

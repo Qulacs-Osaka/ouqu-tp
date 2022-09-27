@@ -113,10 +113,10 @@ def test_getval_sampleval_noiseevo() -> None:
     # getvalのテストを書く
 
     valG = getval_noiseevo_do(
-        input_strs, "tests/fer_test.txt", 1000, 0.005, 10, 10, 2, 0.01, 0.01, 0.9
+        input_strs, "tests/fer_test.txt", 300, 0.005, 10, 10, 2, 0.01, 0.01, 0.9
     )
     valS = sampleval_noiseevo_do(
-        input_strs, "tests/fer_test.txt", 1000, 0.005, 10, 10, 2, 0.01, 0.01, 0.9
+        input_strs, "tests/fer_test.txt", 300, 0.005, 10, 10, 2, 0.01, 0.01, 0.9
     )
     print(valG, valS)
-    assert abs(valG - valS) < 0.02
+    assert abs(valG - valS) < 0.05
