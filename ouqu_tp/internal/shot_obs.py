@@ -140,12 +140,12 @@ def get_noiseevo_meseurment(
             ["1" if n_qubit - 1 - k in pauli_index else "0" for k in range(n_qubit)]
         )
         masked = int(mask, 2)
-
-        out_state = QuantumState(n_qubit)
         for _ in range(shots):
             buf_state.set_zero_state()
             measurement_circuit.update_quantum_state(buf_state)
-            sample = out_state.sampling(1)[0]
+            sample = buf_state.sampling(1)[0]
+            if(_<100):
+                print(sample)
             exp += coef * int((-1) ** (bin(sample & masked).count("1"))) / shots
 
     return exp.real
