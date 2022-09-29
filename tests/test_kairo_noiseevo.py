@@ -1,7 +1,7 @@
-from qulacs import QuantumCircuit, QuantumState
+from qulacs import QuantumCircuit
 
 from ouqu_tp.internal.auto_noise import auto_evo_noise
-from ouqu_tp.internal.debug import check_circuit, check_circuit_DM
+from ouqu_tp.internal.debug import check_circuit
 
 
 def test_kairo_noiseevo() -> None:
@@ -32,4 +32,3 @@ def test_kairo_noiseevo() -> None:
 
     testcircuit = auto_evo_noise(circuit, kak, 0.5, 0.5, 0.25, 0.000001, 0.000001, 0.1)
     check_circuit(circuit, testcircuit, 0.99)
-    # check_circuit_DM(circuit, testcircuit, 0.99)

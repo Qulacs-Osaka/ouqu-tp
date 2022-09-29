@@ -3,7 +3,6 @@ from typing import List, Tuple
 from qulacs import GeneralQuantumOperator, Observable, QuantumCircuit
 from qulacs.gate import (
     DepolarizingNoise,
-    NoisyEvolution,
     NoisyEvolution_fast,
     TwoQubitDepolarizingNoise,
 )
