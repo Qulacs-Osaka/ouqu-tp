@@ -76,10 +76,10 @@ def test_getval_sampleval_noise() -> None:
 
     valG = getval_noise_do(input_strs, "tests/fer_testB.txt", 0.01, 0.01, 0.01, 0.01)
     valS = sampleval_noise_do(
-        input_strs, "tests/fer_testB.txt", 25000, 0.01, 0.01, 0.01, 0.01
+        input_strs, "tests/fer_testB.txt", 15000, 0.01, 0.01, 0.01, 0.01
     )
     print(valG, valS)
-    assert abs(valG - valS) < 0.02
+    assert abs(valG - valS) < 0.03
 
 
 def test_getval_sampleval_noiseevo() -> None:
@@ -103,20 +103,14 @@ def test_getval_sampleval_noiseevo() -> None:
         "U(1.5707943247949,0,3.14159245358979) q[0];",
         "U(0,0,1.5707943247949) q[3];",
         "CX q[1],q[4];",
-        "U(1.5707943247949,0,3.14159245358979) q[2];",
-        "CX q[3],q[2];",
-        "U(1.5707943247949,0,3.14159245358979) q[2];",
-        "U(0,0,-0.785398143397448) q[3];",
-        "U(0,0,-1.5707943247949) q[1];",
-        "U(0,0,0.785398143397448) q[0];",
     ]
     # getvalのテストを書く
 
     valG = getval_noiseevo_do(
-        input_strs, "tests/fer_test.txt", 300, 0.005, 10, 10, 2, 0.01, 0.01, 0.9
+        input_strs, "tests/fer_test.txt", 400, 0.005, 10, 10, 2, 0.01, 0.01, 0.9
     )
     valS = sampleval_noiseevo_do(
-        input_strs, "tests/fer_test.txt", 300, 0.005, 10, 10, 2, 0.01, 0.01, 0.9
+        input_strs, "tests/fer_test.txt", 400, 0.005, 10, 10, 2, 0.01, 0.01, 0.9
     )
     print(valG, valS)
-    assert abs(valG - valS) < 0.05
+    assert abs(valG - valS) < 0.07

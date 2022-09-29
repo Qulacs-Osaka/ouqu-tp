@@ -48,11 +48,11 @@ def getval_noiseevo_do(
     testcircuit = auto_evo_noise(
         precircuit, dt, OZ, OX, ORes, decay_rate_ph, decay_rate_amp, evodt
     )
-    print(testcircuit)
+    # print(testcircuit)
     ans = 0.0
+    obs = observable.create_observable_from_openfermion_file(ferfile)
     for _ in range(shots):
         out_state = QuantumState(testcircuit.get_qubit_count())
         testcircuit.update_quantum_state(out_state)
-        obs = observable.create_observable_from_openfermion_file(ferfile)
         ans += float(obs.get_expectation_value(out_state)) / shots
     return ans
