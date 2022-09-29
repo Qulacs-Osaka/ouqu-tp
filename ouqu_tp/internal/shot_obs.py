@@ -144,7 +144,7 @@ def get_noiseevo_meseurment(
             buf_state.set_zero_state()
             measurement_circuit.update_quantum_state(buf_state)
             sample = buf_state.sampling(1)[0]
-            if(_<100):
+            if _ < 100:
                 print(sample)
             exp += coef * int((-1) ** (bin(sample & masked).count("1"))) / shots
 

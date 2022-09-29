@@ -3,8 +3,8 @@ from typing import List, Tuple
 from qulacs import GeneralQuantumOperator, Observable, QuantumCircuit
 from qulacs.gate import (
     DepolarizingNoise,
-    NoisyEvolution_fast,
     NoisyEvolution,
+    NoisyEvolution_fast,
     TwoQubitDepolarizingNoise,
 )
 
@@ -96,7 +96,7 @@ def auto_evo_noise(
     anscircuit = QuantumCircuit(n_qubit)
     for ple in pulse_comp:
         (gate_ban, start, time) = ple
-        #print(gate_ban, start, time)
+        # print(gate_ban, start, time)
         if gate_ban < n_qubit * 2 or n_qubit * 2 + len(Res_list) <= gate_ban:
             if gate_ban < n_qubit:  # Z gate
                 target = gate_ban
@@ -133,7 +133,7 @@ def auto_evo_noise(
             jump_op_list[3].add_operator(decay_rate_amp / 2, "X {0}".format(control))
 
         # print(gate_ban,n_qubit,len(Res_list))
-        #print(hamiltonian, start, time, evodt)
+        # print(hamiltonian, start, time, evodt)
         opr = NoisyEvolution_fast(hamiltonian, jump_op_list, time * dt)
         anscircuit.add_gate(opr)
 
