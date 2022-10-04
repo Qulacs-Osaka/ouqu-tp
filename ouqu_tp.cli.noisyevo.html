@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ouqu_tp.internal.simulate module &#8212; ouqu_tp  documentation</title>
+    <title>ouqu_tp.cli.noisyevo module &#8212; ouqu_tp  documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -41,8 +41,8 @@
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="ouqu_tp.internal.tran module" href="ouqu_tp.internal.tran.html" />
-    <link rel="prev" title="ouqu_tp.internal.shot_obs module" href="ouqu_tp.internal.shot_obs.html" />
+    <link rel="next" title="ouqu_tp.cli.trance module" href="ouqu_tp.cli.trance.html" />
+    <link rel="prev" title="ouqu_tp.cli.noisy module" href="ouqu_tp.cli.noisy.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -100,16 +100,16 @@
      </i>
     </label>
     <ul class="current">
-     <li class="toctree-l3 has-children">
+     <li class="toctree-l3 current active has-children">
       <a class="reference internal" href="ouqu_tp.cli.html">
        ouqu_tp.cli package
       </a>
-      <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+      <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
       <label for="toctree-checkbox-3">
        <i class="fas fa-chevron-down">
        </i>
       </label>
-      <ul>
+      <ul class="current">
        <li class="toctree-l4">
         <a class="reference internal" href="ouqu_tp.cli.ideal.html">
          ouqu_tp.cli.ideal module
@@ -125,8 +125,8 @@
          ouqu_tp.cli.noisy module
         </a>
        </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="ouqu_tp.cli.noisyevo.html">
+       <li class="toctree-l4 current active">
+        <a class="current reference internal" href="#">
          ouqu_tp.cli.noisyevo module
         </a>
        </li>
@@ -137,16 +137,16 @@
        </li>
       </ul>
      </li>
-     <li class="toctree-l3 current active has-children">
+     <li class="toctree-l3 has-children">
       <a class="reference internal" href="ouqu_tp.internal.html">
        ouqu_tp.internal package
       </a>
-      <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+      <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
       <label for="toctree-checkbox-4">
        <i class="fas fa-chevron-down">
        </i>
       </label>
-      <ul class="current">
+      <ul>
        <li class="toctree-l4">
         <a class="reference internal" href="ouqu_tp.internal.QASMtoqulacs.html">
          ouqu_tp.internal.QASMtoqulacs module
@@ -187,8 +187,8 @@
          ouqu_tp.internal.shot_obs module
         </a>
        </li>
-       <li class="toctree-l4 current active">
-        <a class="current reference internal" href="#">
+       <li class="toctree-l4">
+        <a class="reference internal" href="ouqu_tp.internal.simulate.html">
          ouqu_tp.internal.simulate module
         </a>
        </li>
@@ -276,7 +276,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="_sources/ouqu_tp.internal.simulate.rst.txt"><button type="button"
+        <a class="dropdown-buttons" href="_sources/ouqu_tp.cli.noisyevo.rst.txt"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.rst</button></a>
         <!-- Download PDF via print -->
@@ -321,7 +321,7 @@
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>ouqu_tp.internal.simulate module</h1>
+                <h1>ouqu_tp.cli.noisyevo module</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -332,21 +332,21 @@
             
               <div>
                 
-  <div class="section" id="module-ouqu_tp.internal.simulate">
-<span id="ouqu-tp-internal-simulate-module"></span><h1>ouqu_tp.internal.simulate module<a class="headerlink" href="#module-ouqu_tp.internal.simulate" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-ouqu_tp.cli.noisyevo">
+<span id="ouqu-tp-cli-noisyevo-module"></span><h1>ouqu_tp.cli.noisyevo module<a class="headerlink" href="#module-ouqu_tp.cli.noisyevo" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="ouqu_tp.internal.simulate.simulate_do">
-<span class="sig-prename descclassname"><span class="pre">ouqu_tp.internal.simulate.</span></span><span class="sig-name descname"><span class="pre">simulate_do</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_strs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/ouqu_tp/internal/simulate.html#simulate_do"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ouqu_tp.internal.simulate.simulate_do" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ouqu_tp.cli.noisyevo.getval_noisyevo_call">
+<span class="sig-prename descclassname"><span class="pre">ouqu_tp.cli.noisyevo.</span></span><span class="sig-name descname"><span class="pre">getval_noisyevo_call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_qasm_file:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_cnot_json_file:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_openfermion_file:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">OZ:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">OX:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ORes:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay_rate_ph:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay_rate_amp:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evodt:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direct_qasm:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/ouqu_tp/cli/noisyevo.html#getval_noisyevo_call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ouqu_tp.cli.noisyevo.getval_noisyevo_call" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ouqu_tp.internal.simulate.simulate_noise_do">
-<span class="sig-prename descclassname"><span class="pre">ouqu_tp.internal.simulate.</span></span><span class="sig-name descname"><span class="pre">simulate_noise_do</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_strs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/ouqu_tp/internal/simulate.html#simulate_noise_do"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ouqu_tp.internal.simulate.simulate_noise_do" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ouqu_tp.cli.noisyevo.sampleval_noisyevo_call">
+<span class="sig-prename descclassname"><span class="pre">ouqu_tp.cli.noisyevo.</span></span><span class="sig-name descname"><span class="pre">sampleval_noisyevo_call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_qasm_file:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_cnot_json_file:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_openfermion_file:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">OZ:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">OX:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ORes:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay_rate_ph:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay_rate_amp:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evodt:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direct_qasm:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/ouqu_tp/cli/noisyevo.html#sampleval_noisyevo_call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ouqu_tp.cli.noisyevo.sampleval_noisyevo_call" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ouqu_tp.internal.simulate.simulate_noiseevo_do">
-<span class="sig-prename descclassname"><span class="pre">ouqu_tp.internal.simulate.</span></span><span class="sig-name descname"><span class="pre">simulate_noiseevo_do</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_strs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">OZ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">OX</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ORes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay_rate_ph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay_rate_amp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evodt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/ouqu_tp/internal/simulate.html#simulate_noiseevo_do"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ouqu_tp.internal.simulate.simulate_noiseevo_do" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ouqu_tp.cli.noisyevo.simulate_noisyevo_call">
+<span class="sig-prename descclassname"><span class="pre">ouqu_tp.cli.noisyevo.</span></span><span class="sig-name descname"><span class="pre">simulate_noisyevo_call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_qasm_file:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_cnot_json_file:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">OZ:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">OX:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ORes:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay_rate_ph:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay_rate_amp:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evodt:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direct_qasm:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/ouqu_tp/cli/noisyevo.html#simulate_noisyevo_call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ouqu_tp.cli.noisyevo.simulate_noisyevo_call" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -357,17 +357,17 @@
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="ouqu_tp.internal.shot_obs.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="ouqu_tp.cli.noisy.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">ouqu_tp.internal.shot_obs module</p>
+            <p class="prev-next-title">ouqu_tp.cli.noisy module</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="ouqu_tp.internal.tran.html" title="next page">
+    <a class='right-next' id="next-link" href="ouqu_tp.cli.trance.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">ouqu_tp.internal.tran module</p>
+        <p class="prev-next-title">ouqu_tp.cli.trance module</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

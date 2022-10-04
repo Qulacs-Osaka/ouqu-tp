@@ -124,6 +124,11 @@
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.cli.noisyevo.html">
+         ouqu_tp.cli.noisyevo module
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../ouqu_tp.cli.trance.html">
          ouqu_tp.cli.trance module
         </a>
@@ -313,7 +318,7 @@
 
 <span class="kn">from</span> <span class="nn">qulacs</span> <span class="kn">import</span> <span class="n">DensityMatrix</span><span class="p">,</span> <span class="n">QuantumState</span><span class="p">,</span> <span class="n">observable</span>
 
-<span class="kn">from</span> <span class="nn">ouqu_tp.internal.auto_noise</span> <span class="kn">import</span> <span class="n">auto_noise</span>
+<span class="kn">from</span> <span class="nn">ouqu_tp.internal.auto_noise</span> <span class="kn">import</span> <span class="n">auto_evo_noise</span><span class="p">,</span> <span class="n">auto_noise</span>
 <span class="kn">from</span> <span class="nn">ouqu_tp.internal.QASMtoqulacs</span> <span class="kn">import</span> <span class="n">QASM_to_qulacs</span>
 
 
@@ -341,6 +346,32 @@
     <span class="n">obs</span> <span class="o">=</span> <span class="n">observable</span><span class="o">.</span><span class="n">create_observable_from_openfermion_file</span><span class="p">(</span><span class="n">ferfile</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">obs</span><span class="o">.</span><span class="n">get_expectation_value</span><span class="p">(</span><span class="n">out_state</span><span class="p">))</span></div>
     <span class="c1"># qulacsの型アノテーションないので、怒りのキャスト</span>
+
+
+<div class="viewcode-block" id="getval_noiseevo_do"><a class="viewcode-back" href="../../../ouqu_tp.internal.getval.html#ouqu_tp.internal.getval.getval_noiseevo_do">[docs]</a><span class="k">def</span> <span class="nf">getval_noiseevo_do</span><span class="p">(</span>
+    <span class="n">input_strs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">ferfile</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">OZ</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">OX</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">ORes</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">decay_rate_ph</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">decay_rate_amp</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">evodt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="n">precircuit</span> <span class="o">=</span> <span class="n">QASM_to_qulacs</span><span class="p">(</span><span class="n">input_strs</span><span class="p">,</span> <span class="n">remap_remove</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">testcircuit</span> <span class="o">=</span> <span class="n">auto_evo_noise</span><span class="p">(</span>
+        <span class="n">precircuit</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">OZ</span><span class="p">,</span> <span class="n">OX</span><span class="p">,</span> <span class="n">ORes</span><span class="p">,</span> <span class="n">decay_rate_ph</span><span class="p">,</span> <span class="n">decay_rate_amp</span><span class="p">,</span> <span class="n">evodt</span>
+    <span class="p">)</span>
+    <span class="c1"># print(testcircuit)</span>
+    <span class="n">ans</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">obs</span> <span class="o">=</span> <span class="n">observable</span><span class="o">.</span><span class="n">create_observable_from_openfermion_file</span><span class="p">(</span><span class="n">ferfile</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">shots</span><span class="p">):</span>
+        <span class="n">out_state</span> <span class="o">=</span> <span class="n">QuantumState</span><span class="p">(</span><span class="n">testcircuit</span><span class="o">.</span><span class="n">get_qubit_count</span><span class="p">())</span>
+        <span class="n">testcircuit</span><span class="o">.</span><span class="n">update_quantum_state</span><span class="p">(</span><span class="n">out_state</span><span class="p">)</span>
+        <span class="n">ans</span> <span class="o">+=</span> <span class="nb">float</span><span class="p">(</span><span class="n">obs</span><span class="o">.</span><span class="n">get_expectation_value</span><span class="p">(</span><span class="n">out_state</span><span class="p">))</span> <span class="o">/</span> <span class="n">shots</span>
+    <span class="k">return</span> <span class="n">ans</span></div>
 </pre></div>
 
               </div>

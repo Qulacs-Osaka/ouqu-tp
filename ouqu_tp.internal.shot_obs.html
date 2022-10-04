@@ -126,6 +126,11 @@
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="ouqu_tp.cli.noisyevo.html">
+         ouqu_tp.cli.noisyevo module
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="ouqu_tp.cli.trance.html">
          ouqu_tp.cli.trance module
         </a>
@@ -362,6 +367,24 @@
 </dd>
 </dl>
 <p>this func use noisesimulator</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ouqu_tp.internal.shot_obs.get_noiseevo_meseurment">
+<span class="sig-prename descclassname"><span class="pre">ouqu_tp.internal.shot_obs.</span></span><span class="sig-name descname"><span class="pre">get_noiseevo_meseurment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circuit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">qulacs_core.QuantumCircuit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">qulacs_core.Observable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/ouqu_tp/internal/shot_obs.html#get_noiseevo_meseurment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ouqu_tp.internal.shot_obs.get_noiseevo_meseurment" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>circuit</strong> (<em>qulacs.Quantumcircuit</em><em>) </em><em>(</em><em>have noise</em>) – </p></li>
+<li><p><strong>obs</strong> (<em>qulacs.Observable</em>) – </p></li>
+<li><p><strong>shots</strong> (<em>int</em>) – number of samples for each observable</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>float: sampled expectation value of the observable</p>
+</dd>
+</dl>
+<p>this func NOT use noisesimulator</p>
 </dd></dl>
 
 </div>

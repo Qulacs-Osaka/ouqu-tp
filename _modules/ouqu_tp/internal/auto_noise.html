@@ -124,6 +124,11 @@
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.cli.noisyevo.html">
+         ouqu_tp.cli.noisyevo module
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../ouqu_tp.cli.trance.html">
          ouqu_tp.cli.trance module
         </a>
@@ -309,17 +314,26 @@
               <div>
                 
   <h1>Source code for ouqu_tp.internal.auto_noise</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">qulacs</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span>
-<span class="kn">from</span> <span class="nn">qulacs.gate</span> <span class="kn">import</span> <span class="n">DepolarizingNoise</span><span class="p">,</span> <span class="n">TwoQubitDepolarizingNoise</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span> <span class="nn">qulacs</span> <span class="kn">import</span> <span class="n">GeneralQuantumOperator</span><span class="p">,</span> <span class="n">Observable</span><span class="p">,</span> <span class="n">QuantumCircuit</span>
+<span class="kn">from</span> <span class="nn">qulacs.gate</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DepolarizingNoise</span><span class="p">,</span>
+    <span class="n">NoisyEvolution_fast</span><span class="p">,</span>
+    <span class="n">TwoQubitDepolarizingNoise</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">ouqu_tp.internal.tran</span> <span class="kn">import</span> <span class="n">tran_to_pulse_tyukan</span>
 
 
 <div class="viewcode-block" id="auto_noise"><a class="viewcode-back" href="../../../ouqu_tp.internal.auto_noise.html#ouqu_tp.internal.auto_noise.auto_noise">[docs]</a><span class="k">def</span> <span class="nf">auto_noise</span><span class="p">(</span>
-    <span class="n">inputcircuit</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span>
+    <span class="n">inputcircuit_in</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span>
     <span class="n">p1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">p2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">pm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">pp</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuantumCircuit</span><span class="p">:</span>
+    <span class="n">inputcircuit</span> <span class="o">=</span> <span class="n">inputcircuit_in</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">n_qubit</span> <span class="o">=</span> <span class="n">inputcircuit</span><span class="o">.</span><span class="n">get_qubit_count</span><span class="p">()</span>
     <span class="n">testcircuit</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">):</span>
@@ -347,6 +361,98 @@
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">):</span>
         <span class="n">testcircuit</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">DepolarizingNoise</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">pm</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">testcircuit</span></div>
+
+
+<div class="viewcode-block" id="auto_Res_list"><a class="viewcode-back" href="../../../ouqu_tp.internal.auto_noise.html#ouqu_tp.internal.auto_noise.auto_Res_list">[docs]</a><span class="k">def</span> <span class="nf">auto_Res_list</span><span class="p">(</span><span class="n">inputcircuit</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+    <span class="n">Res_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">gate_num</span> <span class="o">=</span> <span class="n">inputcircuit</span><span class="o">.</span><span class="n">get_gate_count</span><span class="p">()</span>
+    <span class="n">Res_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">Res_list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">gate_num</span><span class="p">):</span>
+        <span class="n">ingate</span> <span class="o">=</span> <span class="n">inputcircuit</span><span class="o">.</span><span class="n">get_gate</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="n">gate_index_list</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">ingate</span><span class="o">.</span><span class="n">get_control_index_list</span><span class="p">()</span> <span class="o">+</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">gate_index_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">gen_Res_pair</span> <span class="o">=</span> <span class="p">(</span><span class="n">gate_index_list</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">gate_index_list</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">gen_Res_pair</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Res_set</span><span class="p">:</span>
+                <span class="n">Res_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">gen_Res_pair</span><span class="p">)</span>
+                <span class="n">Res_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gen_Res_pair</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Res_list</span></div>
+
+
+<div class="viewcode-block" id="auto_evo_noise"><a class="viewcode-back" href="../../../ouqu_tp.internal.auto_noise.html#ouqu_tp.internal.auto_noise.auto_evo_noise">[docs]</a><span class="k">def</span> <span class="nf">auto_evo_noise</span><span class="p">(</span>
+    <span class="n">inputcircuit_in</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span>
+    <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">OZ</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">OX</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">ORes</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">decay_rate_ph</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">decay_rate_amp</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">evodt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuantumCircuit</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param pulce_comp:  各パルスは、(ゲート番号、スタート時刻、ゲート長さ)で、　tran_to_pulse_tyukanの帰り値を渡すことが多い</span>
+<span class="sd">    :param dt: 1パルスの時間</span>
+<span class="sd">    :param OZ: 1時間あたりの回転量(not 1パルス)</span>
+<span class="sd">    :param OX: 1時間あたりの回転量</span>
+<span class="sd">    :param ORes: 1時間あたりの回転量</span>
+<span class="sd">    :param decay_rate_ph:1時間あたりの位相のデコヒーレンス量?</span>
+<span class="sd">    :param decay_rate_amp:1時間あたりのampのデコヒーレンス量?</span>
+<span class="sd">    :param n_qubit: キュービット数</span>
+<span class="sd">    :param evodt: NoisyEvolutionでの1ステップの時間 これが小さいほど正確だけど計算負荷かかる</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">inputcircuit</span> <span class="o">=</span> <span class="n">inputcircuit_in</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">Res_list</span> <span class="o">=</span> <span class="n">auto_Res_list</span><span class="p">(</span><span class="n">inputcircuit</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">pulse_comp</span><span class="p">,</span> <span class="n">unuse</span><span class="p">)</span> <span class="o">=</span> <span class="n">tran_to_pulse_tyukan</span><span class="p">(</span><span class="n">inputcircuit</span><span class="p">,</span> <span class="n">Res_list</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">OZ</span><span class="p">,</span> <span class="n">OX</span><span class="p">,</span> <span class="n">ORes</span><span class="p">)</span>
+    <span class="n">n_qubit</span> <span class="o">=</span> <span class="n">inputcircuit</span><span class="o">.</span><span class="n">get_qubit_count</span><span class="p">()</span>
+    <span class="n">anscircuit</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ple</span> <span class="ow">in</span> <span class="n">pulse_comp</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">gate_ban</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span> <span class="o">=</span> <span class="n">ple</span>
+        <span class="c1"># print(gate_ban, start, time)</span>
+        <span class="k">if</span> <span class="n">gate_ban</span> <span class="o">&lt;</span> <span class="n">n_qubit</span> <span class="o">*</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">n_qubit</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">Res_list</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">gate_ban</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">gate_ban</span> <span class="o">&lt;</span> <span class="n">n_qubit</span><span class="p">:</span>  <span class="c1"># Z gate</span>
+                <span class="n">target</span> <span class="o">=</span> <span class="n">gate_ban</span>
+                <span class="n">hamiltonian</span> <span class="o">=</span> <span class="n">Observable</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span>
+                <span class="n">hamiltonian</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">OZ</span><span class="p">,</span> <span class="s2">&quot;Z </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">gate_ban</span> <span class="o">&lt;</span> <span class="n">n_qubit</span> <span class="o">*</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># X gate</span>
+                <span class="n">target</span> <span class="o">=</span> <span class="n">gate_ban</span> <span class="o">-</span> <span class="n">n_qubit</span>
+                <span class="n">hamiltonian</span> <span class="o">=</span> <span class="n">Observable</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span>
+                <span class="n">hamiltonian</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">OX</span><span class="p">,</span> <span class="s2">&quot;X </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">gate_ban</span> <span class="o">&gt;=</span> <span class="n">n_qubit</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">Res_list</span><span class="p">):</span>  <span class="c1"># I gate</span>
+                <span class="n">target</span> <span class="o">=</span> <span class="n">gate_ban</span> <span class="o">-</span> <span class="p">(</span><span class="n">n_qubit</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">Res_list</span><span class="p">))</span>
+                <span class="n">hamiltonian</span> <span class="o">=</span> <span class="n">Observable</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span>
+            <span class="n">jump_op_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">GeneralQuantumOperator</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+            <span class="n">jump_op_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">decay_rate_ph</span><span class="p">,</span> <span class="s2">&quot;Z </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="p">))</span>
+            <span class="n">jump_op_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span>
+                <span class="n">decay_rate_amp</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="s2">&quot;Y </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">jump_op_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">decay_rate_amp</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;X </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="p">))</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">control</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span> <span class="o">=</span> <span class="n">Res_list</span><span class="p">[</span><span class="n">gate_ban</span> <span class="o">-</span> <span class="n">n_qubit</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span>
+            <span class="n">hamiltonian</span> <span class="o">=</span> <span class="n">Observable</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span>
+            <span class="n">hamiltonian</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">ORes</span><span class="p">,</span> <span class="s2">&quot;X </span><span class="si">{0}</span><span class="s2"> Z </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">control</span><span class="p">))</span>
+            <span class="n">jump_op_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">GeneralQuantumOperator</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>
+            <span class="n">jump_op_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">decay_rate_ph</span><span class="p">,</span> <span class="s2">&quot;Z </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="p">))</span>
+            <span class="n">jump_op_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span>
+                <span class="n">decay_rate_amp</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="s2">&quot;Y </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">jump_op_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">decay_rate_amp</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;X </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="p">))</span>
+            <span class="n">jump_op_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">decay_rate_ph</span><span class="p">,</span> <span class="s2">&quot;Z </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">control</span><span class="p">))</span>
+            <span class="n">jump_op_list</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span>
+                <span class="n">decay_rate_amp</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="s2">&quot;Y </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">control</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">jump_op_list</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">decay_rate_amp</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;X </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">control</span><span class="p">))</span>
+
+        <span class="c1"># print(gate_ban,n_qubit,len(Res_list))</span>
+        <span class="c1"># print(hamiltonian, start, time, evodt)</span>
+        <span class="n">opr</span> <span class="o">=</span> <span class="n">NoisyEvolution_fast</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">jump_op_list</span><span class="p">,</span> <span class="n">time</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span>
+        <span class="n">anscircuit</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">opr</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">anscircuit</span></div>
 </pre></div>
 
               </div>

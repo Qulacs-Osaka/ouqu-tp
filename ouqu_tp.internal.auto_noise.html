@@ -126,6 +126,11 @@
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="ouqu_tp.cli.noisyevo.html">
+         ouqu_tp.cli.noisyevo module
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="ouqu_tp.cli.trance.html">
          ouqu_tp.cli.trance module
         </a>
@@ -330,8 +335,33 @@
   <div class="section" id="module-ouqu_tp.internal.auto_noise">
 <span id="ouqu-tp-internal-auto-noise-module"></span><h1>ouqu_tp.internal.auto_noise module<a class="headerlink" href="#module-ouqu_tp.internal.auto_noise" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
+<dt class="sig sig-object py" id="ouqu_tp.internal.auto_noise.auto_Res_list">
+<span class="sig-prename descclassname"><span class="pre">ouqu_tp.internal.auto_noise.</span></span><span class="sig-name descname"><span class="pre">auto_Res_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputcircuit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">qulacs_core.QuantumCircuit</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/ouqu_tp/internal/auto_noise.html#auto_Res_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ouqu_tp.internal.auto_noise.auto_Res_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ouqu_tp.internal.auto_noise.auto_evo_noise">
+<span class="sig-prename descclassname"><span class="pre">ouqu_tp.internal.auto_noise.</span></span><span class="sig-name descname"><span class="pre">auto_evo_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputcircuit_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">qulacs_core.QuantumCircuit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">OZ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">OX</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ORes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay_rate_ph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay_rate_amp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evodt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">qulacs_core.QuantumCircuit</span></span></span><a class="reference internal" href="_modules/ouqu_tp/internal/auto_noise.html#auto_evo_noise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ouqu_tp.internal.auto_noise.auto_evo_noise" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pulce_comp</strong> – 各パルスは、(ゲート番号、スタート時刻、ゲート長さ)で、　tran_to_pulse_tyukanの帰り値を渡すことが多い</p></li>
+<li><p><strong>dt</strong> – 1パルスの時間</p></li>
+<li><p><strong>OZ</strong> – 1時間あたりの回転量(not 1パルス)</p></li>
+<li><p><strong>OX</strong> – 1時間あたりの回転量</p></li>
+<li><p><strong>ORes</strong> – 1時間あたりの回転量</p></li>
+</ul>
+</dd>
+</dl>
+<p>:param decay_rate_ph:1時間あたりの位相のデコヒーレンス量?
+:param decay_rate_amp:1時間あたりのampのデコヒーレンス量?
+:param n_qubit: キュービット数
+:param evodt: NoisyEvolutionでの1ステップの時間 これが小さいほど正確だけど計算負荷かかる</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="ouqu_tp.internal.auto_noise.auto_noise">
-<span class="sig-prename descclassname"><span class="pre">ouqu_tp.internal.auto_noise.</span></span><span class="sig-name descname"><span class="pre">auto_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputcircuit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">qulacs_core.QuantumCircuit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">qulacs_core.QuantumCircuit</span></span></span><a class="reference internal" href="_modules/ouqu_tp/internal/auto_noise.html#auto_noise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ouqu_tp.internal.auto_noise.auto_noise" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ouqu_tp.internal.auto_noise.</span></span><span class="sig-name descname"><span class="pre">auto_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputcircuit_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">qulacs_core.QuantumCircuit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">qulacs_core.QuantumCircuit</span></span></span><a class="reference internal" href="_modules/ouqu_tp/internal/auto_noise.html#auto_noise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ouqu_tp.internal.auto_noise.auto_noise" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>

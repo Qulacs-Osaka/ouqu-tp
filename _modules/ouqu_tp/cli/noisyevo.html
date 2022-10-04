@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ouqu_tp.cli.noisy &#8212; ouqu_tp  documentation</title>
+    <title>ouqu_tp.cli.noisyevo &#8212; ouqu_tp  documentation</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
   <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -313,51 +313,32 @@
             
               <div>
                 
-  <h1>Source code for ouqu_tp.cli.noisy</h1><div class="highlight"><pre>
+  <h1>Source code for ouqu_tp.cli.noisyevo</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
 <span class="kn">import</span> <span class="nn">typer</span>
 
-<span class="kn">from</span> <span class="nn">ouqu_tp.internal.getval</span> <span class="kn">import</span> <span class="n">getval_noise_do</span>
-<span class="kn">from</span> <span class="nn">ouqu_tp.internal.sampleval</span> <span class="kn">import</span> <span class="n">sampleval_noise_do</span>
-<span class="kn">from</span> <span class="nn">ouqu_tp.internal.simulate</span> <span class="kn">import</span> <span class="n">simulate_noise_do</span>
+<span class="kn">from</span> <span class="nn">ouqu_tp.internal.getval</span> <span class="kn">import</span> <span class="n">getval_noiseevo_do</span>
+<span class="kn">from</span> <span class="nn">ouqu_tp.internal.sampleval</span> <span class="kn">import</span> <span class="n">sampleval_noiseevo_do</span>
+<span class="kn">from</span> <span class="nn">ouqu_tp.internal.simulate</span> <span class="kn">import</span> <span class="n">simulate_noiseevo_do</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Typer</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="getval_noisy_call"><a class="viewcode-back" href="../../../ouqu_tp.cli.noisy.html#ouqu_tp.cli.noisy.getval_noisy_call">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s2">&quot;getval&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">getval_noisy_call</span><span class="p">(</span>
+<div class="viewcode-block" id="getval_noisyevo_call"><a class="viewcode-back" href="../../../ouqu_tp.cli.noisyevo.html#ouqu_tp.cli.noisyevo.getval_noisyevo_call">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s2">&quot;getval&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">getval_noisyevo_call</span><span class="p">(</span>
     <span class="n">input_qasm_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
-    <span class="n">input_openfermion_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
-    <span class="n">p1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">p2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">pm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">pp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">direct_qasm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">direct_qasm</span><span class="p">:</span>
-        <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_qasm_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;staq&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span> <span class="n">input_qasm_file</span><span class="p">])</span>
-            <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
-        <span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="n">getval_noise_do</span><span class="p">(</span><span class="n">cpl_qasm</span><span class="p">,</span> <span class="n">input_openfermion_file</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">pm</span><span class="p">,</span> <span class="n">pp</span><span class="p">))</span></div>
-
-
-<div class="viewcode-block" id="sampleval_noisy_call"><a class="viewcode-back" href="../../../ouqu_tp.cli.noisy.html#ouqu_tp.cli.noisy.sampleval_noisy_call">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s2">&quot;sampleval&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">sampleval_noisy_call</span><span class="p">(</span>
-    <span class="n">input_qasm_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+    <span class="n">input_cnot_json_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
     <span class="n">input_openfermion_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
     <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
-    <span class="n">p1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">p2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">pm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">pp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">OZ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">OX</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">ORes</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">decay_rate_ph</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">decay_rate_amp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">evodt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
     <span class="n">direct_qasm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
@@ -365,21 +346,50 @@
         <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_qasm_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;staq&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span> <span class="n">input_qasm_file</span><span class="p">])</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="s2">&quot;staq&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-S&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-O2&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-d&quot;</span><span class="p">,</span>
+                    <span class="n">input_cnot_json_file</span><span class="p">,</span>
+                    <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span>
+                    <span class="n">input_qasm_file</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
             <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
             <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
         <span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">sampleval_noise_do</span><span class="p">(</span><span class="n">cpl_qasm</span><span class="p">,</span> <span class="n">input_openfermion_file</span><span class="p">,</span> <span class="n">shots</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">pm</span><span class="p">,</span> <span class="n">pp</span><span class="p">))</span></div>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="n">getval_noiseevo_do</span><span class="p">(</span>
+            <span class="n">cpl_qasm</span><span class="p">,</span>
+            <span class="n">input_openfermion_file</span><span class="p">,</span>
+            <span class="n">shots</span><span class="p">,</span>
+            <span class="n">dt</span><span class="p">,</span>
+            <span class="n">OZ</span><span class="p">,</span>
+            <span class="n">OX</span><span class="p">,</span>
+            <span class="n">ORes</span><span class="p">,</span>
+            <span class="n">decay_rate_ph</span><span class="p">,</span>
+            <span class="n">decay_rate_amp</span><span class="p">,</span>
+            <span class="n">evodt</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="simulate_noisy_call"><a class="viewcode-back" href="../../../ouqu_tp.cli.noisy.html#ouqu_tp.cli.noisy.simulate_noisy_call">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s2">&quot;simulate&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">simulate_noisy_call</span><span class="p">(</span>
+<div class="viewcode-block" id="sampleval_noisyevo_call"><a class="viewcode-back" href="../../../ouqu_tp.cli.noisyevo.html#ouqu_tp.cli.noisyevo.sampleval_noisyevo_call">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s2">&quot;sampleval&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">sampleval_noisyevo_call</span><span class="p">(</span>
     <span class="n">input_qasm_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+    <span class="n">input_cnot_json_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+    <span class="n">input_openfermion_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
     <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
-    <span class="n">p1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">p2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">pm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">pp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">OZ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">OX</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">ORes</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">decay_rate_ph</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">decay_rate_amp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">evodt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
     <span class="n">direct_qasm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
@@ -387,11 +397,82 @@
         <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_qasm_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;staq&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span> <span class="n">input_qasm_file</span><span class="p">])</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="s2">&quot;staq&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-S&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-O2&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-d&quot;</span><span class="p">,</span>
+                    <span class="n">input_cnot_json_file</span><span class="p">,</span>
+                    <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span>
+                    <span class="n">input_qasm_file</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
             <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
             <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
         <span class="p">)</span>
-    <span class="p">(</span><span class="n">kekka</span><span class="p">,</span> <span class="n">n_qubit</span><span class="p">)</span> <span class="o">=</span> <span class="n">simulate_noise_do</span><span class="p">(</span><span class="n">cpl_qasm</span><span class="p">,</span> <span class="n">shots</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">pm</span><span class="p">,</span> <span class="n">pp</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="n">sampleval_noiseevo_do</span><span class="p">(</span>
+            <span class="n">cpl_qasm</span><span class="p">,</span>
+            <span class="n">input_openfermion_file</span><span class="p">,</span>
+            <span class="n">shots</span><span class="p">,</span>
+            <span class="n">dt</span><span class="p">,</span>
+            <span class="n">OZ</span><span class="p">,</span>
+            <span class="n">OX</span><span class="p">,</span>
+            <span class="n">ORes</span><span class="p">,</span>
+            <span class="n">decay_rate_ph</span><span class="p">,</span>
+            <span class="n">decay_rate_amp</span><span class="p">,</span>
+            <span class="n">evodt</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="simulate_noisyevo_call"><a class="viewcode-back" href="../../../ouqu_tp.cli.noisyevo.html#ouqu_tp.cli.noisyevo.simulate_noisyevo_call">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s2">&quot;simulate&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">simulate_noisyevo_call</span><span class="p">(</span>
+    <span class="n">input_qasm_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+    <span class="n">input_cnot_json_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+    <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+    <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">OZ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">OX</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">ORes</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">decay_rate_ph</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">decay_rate_amp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">evodt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">direct_qasm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">cpl_qasm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">direct_qasm</span><span class="p">:</span>
+        <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_qasm_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cpl_qasm</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="s2">&quot;staq&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-S&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-O2&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;-d&quot;</span><span class="p">,</span>
+                    <span class="n">input_cnot_json_file</span><span class="p">,</span>
+                    <span class="s2">&quot;--evaluate-all&quot;</span><span class="p">,</span>
+                    <span class="n">input_qasm_file</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+            <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+        <span class="p">)</span>
+    <span class="p">(</span><span class="n">kekka</span><span class="p">,</span> <span class="n">n_qubit</span><span class="p">)</span> <span class="o">=</span> <span class="n">simulate_noiseevo_do</span><span class="p">(</span>
+        <span class="n">cpl_qasm</span><span class="p">,</span>
+        <span class="n">shots</span><span class="p">,</span>
+        <span class="n">dt</span><span class="p">,</span>
+        <span class="n">OZ</span><span class="p">,</span>
+        <span class="n">OX</span><span class="p">,</span>
+        <span class="n">ORes</span><span class="p">,</span>
+        <span class="n">decay_rate_ph</span><span class="p">,</span>
+        <span class="n">decay_rate_amp</span><span class="p">,</span>
+        <span class="n">evodt</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="c1"># input_listを直接ぶち込む</span>
     <span class="k">for</span> <span class="n">aaaa</span> <span class="ow">in</span> <span class="n">kekka</span><span class="p">:</span>
         <span class="n">moziretu</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:b}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">aaaa</span><span class="p">)</span>

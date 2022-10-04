@@ -124,6 +124,11 @@
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../ouqu_tp.cli.noisyevo.html">
+         ouqu_tp.cli.noisyevo module
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../ouqu_tp.cli.trance.html">
          ouqu_tp.cli.trance module
         </a>
@@ -474,18 +479,8 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">true_mat</span><span class="p">,</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">())</span>  <span class="c1"># type:ignore</span></div>
 
 
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">中間表現　「　パルスゲートリスト」　を導入 したい</span>
-<span class="sd">パルスゲート」　の配列</span>
-<span class="sd">各パルスゲートは、 (gateban,start,time) を持つ</span>
-
-
-<span class="sd">この表現であれば、即座にパルスに変換できるし、　ゲートに変換することもできる。</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-
 <div class="viewcode-block" id="tran_to_pulse_tyukan"><a class="viewcode-back" href="../../../ouqu_tp.internal.tran.html#ouqu_tp.internal.tran.tran_to_pulse_tyukan">[docs]</a><span class="k">def</span> <span class="nf">tran_to_pulse_tyukan</span><span class="p">(</span>
-    <span class="n">inputcircuit</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span>
+    <span class="n">inputcircuit_in</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span>
     <span class="n">Res_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
     <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">OZ</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -496,18 +491,21 @@
     <span class="n">RZome</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">OZ</span>
     <span class="n">RXome</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">OX</span>
     <span class="n">CResome</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">ORes</span>
-
+    <span class="n">inputcircuit</span> <span class="o">=</span> <span class="n">inputcircuit_in</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">n_qubit</span> <span class="o">=</span> <span class="n">inputcircuit</span><span class="o">.</span><span class="n">get_qubit_count</span><span class="p">()</span>
+
     <span class="n">inputcircuit</span> <span class="o">=</span> <span class="n">CNOT_to_CRes</span><span class="p">(</span><span class="n">inputcircuit</span><span class="p">)</span>
     <span class="n">inputcircuit</span> <span class="o">=</span> <span class="n">tran_ouqu_multi</span><span class="p">(</span><span class="n">inputcircuit</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    pulse列を、中間表現に直します。</span>
+<span class="sd">    「任意の1qubit回転 + CNOT,CRes 」でできたcircuitを、中間表現に直します。</span>
 <span class="sd">    各パルスは、(ゲート番号、スタート時刻、ゲート長さ) を持ちます。</span>
 <span class="sd">    ゲート長さは、回転角/omeです。</span>
 
 <span class="sd">    「空白」を表すゲートも入れる、　(何もしない間にもデコヒーレンスは発生するので)</span>
 <span class="sd">    ゲート番号は、ZZZZZXXXXXRRRRR...RRSSSSS のような定義をされる</span>
 <span class="sd">    (Sは空白ゲートです)</span>
+
+<span class="sd">    この段階で,ゲートの向きをqulacsではなく、標準基準に戻します</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">inputcircuit</span><span class="p">)</span>
@@ -531,7 +529,7 @@
         <span class="n">target</span> <span class="o">=</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Z-rotation&quot;</span><span class="p">:</span>
             <span class="n">matrix</span> <span class="o">=</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">()</span>
-            <span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="n">phase</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">angle</span> <span class="o">=</span> <span class="n">phase</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">angle</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">1e-6</span><span class="p">:</span>
                 <span class="n">angle</span> <span class="o">+=</span> <span class="n">pi</span> <span class="o">*</span> <span class="mi">2</span>
             <span class="n">pulse_kaz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">angle</span> <span class="o">/</span> <span class="p">(</span><span class="n">RZome</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
@@ -645,7 +643,7 @@
             <span class="k">elif</span> <span class="n">renzoku</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1e-8</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n_qubit</span><span class="p">:</span>
                     <span class="c1"># RZ gate</span>
-                    <span class="n">anscircuit</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">RZ</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">renzoku</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
+                    <span class="n">anscircuit</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">RZ</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="n">renzoku</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
                 <span class="k">elif</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n_qubit</span> <span class="o">*</span> <span class="mi">2</span><span class="p">:</span>
                     <span class="n">anscircuit</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">RX</span><span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="n">n_qubit</span><span class="p">,</span> <span class="o">-</span><span class="n">renzoku</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>

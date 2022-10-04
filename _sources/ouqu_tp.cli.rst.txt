@@ -10,6 +10,7 @@ Submodules
    ouqu_tp.cli.ideal
    ouqu_tp.cli.main
    ouqu_tp.cli.noisy
+   ouqu_tp.cli.noisyevo
    ouqu_tp.cli.trance
 
 Module contents
