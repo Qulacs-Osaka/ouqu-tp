@@ -148,6 +148,7 @@ def QASM_to_qulacs(
     for instr_moto in input_strs:
         instr = instr_moto.lower().strip().replace(" ", "").replace("\t", "")
         # 全部小文字にして、前後の改行を削除、　すべての空白とタブを削除した状態でマッチングします
+        
         if instr[0:4] == "qreg":
             ary = parse("qregq[{:d}];", instr)
             cir = QuantumCircuit(ary[0])
@@ -213,6 +214,12 @@ def QASM_to_qulacs(
         elif instr[0:1] == "u":
             ary = parse("u({:g},{:g},{:g})q[{:d}];", instr)
             cir.add_U3_gate(mapping[ary[3]], ary[0], ary[1], ary[2])
+        elif instr[0:3] == "sxq":
+            ary = parse("sxq[{:d}];", instr)
+            cir.add_sqrtX_gate(mapping[ary[0]])
+        elif instr[0:5] == "sxdgq":
+            ary = parse("sxdgq[{:d}];", instr)
+            cir.add_sqrtXdag_gate(mapping[ary[0]])
         elif instr[0:5] == "cresq":
             ary = parse("CResq[{:d}],q[{:d}];", instr)
             cir.add_gate(CRes(mapping[ary[0]], mapping[ary[1]]))
