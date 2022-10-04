@@ -61,7 +61,7 @@ def get_noise_meseurment(circuit: QuantumCircuit, obs: Observable, shots: int) -
     this func use noisesimulator
     """
     n_term = obs.get_term_count()
-    n_qubit = obs.get_qubit_count()
+    n_qubit = circuit.get_qubit_count()
 
     exp = 0 + 0.0j
 
