@@ -148,7 +148,7 @@ def QASM_to_qulacs(
     for instr_moto in input_strs:
         instr = instr_moto.lower().strip().replace(" ", "").replace("\t", "")
         # 全部小文字にして、前後の改行を削除、　すべての空白とタブを削除した状態でマッチングします
-        
+
         if instr[0:4] == "qreg":
             ary = parse("qregq[{:d}];", instr)
             cir = QuantumCircuit(ary[0])
@@ -259,12 +259,15 @@ def QASM_to_qulacs(
                 bas += 1
                 dense_gate.add_control_qubit(control_index, control_values[i])
             cir.add_gate(dense_gate)
-        elif remap_remove and instr[0:6] == "// \tq[":
-            ary = parse("// \tq[{:d}] --> q[{:d}]", instr)
-            mapping[ary[0]] = ary[1]
-        elif remap_remove and instr[0:9] == "// qubits":
-            ary = parse("// qubits: {:d}", instr)
+        elif remap_remove and instr[0:4] == "//q[":
+            ary = parse("//q[{:d}]-->q[{:d}]", instr)
+            if not (ary is None):
+                mapping[ary[0]] = ary[1]
+        elif remap_remove and instr[0:8] == "//qubits":
+            ary = parse("//qubits:{:d}", instr)
             mapping = list(range(ary[0]))
+        else:
+            print("unknown line:", instr)
     return cir
 
 
