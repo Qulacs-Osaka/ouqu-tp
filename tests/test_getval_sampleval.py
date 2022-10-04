@@ -1,5 +1,13 @@
-from ouqu_tp.internal.getval import getval_do, getval_noise_do
-from ouqu_tp.internal.sampleval import sampleval_do, sampleval_noise_do
+from ouqu_tp.internal.getval import (
+    getval_do,
+    getval_noise_do,
+    getval_noiseevo_do,
+)
+from ouqu_tp.internal.sampleval import (
+    sampleval_do,
+    sampleval_noise_do,
+    sampleval_noiseevo_do,
+)
 
 
 def test_getval_sampleval() -> None:
@@ -68,7 +76,41 @@ def test_getval_sampleval_noise() -> None:
 
     valG = getval_noise_do(input_strs, "tests/fer_testB.txt", 0.01, 0.01, 0.01, 0.01)
     valS = sampleval_noise_do(
-        input_strs, "tests/fer_testB.txt", 25000, 0.01, 0.01, 0.01, 0.01
+        input_strs, "tests/fer_testB.txt", 15000, 0.01, 0.01, 0.01, 0.01
     )
     print(valG, valS)
-    assert abs(valG - valS) < 0.02
+    assert abs(valG - valS) < 0.03
+
+
+def test_getval_sampleval_noiseevo() -> None:
+    # getval　と　sampleval　で　大きな誤差が出ないか試します
+    # noiseevoで。
+    input_strs = [
+        "qreg q[5];",
+        "U(1.20000004748372,2.1,0.9) q[0];",
+        "U(1.5707943247949,-0.5,1.20000004748372) q[3];",
+        "U(1.400000005940444,0,0) q[1];",
+        "U(0,0,0.400000005940444) q[4];",
+        "CX q[1],q[4];",
+        "CX q[0],q[1];",
+        "CX q[1],q[4];",
+        "CX q[0],q[1];",
+        "U(3.14159245358979,0,3.14159245358979) q[4];",
+        "CX q[1],q[2];",
+        "U(3.14159245358979,1.5707943247949,1.5707943247949) q[3];",
+        "U(1.20000004748372,-1.5707943247949,1.5707943247949) q[4];",
+        "U(0,0,3.14159245358979) q[1];",
+        "U(1.5707943247949,0,3.14159245358979) q[0];",
+        "U(0,0,1.5707943247949) q[3];",
+        "CX q[1],q[4];",
+    ]
+    # getvalのテストを書く
+
+    valG = getval_noiseevo_do(
+        input_strs, "tests/fer_test.txt", 400, 0.005, 10, 10, 2, 0.01, 0.01, 0.9
+    )
+    valS = sampleval_noiseevo_do(
+        input_strs, "tests/fer_test.txt", 400, 0.005, 10, 10, 2, 0.01, 0.01, 0.9
+    )
+    print(valG, valS)
+    assert abs(valG - valS) < 0.07

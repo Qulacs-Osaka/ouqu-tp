@@ -163,18 +163,8 @@ def check_is_CResdag(ingate: qulacs.QuantumGateBase) -> bool:
     return np.allclose(true_mat, ingate.get_matrix())  # type:ignore
 
 
-"""
-中間表現　「　パルスゲートリスト」　を導入 したい
-パルスゲート」　の配列
-各パルスゲートは、 (gateban,start,time) を持つ
-
-
-この表現であれば、即座にパルスに変換できるし、　ゲートに変換することもできる。
-"""
-
-
 def tran_to_pulse_tyukan(
-    inputcircuit: QuantumCircuit,
+    inputcircuit_in: QuantumCircuit,
     Res_list: List[Tuple[int, int]],
     dt: float,
     OZ: float,
@@ -185,18 +175,21 @@ def tran_to_pulse_tyukan(
     RZome = dt * OZ
     RXome = dt * OX
     CResome = dt * ORes
-
+    inputcircuit = inputcircuit_in.copy()
     n_qubit = inputcircuit.get_qubit_count()
+
     inputcircuit = CNOT_to_CRes(inputcircuit)
     inputcircuit = tran_ouqu_multi(inputcircuit)
     """
-    pulse列を、中間表現に直します。
+    「任意の1qubit回転 + CNOT,CRes 」でできたcircuitを、中間表現に直します。
     各パルスは、(ゲート番号、スタート時刻、ゲート長さ) を持ちます。
     ゲート長さは、回転角/omeです。
 
     「空白」を表すゲートも入れる、　(何もしない間にもデコヒーレンスは発生するので)
     ゲート番号は、ZZZZZXXXXXRRRRR...RRSSSSS のような定義をされる
     (Sは空白ゲートです)
+
+    この段階で,ゲートの向きをqulacsではなく、標準基準に戻します
     """
     logger.debug(n_qubit)
     logger.debug(inputcircuit)
@@ -220,7 +213,7 @@ def tran_to_pulse_tyukan(
         target = ingate.get_target_index_list()[0]
         if ingate.get_name() == "Z-rotation":
             matrix = ingate.get_matrix()
-            angle = -phase(matrix[1][1] / matrix[0][0])
+            angle = phase(matrix[1][1] / matrix[0][0])
             if angle < -1e-6:
                 angle += pi * 2
             pulse_kaz = int(angle / (RZome * 2) + 0.5)
@@ -334,7 +327,7 @@ def pulse_to_circuit(
             elif renzoku[j] > 1e-8:
                 if j < n_qubit:
                     # RZ gate
-                    anscircuit.add_gate(RZ(j, renzoku[j] * 2))
+                    anscircuit.add_gate(RZ(j, -renzoku[j] * 2))
                 elif j < n_qubit * 2:
                     anscircuit.add_gate(RX(j - n_qubit, -renzoku[j] * 2))
                 else:
