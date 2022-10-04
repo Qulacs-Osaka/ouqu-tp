@@ -114,7 +114,7 @@ def get_noiseevo_meseurment(
     this func NOT use noisesimulator
     """
     n_term = obs.get_term_count()
-    n_qubit = obs.get_qubit_count()
+    n_qubit = circuit.get_qubit_count()
 
     exp = 0 + 0.0j
 
