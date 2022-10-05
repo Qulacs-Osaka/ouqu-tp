@@ -18,10 +18,9 @@ RUN git clone https://github.com/softwareQinc/staq.git \
 RUN apt-get install -y python3 curl python3-distutils python3-dev
 
 # Poetry
-RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=/opt/poetry python3 - && \
-    cd /usr/local/bin && \
-    ln -s /opt/poetry/bin/poetry && \
-    poetry config virtualenvs.create true
+ENV POETRY_HOME=/home/vscode/.local/share/pypoetry
+ENV PATH="${POETRY_HOME}/bin:${PATH}"
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
 # change user to vscode
 USER vscode
