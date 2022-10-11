@@ -14,12 +14,15 @@ RUN git clone https://github.com/softwareQinc/staq.git \
   && cd staq && mkdir build && cd build && \
   cmake .. && make -j8 && make install
 
-# Setup Poetry Environment
+# Setup Python Environment
 RUN apt-get install -y python3 curl python3-distutils python3-dev
+
+# Poetry
+ENV POETRY_HOME=/home/vscode/.local/share/pypoetry
+ENV PATH="${POETRY_HOME}/bin:${PATH}"
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
 # change user to vscode
 USER vscode
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 -
-ENV PATH $PATH:/vscode/.poetry/bin
 
 WORKDIR /ouqu-tp
