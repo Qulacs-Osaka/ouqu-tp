@@ -266,8 +266,18 @@ def QASM_to_qulacs(
         elif remap_remove and instr[0:8] == "//qubits":
             ary = parse("//qubits:{:d}", instr)
             mapping = list(range(ary[0]))
+        elif instr[0:2] == "//":
+            continue
+        elif instr.lower() == "openqasm2.0;":
+            continue
+        elif instr.lower() == 'include"qelib1.inc";':
+            continue
+        elif instr.isspace():
+            continue
+        elif instr == "":
+            continue
         else:
-            print("unknown line:", instr)
+            print("// unknown line:", instr)
     return cir
 
 
