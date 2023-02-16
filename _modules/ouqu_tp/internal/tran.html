@@ -397,8 +397,16 @@
     <span class="n">gate_num</span> <span class="o">=</span> <span class="n">inputcircuit</span><span class="o">.</span><span class="n">get_gate_count</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">gate_num</span><span class="p">):</span>
         <span class="n">ingate</span> <span class="o">=</span> <span class="n">inputcircuit</span><span class="o">.</span><span class="n">get_gate</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="c1"># 測定はスキップ</span>
+        <span class="k">if</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;CPTP&quot;</span> <span class="ow">or</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Instrument&quot;</span><span class="p">:</span>
+            <span class="c1"># TODO: 測定の追加位置（bitSingleGatesはまとめているためここで測定を追加できない）</span>
+            <span class="c1"># anscircuit.add_gate(ingate)</span>
+            <span class="k">continue</span>
+
         <span class="k">if</span> <span class="p">(</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">ingate</span><span class="o">.</span><span class="n">get_control_index_list</span><span class="p">())</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">ingate</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">())</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">ingate</span><span class="o">.</span><span class="n">get_control_index_list</span><span class="p">())</span>
+                <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">ingate</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">())</span>
             <span class="o">&lt;=</span> <span class="mi">1</span>
         <span class="p">):</span>
             <span class="n">target</span> <span class="o">=</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
@@ -415,6 +423,15 @@
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubit</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">tuigate</span> <span class="ow">in</span> <span class="n">tran_ouqu_single</span><span class="p">(</span><span class="n">bitSingleGates</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
             <span class="n">anscircuit</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">tuigate</span><span class="p">)</span>
+
+    <span class="c1"># 測定の追加</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">gate_num</span><span class="p">):</span>
+        <span class="n">ingate</span> <span class="o">=</span> <span class="n">inputcircuit</span><span class="o">.</span><span class="n">get_gate</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;CPTP&quot;</span> <span class="ow">or</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Instrument&quot;</span><span class="p">:</span>
+            <span class="c1"># print(f&quot;tran_ouqu_multi ingate: {ingate}&quot;)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;tran_ouqu_multi get_target_index_list: </span><span class="si">{</span><span class="n">ingate</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">anscircuit</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">ingate</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">anscircuit</span></div>
 
@@ -496,7 +513,7 @@
 
     <span class="n">inputcircuit</span> <span class="o">=</span> <span class="n">CNOT_to_CRes</span><span class="p">(</span><span class="n">inputcircuit</span><span class="p">)</span>
     <span class="n">inputcircuit</span> <span class="o">=</span> <span class="n">tran_ouqu_multi</span><span class="p">(</span><span class="n">inputcircuit</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    「任意の1qubit回転 + CNOT,CRes 」でできたcircuitを、中間表現に直します。</span>
 <span class="sd">    各パルスは、(ゲート番号、スタート時刻、ゲート長さ) を持ちます。</span>
 <span class="sd">    ゲート長さは、回転角/omeです。</span>
@@ -539,11 +556,13 @@
 
         <span class="k">elif</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;sqrtX&quot;</span><span class="p">:</span>
             <span class="n">pulse_kaz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">RXome</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
-            <span class="n">pulse_comp</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">target</span> <span class="o">+</span> <span class="n">n_qubit</span><span class="p">,</span> <span class="n">saigo_zikan</span><span class="p">[</span><span class="n">target</span><span class="p">],</span> <span class="n">pulse_kaz</span><span class="p">))</span>
+            <span class="n">pulse_comp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">target</span> <span class="o">+</span> <span class="n">n_qubit</span><span class="p">,</span> <span class="n">saigo_zikan</span><span class="p">[</span><span class="n">target</span><span class="p">],</span> <span class="n">pulse_kaz</span><span class="p">))</span>
             <span class="n">saigo_zikan</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">+=</span> <span class="n">pulse_kaz</span> <span class="o">+</span> <span class="n">mergin</span>
         <span class="k">elif</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span>
             <span class="n">pulse_kaz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="n">RXome</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
-            <span class="n">pulse_comp</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">target</span> <span class="o">+</span> <span class="n">n_qubit</span><span class="p">,</span> <span class="n">saigo_zikan</span><span class="p">[</span><span class="n">target</span><span class="p">],</span> <span class="n">pulse_kaz</span><span class="p">))</span>
+            <span class="n">pulse_comp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">target</span> <span class="o">+</span> <span class="n">n_qubit</span><span class="p">,</span> <span class="n">saigo_zikan</span><span class="p">[</span><span class="n">target</span><span class="p">],</span> <span class="n">pulse_kaz</span><span class="p">))</span>
             <span class="n">saigo_zikan</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">+=</span> <span class="n">pulse_kaz</span> <span class="o">+</span> <span class="n">mergin</span>
         <span class="k">elif</span> <span class="n">check_is_CRes</span><span class="p">(</span><span class="n">ingate</span><span class="p">):</span>
             <span class="n">control</span> <span class="o">=</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
@@ -600,7 +619,7 @@
     <span class="p">(</span><span class="n">pulse_comp</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span> <span class="o">=</span> <span class="n">tran_to_pulse_tyukan</span><span class="p">(</span>
         <span class="n">inputcircuit</span><span class="p">,</span> <span class="n">Res_list</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">OZ</span><span class="p">,</span> <span class="n">OX</span><span class="p">,</span> <span class="n">ORes</span><span class="p">,</span> <span class="n">mergin</span>
     <span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ゲートパルス中間表現を関数内で取得し、それをnumpy array に直します。</span>
 <span class="sd">    arrayは、[ゲート名+1][時間(1パルス単位)] の配列です。</span>
 
