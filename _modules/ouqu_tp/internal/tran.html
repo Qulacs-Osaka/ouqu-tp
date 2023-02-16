@@ -429,8 +429,8 @@
         <span class="n">ingate</span> <span class="o">=</span> <span class="n">inputcircuit</span><span class="o">.</span><span class="n">get_gate</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;CPTP&quot;</span> <span class="ow">or</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Instrument&quot;</span><span class="p">:</span>
             <span class="c1"># print(f&quot;tran_ouqu_multi ingate: {ingate}&quot;)</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;tran_ouqu_multi get_target_index_list: </span><span class="si">{</span><span class="n">ingate</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># print(</span>
+            <span class="c1">#     f&quot;tran_ouqu_multi get_target_index_list: {ingate.get_target_index_list()}&quot;)</span>
             <span class="n">anscircuit</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">ingate</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">anscircuit</span></div>
