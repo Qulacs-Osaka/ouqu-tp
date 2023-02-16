@@ -81,8 +81,16 @@ def tran_ouqu_multi(inputcircuit: QuantumCircuit) -> QuantumCircuit:
     gate_num = inputcircuit.get_gate_count()
     for i in range(gate_num):
         ingate = inputcircuit.get_gate(i)
+
+        # 測定はスキップ
+        if ingate.get_name() == "CPTP" or ingate.get_name() == "Instrument":
+            # TODO: 測定の追加位置（bitSingleGatesはまとめているためここで測定を追加できない）
+            # anscircuit.add_gate(ingate)
+            continue
+
         if (
-            len(ingate.get_control_index_list()) + len(ingate.get_target_index_list())
+            len(ingate.get_control_index_list())
+                + len(ingate.get_target_index_list())
             <= 1
         ):
             target = ingate.get_target_index_list()[0]
@@ -99,6 +107,15 @@ def tran_ouqu_multi(inputcircuit: QuantumCircuit) -> QuantumCircuit:
     for i in range(n_qubit):
         for tuigate in tran_ouqu_single(bitSingleGates[i]):
             anscircuit.add_gate(tuigate)
+
+    # 測定の追加
+    for i in range(gate_num):
+        ingate = inputcircuit.get_gate(i)
+        if ingate.get_name() == "CPTP" or ingate.get_name() == "Instrument":
+            # print(f"tran_ouqu_multi ingate: {ingate}")
+            print(
+                f"tran_ouqu_multi get_target_index_list: {ingate.get_target_index_list()}")
+            anscircuit.add_gate(ingate)
 
     return anscircuit
 
@@ -223,11 +240,13 @@ def tran_to_pulse_tyukan(
 
         elif ingate.get_name() == "sqrtX":
             pulse_kaz = int(pi / 2 / (RXome * 2) + 0.5)
-            pulse_comp.append((target + n_qubit, saigo_zikan[target], pulse_kaz))
+            pulse_comp.append(
+                (target + n_qubit, saigo_zikan[target], pulse_kaz))
             saigo_zikan[target] += pulse_kaz + mergin
         elif ingate.get_name() == "X":
             pulse_kaz = int(pi / (RXome * 2) + 0.5)
-            pulse_comp.append((target + n_qubit, saigo_zikan[target], pulse_kaz))
+            pulse_comp.append(
+                (target + n_qubit, saigo_zikan[target], pulse_kaz))
             saigo_zikan[target] += pulse_kaz + mergin
         elif check_is_CRes(ingate):
             control = ingate.get_target_index_list()[0]

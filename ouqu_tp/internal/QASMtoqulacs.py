@@ -6,7 +6,7 @@ from typing import List
 import numpy as np
 from parse import parse, search
 from qulacs import QuantumCircuit, QuantumGateBase, QuantumState
-from qulacs.gate import DenseMatrix, Identity
+from qulacs.gate import DenseMatrix, Identity, Measurement, Instrument, merge, CPTP, P0, P1
 
 from ouqu_tp.internal.tran import (
     CRes,
@@ -37,12 +37,15 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
         "OPENQASM 2.0;",
         'include "qelib1.inc";',
         f"qreg q[{cir.get_qubit_count()}];",
+        f"creg c[{cir.get_qubit_count()}];",
     ]
 
     for kai in range(cir.get_gate_count()):
         it = cir.get_gate(kai)
         clis = it.get_control_index_list()
         tlis = it.get_target_index_list()
+
+        # print(f"it.get_name(): {it.get_name()}")
 
         if it.get_name() == "CNOT":
             out_strs.append(f"cx q[{clis[0]}],q[{tlis[0]}];")
@@ -87,6 +90,12 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
             angle = phase(matrix[1][1] / matrix[0][0])
             if abs(angle) > 1e-5:
                 out_strs.append(f"rz({angle}) q[{tlis[0]}];")
+        elif it.get_name() == "CPTP":
+            # TODO: classical_pos
+            target_idx_list = it.get_target_index_list()
+            if len(target_idx_list) > 0:
+                target_idx = target_idx_list[0]
+                out_strs.append(f"measure q[{target_idx}]->c[{target_idx}];")
         elif check_is_CRes(it):
             out_strs.append(f"CRes q[{tlis[0]}],q[{tlis[1]}];")
         elif check_is_CResdag(it):
@@ -121,6 +130,7 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
         else:
             out_strs.append("unknown gate:" + it.get_name())
             logger.warning("unknown gate:" + it.get_name())
+            print(f"unknown gate: {it.get_name()}")
         # get_matrix が効かないゲートの対応
         # 1qubitのDenseMatrixはu3ゲートに直すべきだが、やってない
 
@@ -141,8 +151,8 @@ DenseMatrix(2,1,0.707107,0,0,0,-0,-0.707107,0,0,0,0,0.707107,0,0,0,0,0.707107,-0
 def QASM_to_qulacs(
     input_strs: typing.List[str], *, remap_remove: bool = False
 ) -> QuantumCircuit:
-    # 仕様: キュービットレジスタはq[]のやつだけにしてください cregは無し
-
+    # 仕様: キュービットレジスタはq[]のやつだけにしてください
+    n = 0
     mapping: List[int] = []
 
     for instr_moto in input_strs:
@@ -150,10 +160,33 @@ def QASM_to_qulacs(
         # 全部小文字にして、前後の改行を削除、　すべての空白とタブを削除した状態でマッチングします
 
         if instr[0:4] == "qreg":
-            ary = parse("qregq[{:d}];", instr)
-            cir = QuantumCircuit(ary[0])
-            if len(mapping) == 0:
-                mapping = list(range(ary[0]))
+            ary = parse("qreg{v}[{n}];", instr)
+            if ary != None:
+                n = int(ary["n"].strip())
+                # v = ary["v"].strip()
+                cir = QuantumCircuit(n)
+                if len(mapping) == 0:
+                    mapping = list(range(n))
+        if instr[0:4] == "creg":
+            continue
+        elif remap_remove and instr[0:4] == "//q[":
+            ary = parse("//q[{:d}]-->q[{:d}]", instr)
+            if not (ary is None):
+                mapping[ary[0]] = ary[1]
+        elif remap_remove and instr[0:8] == "//qubits":
+            ary = parse("//qubits:{:d}", instr)
+            mapping = list(range(ary[0]))
+        elif instr[0:2] == "//":
+            continue
+        elif instr.lower() == "openqasm2.0;":
+            continue
+        elif instr.lower() == 'include"qelib1.inc";':
+            continue
+        elif instr.isspace():
+            continue
+        elif instr == "":
+            continue
+
         elif instr[0:2] == "cx":
             ary = parse("cxq[{:d}],q[{:d}];", instr)
             cir.add_CNOT_gate(mapping[ary[0]], mapping[ary[1]])
@@ -259,23 +292,28 @@ def QASM_to_qulacs(
                 bas += 1
                 dense_gate.add_control_qubit(control_index, control_values[i])
             cir.add_gate(dense_gate)
-        elif remap_remove and instr[0:4] == "//q[":
-            ary = parse("//q[{:d}]-->q[{:d}]", instr)
-            if not (ary is None):
-                mapping[ary[0]] = ary[1]
-        elif remap_remove and instr[0:8] == "//qubits":
-            ary = parse("//qubits:{:d}", instr)
-            mapping = list(range(ary[0]))
-        elif instr[0:2] == "//":
-            continue
-        elif instr.lower() == "openqasm2.0;":
-            continue
-        elif instr.lower() == 'include"qelib1.inc";':
-            continue
-        elif instr.isspace():
-            continue
-        elif instr == "":
-            continue
+        elif instr[0:7] == "measure":
+            ary = parse("measure{q}->{c};", instr)
+            if ary != None:
+                q = ary["q"].strip()
+                c = ary["c"].strip()
+                qary = parse("{s}[{:d}]", q)
+                cary = parse("{s}[{:d}]", c)
+                # print(f"qary: {qary}")
+                # print(f"cary: {cary}")
+                if qary != None and cary != None:
+                    # print(f"qary[0]: {qary[0]}")
+                    # print(f"cary[0]: {cary[0]}")
+                    measurement_gate = Measurement(qary[0], cary[0])
+                    # print(
+                    #     f"measurement_gate.name: {measurement_gate.get_name()}")
+                    # print(
+                    #     f"measurement_gate get_target_index_list: {measurement_gate.get_target_index_list()}")
+                    cir.add_gate(measurement_gate)
+                else:
+                    for i in range(n):
+                        measurement_gate = Measurement(i, i)
+                        cir.add_gate(measurement_gate)
         else:
             print("// unknown line:", instr)
     return cir
