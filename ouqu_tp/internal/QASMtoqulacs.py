@@ -160,14 +160,14 @@ def QASM_to_qulacs(
         # 全部小文字にして、前後の改行を削除、　すべての空白とタブを削除した状態でマッチングします
 
         if instr[0:4] == "qreg":
-            ary = parse("qreg{v}[{n}];", instr)
+            ary = parse("qreg{v}[{n}];", instr_moto)
             if ary != None:
                 n = int(ary["n"].strip())
                 # v = ary["v"].strip()
                 cir = QuantumCircuit(n)
                 if len(mapping) == 0:
                     mapping = list(range(n))
-        if instr[0:4] == "creg":
+        elif instr[0:4] == "creg":
             continue
         elif remap_remove and instr[0:4] == "//q[":
             ary = parse("//q[{:d}]-->q[{:d}]", instr)

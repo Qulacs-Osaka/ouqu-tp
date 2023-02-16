@@ -113,8 +113,8 @@ def tran_ouqu_multi(inputcircuit: QuantumCircuit) -> QuantumCircuit:
         ingate = inputcircuit.get_gate(i)
         if ingate.get_name() == "CPTP" or ingate.get_name() == "Instrument":
             # print(f"tran_ouqu_multi ingate: {ingate}")
-            print(
-                f"tran_ouqu_multi get_target_index_list: {ingate.get_target_index_list()}")
+            # print(
+            #     f"tran_ouqu_multi get_target_index_list: {ingate.get_target_index_list()}")
             anscircuit.add_gate(ingate)
 
     return anscircuit
