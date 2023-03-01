@@ -158,9 +158,8 @@ def QASM_to_qulacs(
     for instr_moto in input_strs:
         instr = instr_moto.lower().strip().replace(" ", "").replace("\t", "")
         # 全部小文字にして、前後の改行を削除、　すべての空白とタブを削除した状態でマッチングします
-
         if instr[0:4] == "qreg":
-            ary = parse("qreg{v}[{n}];", instr_moto)
+            ary = parse("qreg{v}[{n}];", instr)
             if ary != None:
                 n = int(ary["n"].strip())
                 # v = ary["v"].strip()
