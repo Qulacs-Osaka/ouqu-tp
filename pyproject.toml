@@ -1,12 +1,11 @@
 [tool.poetry]
-name = "ouqu_tp"
+name = "ouqu-tp"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
-license = "MIT"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.11"
+python = ">=3.9,<4.0"
 numpy = "^1.21.2"
 scipy = "^1.7.3"
 typer = "^0.4.0"
