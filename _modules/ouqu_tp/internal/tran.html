@@ -405,8 +405,7 @@
             <span class="k">continue</span>
 
         <span class="k">if</span> <span class="p">(</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">ingate</span><span class="o">.</span><span class="n">get_control_index_list</span><span class="p">())</span>
-                <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">ingate</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">())</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">ingate</span><span class="o">.</span><span class="n">get_control_index_list</span><span class="p">())</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">ingate</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">())</span>
             <span class="o">&lt;=</span> <span class="mi">1</span>
         <span class="p">):</span>
             <span class="n">target</span> <span class="o">=</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
@@ -556,13 +555,11 @@
 
         <span class="k">elif</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;sqrtX&quot;</span><span class="p">:</span>
             <span class="n">pulse_kaz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">RXome</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
-            <span class="n">pulse_comp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">target</span> <span class="o">+</span> <span class="n">n_qubit</span><span class="p">,</span> <span class="n">saigo_zikan</span><span class="p">[</span><span class="n">target</span><span class="p">],</span> <span class="n">pulse_kaz</span><span class="p">))</span>
+            <span class="n">pulse_comp</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">target</span> <span class="o">+</span> <span class="n">n_qubit</span><span class="p">,</span> <span class="n">saigo_zikan</span><span class="p">[</span><span class="n">target</span><span class="p">],</span> <span class="n">pulse_kaz</span><span class="p">))</span>
             <span class="n">saigo_zikan</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">+=</span> <span class="n">pulse_kaz</span> <span class="o">+</span> <span class="n">mergin</span>
         <span class="k">elif</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span>
             <span class="n">pulse_kaz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="n">RXome</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
-            <span class="n">pulse_comp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">target</span> <span class="o">+</span> <span class="n">n_qubit</span><span class="p">,</span> <span class="n">saigo_zikan</span><span class="p">[</span><span class="n">target</span><span class="p">],</span> <span class="n">pulse_kaz</span><span class="p">))</span>
+            <span class="n">pulse_comp</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">target</span> <span class="o">+</span> <span class="n">n_qubit</span><span class="p">,</span> <span class="n">saigo_zikan</span><span class="p">[</span><span class="n">target</span><span class="p">],</span> <span class="n">pulse_kaz</span><span class="p">))</span>
             <span class="n">saigo_zikan</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">+=</span> <span class="n">pulse_kaz</span> <span class="o">+</span> <span class="n">mergin</span>
         <span class="k">elif</span> <span class="n">check_is_CRes</span><span class="p">(</span><span class="n">ingate</span><span class="p">):</span>
             <span class="n">control</span> <span class="o">=</span> <span class="n">ingate</span><span class="o">.</span><span class="n">get_target_index_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>

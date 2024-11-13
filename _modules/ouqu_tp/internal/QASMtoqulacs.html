@@ -322,7 +322,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">parse</span> <span class="kn">import</span> <span class="n">parse</span><span class="p">,</span> <span class="n">search</span>
 <span class="kn">from</span> <span class="nn">qulacs</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">QuantumGateBase</span><span class="p">,</span> <span class="n">QuantumState</span>
-<span class="kn">from</span> <span class="nn">qulacs.gate</span> <span class="kn">import</span> <span class="n">DenseMatrix</span><span class="p">,</span> <span class="n">Identity</span><span class="p">,</span> <span class="n">Measurement</span><span class="p">,</span> <span class="n">Instrument</span><span class="p">,</span> <span class="n">merge</span><span class="p">,</span> <span class="n">CPTP</span><span class="p">,</span> <span class="n">P0</span><span class="p">,</span> <span class="n">P1</span>
+<span class="kn">from</span> <span class="nn">qulacs.gate</span> <span class="kn">import</span> <span class="n">DenseMatrix</span><span class="p">,</span> <span class="n">Identity</span><span class="p">,</span> <span class="n">Measurement</span>
 
 <span class="kn">from</span> <span class="nn">ouqu_tp.internal.tran</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">CRes</span><span class="p">,</span>
@@ -476,7 +476,7 @@
         <span class="c1"># 全部小文字にして、前後の改行を削除、　すべての空白とタブを削除した状態でマッチングします</span>
         <span class="k">if</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;qreg&quot;</span><span class="p">:</span>
             <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;qreg</span><span class="si">{v}</span><span class="s2">[</span><span class="si">{n}</span><span class="s2">];&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">ary</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ary</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ary</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
                 <span class="c1"># v = ary[&quot;v&quot;].strip()</span>
                 <span class="n">cir</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
@@ -609,14 +609,14 @@
             <span class="n">cir</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">dense_gate</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;measure&quot;</span><span class="p">:</span>
             <span class="n">ary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;measure</span><span class="si">{q}</span><span class="s2">-&gt;</span><span class="si">{c}</span><span class="s2">;&quot;</span><span class="p">,</span> <span class="n">instr</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">ary</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ary</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">q</span> <span class="o">=</span> <span class="n">ary</span><span class="p">[</span><span class="s2">&quot;q&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                 <span class="n">c</span> <span class="o">=</span> <span class="n">ary</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                 <span class="n">qary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{s}</span><span class="s2">[</span><span class="si">{:d}</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
                 <span class="n">cary</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{s}</span><span class="s2">[</span><span class="si">{:d}</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
                 <span class="c1"># print(f&quot;qary: {qary}&quot;)</span>
                 <span class="c1"># print(f&quot;cary: {cary}&quot;)</span>
-                <span class="k">if</span> <span class="n">qary</span> <span class="o">!=</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cary</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">qary</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cary</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="c1"># print(f&quot;qary[0]: {qary[0]}&quot;)</span>
                     <span class="c1"># print(f&quot;cary[0]: {cary[0]}&quot;)</span>
                     <span class="n">measurement_gate</span> <span class="o">=</span> <span class="n">Measurement</span><span class="p">(</span><span class="n">qary</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
