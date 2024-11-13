@@ -6,7 +6,16 @@ from typing import List
 import numpy as np
 from parse import parse, search
 from qulacs import QuantumCircuit, QuantumGateBase, QuantumState
-from qulacs.gate import DenseMatrix, Identity, Measurement, Instrument, merge, CPTP, P0, P1
+from qulacs.gate import (
+    CPTP,
+    P0,
+    P1,
+    DenseMatrix,
+    Identity,
+    Instrument,
+    Measurement,
+    merge,
+)
 
 from ouqu_tp.internal.tran import (
     CRes,

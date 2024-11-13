@@ -89,8 +89,7 @@ def tran_ouqu_multi(inputcircuit: QuantumCircuit) -> QuantumCircuit:
             continue
 
         if (
-            len(ingate.get_control_index_list())
-                + len(ingate.get_target_index_list())
+            len(ingate.get_control_index_list()) + len(ingate.get_target_index_list())
             <= 1
         ):
             target = ingate.get_target_index_list()[0]
@@ -240,13 +239,11 @@ def tran_to_pulse_tyukan(
 
         elif ingate.get_name() == "sqrtX":
             pulse_kaz = int(pi / 2 / (RXome * 2) + 0.5)
-            pulse_comp.append(
-                (target + n_qubit, saigo_zikan[target], pulse_kaz))
+            pulse_comp.append((target + n_qubit, saigo_zikan[target], pulse_kaz))
             saigo_zikan[target] += pulse_kaz + mergin
         elif ingate.get_name() == "X":
             pulse_kaz = int(pi / (RXome * 2) + 0.5)
-            pulse_comp.append(
-                (target + n_qubit, saigo_zikan[target], pulse_kaz))
+            pulse_comp.append((target + n_qubit, saigo_zikan[target], pulse_kaz))
             saigo_zikan[target] += pulse_kaz + mergin
         elif check_is_CRes(ingate):
             control = ingate.get_target_index_list()[0]
