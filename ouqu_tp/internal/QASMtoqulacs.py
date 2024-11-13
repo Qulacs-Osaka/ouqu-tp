@@ -7,14 +7,9 @@ import numpy as np
 from parse import parse, search
 from qulacs import QuantumCircuit, QuantumGateBase, QuantumState
 from qulacs.gate import (
-    CPTP,
-    P0,
-    P1,
     DenseMatrix,
     Identity,
-    Instrument,
     Measurement,
-    merge,
 )
 
 from ouqu_tp.internal.tran import (
@@ -169,7 +164,7 @@ def QASM_to_qulacs(
         # 全部小文字にして、前後の改行を削除、　すべての空白とタブを削除した状態でマッチングします
         if instr[0:4] == "qreg":
             ary = parse("qreg{v}[{n}];", instr)
-            if ary != None:
+            if ary is not None:
                 n = int(ary["n"].strip())
                 # v = ary["v"].strip()
                 cir = QuantumCircuit(n)
@@ -302,14 +297,14 @@ def QASM_to_qulacs(
             cir.add_gate(dense_gate)
         elif instr[0:7] == "measure":
             ary = parse("measure{q}->{c};", instr)
-            if ary != None:
+            if ary is not None:
                 q = ary["q"].strip()
                 c = ary["c"].strip()
                 qary = parse("{s}[{:d}]", q)
                 cary = parse("{s}[{:d}]", c)
                 # print(f"qary: {qary}")
                 # print(f"cary: {cary}")
-                if qary != None and cary != None:
+                if qary is not None and cary is not None:
                     # print(f"qary[0]: {qary[0]}")
                     # print(f"cary[0]: {cary[0]}")
                     measurement_gate = Measurement(qary[0], cary[0])
