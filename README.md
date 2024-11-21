@@ -13,7 +13,7 @@
 
 # Setup
 
-For installation instructions, please refer to the [Setup Guide](Setup.md). (in Japanese)
+For installation instructions, please refer to the [Setup Guide](Setup.md).
 
 # How To Use
 
