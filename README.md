@@ -21,11 +21,7 @@ For usage instructions, please refer to the [How to Use Guide](HowToUse.md). (in
 
 # How to Contribute
 
-For Contributing, please refer to the [How to contribute Guide](CONTRIBUTING_en.md). 
-
-# CITATION
-
-Citation information is also available in the [CITATION](CITATION.cff) file.
+For Contributing, please refer to the [How to contribute Guide](CONTRIBUTING_en.md).
 
 # LICENSE
 
