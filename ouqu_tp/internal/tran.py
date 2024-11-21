@@ -162,7 +162,7 @@ def check_is_CRes(ingate: qulacs.QuantumGateBase) -> bool:
     true_mat = np.array(
         [[1, 0, -1.0j, 0], [0, 1, 0, 1.0j], [-1.0j, 0, 1, 0], [0, 1.0j, 0, 1]]
     ) / sqrt(2)
-    return np.allclose(true_mat, ingate.get_matrix())  # type:ignore
+    return np.allclose(true_mat, ingate.get_matrix())
 
 
 def check_is_CResdag(ingate: qulacs.QuantumGateBase) -> bool:
@@ -176,7 +176,7 @@ def check_is_CResdag(ingate: qulacs.QuantumGateBase) -> bool:
     true_mat = np.array(
         [[1, 0, 1.0j, 0], [0, 1, 0, -1.0j], [1.0j, 0, 1, 0], [0, -1.0j, 0, 1]]
     ) / sqrt(2)
-    return np.allclose(true_mat, ingate.get_matrix())  # type:ignore
+    return np.allclose(true_mat, ingate.get_matrix())
 
 
 def tran_to_pulse_tyukan(
