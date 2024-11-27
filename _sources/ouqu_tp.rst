@@ -9,6 +9,7 @@ Subpackages
 
    ouqu_tp.cli
    ouqu_tp.internal
+   ouqu_tp.servicers
 
 Submodules
 ----------
