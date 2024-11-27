@@ -168,9 +168,11 @@ def QASM_to_qulacs(
                     mapping = list(range(n))
         elif instr[0:4] == "creg":
             continue
+        elif instr[0:4] == "gate":
+            continue
         elif remap_remove and instr[0:4] == "//q[":
             ary = parse("//q[{:d}]-->q[{:d}]", instr)
-            if not (ary is None):
+            if ary is not None:
                 mapping[ary[0]] = ary[1]
         elif remap_remove and instr[0:8] == "//qubits":
             ary = parse("//qubits:{:d}", instr)
@@ -183,12 +185,15 @@ def QASM_to_qulacs(
             continue
         elif instr.isspace():
             continue
+        elif instr == "}":
+            continue
         elif instr == "":
             continue
 
         elif instr[0:2] == "cx":
             ary = parse("cxq[{:d}],q[{:d}];", instr)
-            cir.add_CNOT_gate(mapping[ary[0]], mapping[ary[1]])
+            if ary is not None:
+                cir.add_CNOT_gate(mapping[ary[0]], mapping[ary[1]])
         elif instr[0:2] == "cz":
             ary = parse("czq[{:d}],q[{:d}];", instr)
             cir.add_CZ_gate(mapping[ary[0]], mapping[ary[1]])
@@ -245,7 +250,8 @@ def QASM_to_qulacs(
             cir.add_U3_gate(mapping[ary[3]], ary[0], ary[1], ary[2])
         elif instr[0:1] == "u":
             ary = parse("u({:g},{:g},{:g})q[{:d}];", instr)
-            cir.add_U3_gate(mapping[ary[3]], ary[0], ary[1], ary[2])
+            if ary is not None:
+                cir.add_U3_gate(mapping[ary[3]], ary[0], ary[1], ary[2])
         elif instr[0:3] == "sxq":
             ary = parse("sxq[{:d}];", instr)
             cir.add_sqrtX_gate(mapping[ary[0]])
