@@ -1,6 +1,19 @@
 # Setup
 
-## Setting Up the Environment
+## Setting Up the Environment for Users
+
+#### Tools required for installation
+
+- Install [staq](https://github.com/softwareQinc/staq/wiki/Installation-instructions) (setup yourself)
+- Install python
+- Install ouqu-tp with the following command:
+
+```
+pip install ouqu-tp
+```
+
+
+## Setting Up the Environment for Developers
 
 ### To run in a VSCode + Devcontainer environment
 
@@ -28,9 +41,9 @@ docker run -it --mount type=bind,source=`pwd`,target=/ouqu-tp ouqu-tp-docker-ima
 
 #### Tools required for installation
 
-- python
-- Poetry (recommended) or pip
-- [staq](https://github.com/softwareQinc/staq/wiki/Installation-instructions)
+- Install [staq](https://github.com/softwareQinc/staq/wiki/Installation-instructions) (setup yourself)
+- Install python
+- Install Poetry (recommended) or pip
 
 Other tools will be automatically installed by Poetry or pip.
 
