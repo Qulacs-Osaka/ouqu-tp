@@ -157,7 +157,7 @@ c[2] = measure q[2];
 
 class TestTranspilerService:
     @pytest.mark.skipif(
-        os.getenv("GITHUB_ACTIONS") == "true", 
+        os.getenv("GITHUB_ACTIONS") == "true",
         reason="Skipping this test on GitHub Actions",
     )
     def test_transpile(self) -> None:
@@ -169,7 +169,7 @@ class TestTranspilerService:
         assert response.qubit_mapping == {2: 1, 3: 0}  # physical-virtual mapping
 
     @pytest.mark.skipif(
-        os.getenv("GITHUB_ACTIONS") == "true", 
+        os.getenv("GITHUB_ACTIONS") == "true",
         reason="Skipping this test on GitHub Actions",
     )
     def test_transpile_device_id(self) -> None:
