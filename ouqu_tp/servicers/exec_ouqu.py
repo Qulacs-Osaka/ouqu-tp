@@ -140,6 +140,7 @@ def add_newline_to_semicolons(qasm_str: str) -> str:
 
 
 def exec_ouqu(qasm_str: str, device_topology_json: str) -> str:
+    device_topology_json = device_topology_json.replace("device_id", "name")
     with tempfile.NamedTemporaryFile(mode="w+t", delete=DELETE_FLG) as fcnot:
         fcnot.write(device_topology_json)
         fcnot.seek(0)
