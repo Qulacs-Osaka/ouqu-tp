@@ -1,3 +1,4 @@
+import json
 import typing
 from cmath import phase
 from logging import NullHandler, getLogger
@@ -91,11 +92,15 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
             if abs(angle) > 1e-5:
                 out_strs.append(f"rz({angle}) q[{tlis[0]}];")
         elif it.get_name() == "CPTP":
-            # TODO: classical_pos
             target_idx_list = it.get_target_index_list()
             if len(target_idx_list) > 0:
                 target_idx = target_idx_list[0]
-                out_strs.append(f"measure q[{target_idx}]->c[{target_idx}];")
+                measure_dict = json.loads(it.to_json())
+                if "classical_register_address" in measure_dict:
+                    classical_idx = measure_dict["classical_register_address"]
+                    out_strs.append(f"measure q[{target_idx}]->c[{classical_idx}];")
+                else:
+                    out_strs.append(f"measure q[{target_idx}]->c[{target_idx}];")
         elif check_is_CRes(it):
             out_strs.append(f"CRes q[{tlis[0]}],q[{tlis[1]}];")
         elif check_is_CResdag(it):
