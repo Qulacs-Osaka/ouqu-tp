@@ -1,5 +1,7 @@
 # ouqu-tp
 
+[![pypi version](https://img.shields.io/pypi/v/ouqu-tp.svg)](https://pypi.org/project/ouqu-tp/)
+
 **ouqu-tp** is a library that allows you to run OpenQASM on qulacs and to transpile circuits to run on real devices.
 
 # Feature
