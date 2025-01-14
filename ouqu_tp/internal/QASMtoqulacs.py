@@ -1,4 +1,5 @@
 import json
+import re
 import typing
 from cmath import phase
 from logging import NullHandler, getLogger
@@ -38,8 +39,10 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
         "OPENQASM 2.0;",
         'include "qelib1.inc";',
         f"qreg q[{cir.get_qubit_count()}];",
-        f"creg c[{cir.get_qubit_count()}];",
+        "creg c[__len_creg_idx__];",
     ]
+
+    creg_idx = set()
 
     for kai in range(cir.get_gate_count()):
         it = cir.get_gate(kai)
@@ -99,8 +102,10 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
                 if "classical_register_address" in measure_dict:
                     classical_idx = measure_dict["classical_register_address"]
                     out_strs.append(f"measure q[{target_idx}]->c[{classical_idx}];")
+                    creg_idx.add(classical_idx)
                 else:
                     out_strs.append(f"measure q[{target_idx}]->c[{target_idx}];")
+                    creg_idx.add(target_idx)
         elif check_is_CRes(it):
             out_strs.append(f"CRes q[{tlis[0]}],q[{tlis[1]}];")
         elif check_is_CResdag(it):
@@ -139,6 +144,8 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
         # get_matrix が効かないゲートの対応
         # 1qubitのDenseMatrixはu3ゲートに直すべきだが、やってない
 
+    # rewite creg
+    out_strs[3] = re.sub(r"__len_creg_idx__", str(len(creg_idx)), out_strs[3])
     return out_strs
 
 
