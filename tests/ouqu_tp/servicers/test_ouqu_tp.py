@@ -144,7 +144,7 @@ expected_qasm = """// Mapped to device "test_device"
 OPENQASM 3.0;
 include "stdgates.inc";
 qreg q[4];
-creg c[4];
+creg c[2];
 rz(1.5707963267948932) q[3];
 sx q[3];
 rz(1.5707963267948966) q[3];
