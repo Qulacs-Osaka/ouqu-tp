@@ -15,8 +15,8 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!-- 
-    this give us a css class that will be invisible only if js is disabled 
+  <!--
+    this give us a css class that will be invisible only if js is disabled
   -->
   <noscript>
     <style>
@@ -26,18 +26,18 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
@@ -190,9 +190,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -292,15 +297,15 @@
                 <article class="bd-article">
                   
   <h1>Source code for ouqu_tp.servicers.exec_ouqu</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="kn">from</span> <span class="nn">parse</span> <span class="kn">import</span> <span class="n">parse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse</span>
 
-<span class="kn">from</span> <span class="nn">ouqu_tp.servicers</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ouqu_tp.servicers</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
 
 <span class="n">DELETE_FLG</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_config_DELETE_TMP_FLG</span><span class="p">()</span>
 <span class="n">ADD_INC_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s2">&quot;add.inc&quot;</span><span class="p">)</span>
@@ -308,10 +313,10 @@
 
 <div class="viewcode-block" id="add_gate_def">
 <a class="viewcode-back" href="../../../ouqu_tp.servicers.exec_ouqu.html#ouqu_tp.servicers.exec_ouqu.add_gate_def">[docs]</a>
-<span class="k">def</span> <span class="nf">add_gate_def</span><span class="p">(</span><span class="n">qasm_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_gate_def</span><span class="p">(</span><span class="n">qasm_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">read_add</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_add</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ADD_INC_PATH</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">s</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">s</span>
@@ -327,7 +332,7 @@
 
 <div class="viewcode-block" id="convert_qubit_to_qreg">
 <a class="viewcode-back" href="../../../ouqu_tp.servicers.exec_ouqu.html#ouqu_tp.servicers.exec_ouqu.convert_qubit_to_qreg">[docs]</a>
-<span class="k">def</span> <span class="nf">convert_qubit_to_qreg</span><span class="p">(</span><span class="n">qasm</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_qubit_to_qreg</span><span class="p">(</span><span class="n">qasm</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">q_str</span> <span class="o">=</span> <span class="s2">&quot;q&quot;</span>
     <span class="n">c_str</span> <span class="o">=</span> <span class="s2">&quot;c&quot;</span>
@@ -377,7 +382,7 @@
 
 <div class="viewcode-block" id="convert_v3_to_v2_measure">
 <a class="viewcode-back" href="../../../ouqu_tp.servicers.exec_ouqu.html#ouqu_tp.servicers.exec_ouqu.convert_v3_to_v2_measure">[docs]</a>
-<span class="k">def</span> <span class="nf">convert_v3_to_v2_measure</span><span class="p">(</span><span class="n">qasm</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_v3_to_v2_measure</span><span class="p">(</span><span class="n">qasm</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">qasm</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
         <span class="c1"># `c = measure q;` -&gt; `measure q -&gt; c;`</span>
@@ -396,7 +401,7 @@
 
 <div class="viewcode-block" id="convert_v3_to_v2">
 <a class="viewcode-back" href="../../../ouqu_tp.servicers.exec_ouqu.html#ouqu_tp.servicers.exec_ouqu.convert_v3_to_v2">[docs]</a>
-<span class="k">def</span> <span class="nf">convert_v3_to_v2</span><span class="p">(</span><span class="n">qasm</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_v3_to_v2</span><span class="p">(</span><span class="n">qasm</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="nb">str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;OPENQASM\s+3.0;&quot;</span><span class="p">,</span> <span class="s2">&quot;OPENQASM 2.0;&quot;</span><span class="p">,</span> <span class="n">qasm</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
     <span class="nb">str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;OPENQASM\s+3;&quot;</span><span class="p">,</span> <span class="s2">&quot;OPENQASM 2.0;&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
     <span class="k">if</span> <span class="s2">&quot;stdgates.inc&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">qasm</span><span class="p">:</span>
@@ -416,7 +421,7 @@
 
 <div class="viewcode-block" id="convert_v2_to_v3_measure">
 <a class="viewcode-back" href="../../../ouqu_tp.servicers.exec_ouqu.html#ouqu_tp.servicers.exec_ouqu.convert_v2_to_v3_measure">[docs]</a>
-<span class="k">def</span> <span class="nf">convert_v2_to_v3_measure</span><span class="p">(</span><span class="n">qasm</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_v2_to_v3_measure</span><span class="p">(</span><span class="n">qasm</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">qasm</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
         <span class="c1"># `measure q -&gt; c;` -&gt; `c = measure q;`</span>
@@ -435,7 +440,7 @@
 
 <div class="viewcode-block" id="convert_v2_to_v3">
 <a class="viewcode-back" href="../../../ouqu_tp.servicers.exec_ouqu.html#ouqu_tp.servicers.exec_ouqu.convert_v2_to_v3">[docs]</a>
-<span class="k">def</span> <span class="nf">convert_v2_to_v3</span><span class="p">(</span><span class="n">qasm</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_v2_to_v3</span><span class="p">(</span><span class="n">qasm</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="nb">str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;OPENQASM 2.0;&quot;</span><span class="p">,</span> <span class="s2">&quot;OPENQASM 3.0;&quot;</span><span class="p">,</span> <span class="n">qasm</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
     <span class="nb">str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;qelib1.inc&quot;</span><span class="p">,</span> <span class="s2">&quot;stdgates.inc&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
     <span class="nb">str</span> <span class="o">=</span> <span class="n">convert_v2_to_v3_measure</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
@@ -445,7 +450,7 @@
 
 <div class="viewcode-block" id="add_newline_to_semicolons">
 <a class="viewcode-back" href="../../../ouqu_tp.servicers.exec_ouqu.html#ouqu_tp.servicers.exec_ouqu.add_newline_to_semicolons">[docs]</a>
-<span class="k">def</span> <span class="nf">add_newline_to_semicolons</span><span class="p">(</span><span class="n">qasm_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_newline_to_semicolons</span><span class="p">(</span><span class="n">qasm_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="c1"># 正規表現でセミコロンに続く改行がない場合に改行を追加する</span>
     <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;;(?!\n)&quot;</span>
     <span class="n">repl</span> <span class="o">=</span> <span class="s2">&quot;;</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -456,7 +461,7 @@
 
 <div class="viewcode-block" id="exec_ouqu">
 <a class="viewcode-back" href="../../../ouqu_tp.servicers.exec_ouqu.html#ouqu_tp.servicers.exec_ouqu.exec_ouqu">[docs]</a>
-<span class="k">def</span> <span class="nf">exec_ouqu</span><span class="p">(</span><span class="n">qasm_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">device_topology_json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">exec_ouqu</span><span class="p">(</span><span class="n">qasm_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">device_topology_json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="n">device_topology_json</span> <span class="o">=</span> <span class="n">device_topology_json</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;device_id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
     <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w+t&quot;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="n">DELETE_FLG</span><span class="p">)</span> <span class="k">as</span> <span class="n">fcnot</span><span class="p">:</span>
         <span class="n">fcnot</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">device_topology_json</span><span class="p">)</span>
@@ -485,7 +490,7 @@
 
 <div class="viewcode-block" id="get_mapping">
 <a class="viewcode-back" href="../../../ouqu_tp.servicers.exec_ouqu.html#ouqu_tp.servicers.exec_ouqu.get_mapping">[docs]</a>
-<span class="k">def</span> <span class="nf">get_mapping</span><span class="p">(</span><span class="n">qasm</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_mapping</span><span class="p">(</span><span class="n">qasm</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
     <span class="n">mapping</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">qasm</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
@@ -501,7 +506,7 @@
 
 <div class="viewcode-block" id="ouqu">
 <a class="viewcode-back" href="../../../ouqu_tp.servicers.exec_ouqu.html#ouqu_tp.servicers.exec_ouqu.ouqu">[docs]</a>
-<span class="k">def</span> <span class="nf">ouqu</span><span class="p">(</span><span class="n">qasm_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">device_topology_json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ouqu</span><span class="p">(</span><span class="n">qasm_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">device_topology_json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
     <span class="n">qasm_str</span> <span class="o">=</span> <span class="n">add_newline_to_semicolons</span><span class="p">(</span><span class="n">qasm_str</span><span class="p">)</span>
     <span class="n">qasm_str</span> <span class="o">=</span> <span class="n">convert_v3_to_v2</span><span class="p">(</span><span class="n">qasm_str</span><span class="p">)</span>
     <span class="n">qasm_str</span> <span class="o">=</span> <span class="n">add_gate_def</span><span class="p">(</span><span class="n">qasm_str</span><span class="p">)</span>
@@ -572,8 +577,8 @@ By Qulacs-Osaka
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>
