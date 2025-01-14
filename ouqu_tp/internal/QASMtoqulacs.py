@@ -42,7 +42,7 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
         "creg c[__len_creg_idx__];",
     ]
 
-    creg_idx = set()
+    creg_idx = list()
 
     for kai in range(cir.get_gate_count()):
         it = cir.get_gate(kai)
@@ -102,10 +102,10 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
                 if "classical_register_address" in measure_dict:
                     classical_idx = measure_dict["classical_register_address"]
                     out_strs.append(f"measure q[{target_idx}]->c[{classical_idx}];")
-                    creg_idx.add(classical_idx)
+                    creg_idx.append(int(classical_idx))
                 else:
                     out_strs.append(f"measure q[{target_idx}]->c[{target_idx}];")
-                    creg_idx.add(target_idx)
+                    creg_idx.append(int(target_idx))
         elif check_is_CRes(it):
             out_strs.append(f"CRes q[{tlis[0]}],q[{tlis[1]}];")
         elif check_is_CResdag(it):
@@ -145,7 +145,9 @@ def qulacs_to_QASM(cir: QuantumCircuit) -> typing.List[str]:
         # 1qubitのDenseMatrixはu3ゲートに直すべきだが、やってない
 
     # rewite creg
-    out_strs[3] = re.sub(r"__len_creg_idx__", str(len(creg_idx)), out_strs[3])
+    creg_idx.append(0)
+    num_creg = max(creg_idx) + 1
+    out_strs[3] = re.sub(r"__len_creg_idx__", str(num_creg), out_strs[3])
     return out_strs
 
 
