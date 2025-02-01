@@ -1,5 +1,6 @@
 import logging
 import subprocess
+import os
 from xmlrpc.client import Boolean
 
 import typer
@@ -13,40 +14,50 @@ app.add_typer(ideal.app, name="ideal")
 app.add_typer(noisy.app, name="noisy")
 app.add_typer(trance.app, name="trance")
 
-
-def is_staq_installed() -> Boolean:
+def is_staq_installed() -> bool:
+    """
+    Check if 'staq' is installed and accessible via the command line.
+    """
     try:
-        subprocess.run(["staq", "--help"], stdout=subprocess.DEVNULL, check=True)
+        subprocess.run(
+            ["staq", "--help"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=True,
+        )
         return True
-    except Exception:
+    except (FileNotFoundError, subprocess.CalledProcessError):
         return False
 
-
-@app.callback()
-def debugflag(debug: bool = False) -> None:
+def install_staq() -> None:
     """
-    Debug mode for output log files.
+    Clone, build, and install the 'staq' tool from its GitHub repository.
     """
-    if debug:
-        logger = logging.getLogger()
-        formatter = logging.Formatter(
-            "%(asctime)s %(name)s %(funcName)s [%(levelname)s]: %(message)s"
-        )
-        handler = logging.StreamHandler()
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
-        logger.setLevel(logging.DEBUG)
+    repo_url = "https://github.com/softwareQinc/staq.git"
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    staq_dir = os.path.join(base_dir, "..", "external", "staq")
 
+    if not os.path.exists(staq_dir):
+        try:
+            subprocess.check_call(["git", "clone", repo_url, staq_dir], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except subprocess.CalledProcessError:
+            return
 
-def main() -> None:
-    if is_staq_installed() is False:
-        raise Exception(
-            "[ERROR] staq seems to be not installed.\n"
-            "please install staq from https://github.com/softwareQinc/staq"
-        )
+    staq_build_dir = os.path.join(staq_dir, "build")
+    os.makedirs(staq_build_dir, exist_ok=True)
+
+    try:
+        subprocess.check_call(["cmake", staq_dir], cwd=staq_build_dir, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.check_call(["make"], cwd=staq_build_dir, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.check_call(["sudo", "make", "install"], cwd=staq_build_dir, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except subprocess.CalledProcessError:
+        return
+
+def main():
+    if not is_staq_installed():
+        install_staq()
 
     app()
-
 
 if __name__ == "__main__":
     main()
