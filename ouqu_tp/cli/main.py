@@ -1,7 +1,5 @@
-import logging
 import os
 import subprocess
-from xmlrpc.client import Boolean
 
 import typer
 
