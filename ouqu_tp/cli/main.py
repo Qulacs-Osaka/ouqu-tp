@@ -73,7 +73,7 @@ def install_staq() -> None:
         return
 
 
-def main():
+def main() -> None:
     if not is_staq_installed():
         print("Installing 'staq'. This may take a few minutes...")
         install_staq()
