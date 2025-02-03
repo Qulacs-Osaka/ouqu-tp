@@ -1,6 +1,6 @@
 import logging
-import subprocess
 import os
+import subprocess
 from xmlrpc.client import Boolean
 
 import typer
@@ -13,6 +13,7 @@ app = typer.Typer()
 app.add_typer(ideal.app, name="ideal")
 app.add_typer(noisy.app, name="noisy")
 app.add_typer(trance.app, name="trance")
+
 
 def is_staq_installed() -> bool:
     """
@@ -29,6 +30,7 @@ def is_staq_installed() -> bool:
     except (FileNotFoundError, subprocess.CalledProcessError):
         return False
 
+
 def install_staq() -> None:
     """
     Clone, build, and install the 'staq' tool from its GitHub repository.
@@ -39,7 +41,11 @@ def install_staq() -> None:
 
     if not os.path.exists(staq_dir):
         try:
-            subprocess.check_call(["git", "clone", repo_url, staq_dir], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.check_call(
+                ["git", "clone", repo_url, staq_dir],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
         except subprocess.CalledProcessError:
             return
 
@@ -47,17 +53,35 @@ def install_staq() -> None:
     os.makedirs(staq_build_dir, exist_ok=True)
 
     try:
-        subprocess.check_call(["cmake", staq_dir], cwd=staq_build_dir, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        subprocess.check_call(["make"], cwd=staq_build_dir, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        subprocess.check_call(["sudo", "make", "install"], cwd=staq_build_dir, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.check_call(
+            ["cmake", staq_dir],
+            cwd=staq_build_dir,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        subprocess.check_call(
+            ["make"],
+            cwd=staq_build_dir,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        subprocess.check_call(
+            ["sudo", "make", "install"],
+            cwd=staq_build_dir,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
     except subprocess.CalledProcessError:
         return
 
+
 def main():
     if not is_staq_installed():
+        print("Installing 'staq'. This may take a few minutes...")
         install_staq()
 
     app()
+
 
 if __name__ == "__main__":
     main()
