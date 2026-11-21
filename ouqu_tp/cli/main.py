@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 
 import typer
 
@@ -75,7 +76,7 @@ def install_staq() -> None:
 
 def main() -> None:
     if not is_staq_installed():
-        print("Installing 'staq'. This may take a few minutes...")
+        print("Installing 'staq'. This may take a few minutes...", file=sys.stderr)
         install_staq()
 
     app()

@@ -1,7 +1,7 @@
 PYTEST := poetry run pytest
 FORMATTER := poetry run black
 LINTER := poetry run flake8
-IMPORT_SORTER := poetry run isort
+IMPORT_SORTER := poetry run isort --skip ouqu_tp/external
 TYPE_CHECKER := poetry run mypy
 SPHINX_APIDOC := poetry run sphinx-apidoc
 
