@@ -299,6 +299,7 @@
   <h1>Source code for ouqu_tp.cli.main</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">typer</span>
 
@@ -382,7 +383,7 @@
 <a class="viewcode-back" href="../../../ouqu_tp.cli.main.html#ouqu_tp.cli.main.main">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_staq_installed</span><span class="p">():</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Installing &#39;staq&#39;. This may take a few minutes...&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Installing &#39;staq&#39;. This may take a few minutes...&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="n">install_staq</span><span class="p">()</span>
 
     <span class="n">app</span><span class="p">()</span></div>
